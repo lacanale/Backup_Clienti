@@ -1,0 +1,7 @@
+Router = 192.168.0.1 utente=admin Pw=admin
+PCU20  = 192.168.0.10 utente=PCU20_USER pw=SUNRISE
+PC-IVO = 192.168.0.101
+
+
+SSID=Asamec
+Chiave di rete : asamecasamec

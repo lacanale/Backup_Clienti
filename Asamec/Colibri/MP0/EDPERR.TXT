@@ -1,0 +1,31 @@
+%TABELLA NOMI LOGICI GIA' PIENA          
+NOME LOGICO GIA' DEFINITO               
+NOME LOGICO NON DEFINITO                
+ERRORE DA PERIFERICA                    
+FILE INESISTENTE SU BOLLA/CMOS          
+TIPO RECORD NON PREVISTO                
+LOAD GO SENZA INDIRIZZO DI START        
+INVALID COMMAND                         
+ERRORE DI FORMATO                       
+SYNTAX ERROR                            
+UTILITY NON DISPONIBILE                 
+ERRORE DI LINEA                         
+ERRORE DI TIME-OUT                      
+RICHIESTA ILLECITA                      
+ERRORE FORMATO SEZ. 2 FCRSYS            
+ERR. DA BOOTSTRAP IN SEZ. 2 FCRSYS      
+DRIVER NON PRESENTE IN EPROM            
+NUMERO PERIFERICA NON CONGRUENTE        
+MANCA IL RECORD DI EOF                  
+FCRSYS NON ESISTENTE                    
+ACCENSIONE IN EMERGENZA                 
+ERR. FORMATO SEZ. 1 DI FCRSYS           
+INCONGR. TRA FCRSYS E CONFIG. HW        
+ERRORE DA DIRECTORY EPROM               
+SEZ. 3 DI FCRSYS VUOTA                  
+ERR. FORMATO IN SEZ. 3 DI FCRSYS        
+ERR.DA BOOTSTRAP IN SEZ.3 FCRSYS        
+FILE NON PRESENTE IN EPROM              
+OUT OF MEMORY                           
+COMANDO INIBITO                         
+%

@@ -1,0 +1,45 @@
+%OPERAZIONE NON VALIDA                   
+INCONGRUENZA TRA PARAMETRI              
+NOME DEVICE NON VALIDO                  
+NUMERO RECORD NON VALIDO                
+LUNGHEZZA RECORD NON VALIDA             
+LUNGHEZZA BUFFER NON VALIDA             
+CANALE LOGICO NON VALIDO                
+NUMERO SEMAFORO NON VALIDO              
+CODICE FUNZIONE NON VALIDO              
+NOME LOGICO NON DEFINITO                
+CANALE GIA' LIBERO                      
+FILE GIA' APERTO                        
+FILE CHIUSO                             
+RECORD GIA' SCRITTO                     
+NESSUN SETTORE LIBERO                   
+FILE GIA' ESISTENTE                     
+SPAZIO INSUFFICIENTE                    
+RECORD LOGICAMENTE CANCELLATO           
+ASSEGNAZIONE DATA-SET NON VALIDA        
+OPERAZIONE NON PERMESSA                 
+METODO DI ACCESSO NON PERMESSO          
+NESSUN CANALE LOGICO DISPONIBILE        
+NUMERO RECORD INESISTENTE               
+FILE INESISTENTE                        
+FILE PROTETTO                           
+FILE PROTETTO IN SCRITTURA              
+RAGGIUNTO FINE FILE                     
+RAGGIUNTO INIZIO FILE                   
+DEVICE GIA' ALLOCCATO                   
+DEVICE NON PRONTO                       
+DEVICE PROTETTO IN SCRITTURA            
+ERRORE DI PARITA'                       
+OVERFLOW DEL BUFFER                     
+DEVICE NON FORMATTATO                   
+ERRORE HARDWARE                         
+FILE INVISIBILE                         
+ERRORE DI FORMATO                       
+ERRORE DI LINEA                         
+TRACCIA ZERO ROVINATA IN FORMAT HD-FD   
+TRACCIA ROVINATA IN R,W SU HD-FD        
+FLOPPY NON INSERITO NEL DRIVER          
+NON USATO           
+NON USATO                               
+NON USATO                               
+%

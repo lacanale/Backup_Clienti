@@ -1,0 +1,11 @@
+%E' TUTTO VUOTO!                         
+LO CONFERMO ? (Y/N)                     
+COMANDO ESEGUITO                        
+?? E' GIA' ESISTENTE, AGGIORNO ? (Y/N)  
+?? E' GIA' ESISTENTE,CANCELLO ? (Y/N)   
+FILE COPIATO                            
+ATTENDI, IL JCL E'IMPEGNATO             
+ERRORE DI PARITA' NEL TRASFERIMENTO     
+CONTINUA ? (Y/N)                        
+UNITA'PIENA-INSER.NUOVO DISCO-PREMERE Y 
+%

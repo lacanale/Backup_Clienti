@@ -1,0 +1,1 @@
+Modificato il CYCLE72 blocchi N430 e N435 (bypassato G64 con i ;)
