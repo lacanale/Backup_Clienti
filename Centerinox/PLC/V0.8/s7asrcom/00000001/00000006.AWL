@@ -1,0 +1,29 @@
+// ------------------------------------------------------------------
+// File           : C:\Documents and Settings\Vito\Desktop\Centerinox.awl
+//
+// Source File    : C:\Documents and Settings\Vito\Desktop\Centerinox.var
+// Generation Date: 03/05/2011  Time: 14.36.43
+// ------------------------------------------------------------------
+
+DATA_BLOCK DB  120
+VERSION : 0.0
+
+
+STRUCT
+
+ N_SEMA_measPos11_5:
+   STRUCT
+   SYNTAX_ID : BYTE  := B#16#82;
+   Area_Unit : BYTE := B#16#01;
+   Column : WORD := W#16#5;
+   Line : WORD := W#16#1;
+   BlockType : BYTE := B#16#71;
+   NumOfLine : BYTE := B#16#1;
+   DataType : BYTE := B#16#F;
+   Length : BYTE := B#16#8;
+   END_STRUCT ;
+
+ END_STRUCT ;
+
+BEGIN
+END_DATA_BLOCK

@@ -1,0 +1,148 @@
+FUNCTION "PROFIBUS_MM4" : VOID
+TITLE =
+AUTHOR : PROTEKNO
+NAME : MM4
+VERSION : 0.1
+
+
+VAR_INPUT
+  Periferic_Address : INT ;	
+  Drive_On_Off : BOOL ;	
+  Drive_Reversing : BOOL ;	
+  Drive_Fault_ACKN : BOOL ;	
+  Drive_F_Setpoint : REAL ;	
+END_VAR
+VAR_OUTPUT
+  Drive_in_operation : BOOL ;	
+  Drive_Fault_Active : BOOL ;	
+  Drive_Alarm_Active : BOOL ;	
+  Freno : BOOL ;	
+  Drive_F_Act : REAL ;	
+END_VAR
+VAR_TEMP
+  Address_E_A : DWORD ;	
+  SEND : STRUCT 	
+   CW1 : "MM4_Control_Word";	
+   f_setpoint : WORD ;	
+  END_STRUCT ;	
+  REC : STRUCT 	
+   SW1 : "MM4_Status_Word";	
+   f_act : WORD ;	
+  END_STRUCT ;	
+END_VAR
+BEGIN
+NETWORK
+TITLE =Trasferimento indirizzo blocco;
+
+      L     #Periferic_Address; 
+      SLD   3; 
+      T     #Address_E_A; 
+
+NETWORK
+TITLE =Status word PZD MM4;
+
+      L     PED [#Address_E_A]; 
+      T     LD     8; //Status word MM4;
+
+NETWORK
+TITLE =control bit`s + setpoint
+// ---------------------------------------
+// IN-Variablen FC
+// --------------------------------------
+// PZD1 - Steuerwort 1                  // set single bit in the control word 1
+      SET   ; // set VKE=1
+      =     #SEND.CW1.Bit_1; 
+      =     #SEND.CW1.Bit_2; 
+      =     #SEND.CW1.Bit_3; 
+      =     #SEND.CW1.Bit_4; 
+      =     #SEND.CW1.Bit_5; 
+      =     #SEND.CW1.Bit_6; 
+      =     #SEND.CW1.Bit_10; // setpoint valid
+
+      CLR   ; // set VKE=0
+      =     #SEND.CW1.Bit_8; 
+      =     #SEND.CW1.Bit_9; 
+      =     #SEND.CW1.Bit_12; 
+      =     #SEND.CW1.Bit_13; 
+      =     #SEND.CW1.Bit_14; 
+      =     #SEND.CW1.Bit_15; 
+
+      U     #Drive_On_Off; // on / off ?
+      =     #SEND.CW1.Bit_0; 
+
+      U     #Drive_Reversing; // cw / cww ?
+      =     #SEND.CW1.Bit_11; 
+
+      U     #Drive_Fault_ACKN; // fault ackn.?
+      =     #SEND.CW1.Bit_7; 
+//  
+// PZD2 - Drehzahlsollwert
+// gültiger Drehzahlsollwert zwischen 0.00-50 Hz
+
+      L     #Drive_F_Setpoint; // setpoint [Hz]
+      L     0.000000e+000; 
+      <R    ; // setpoinz >0Hz
+      SPB   N004; 
+
+      L     #Drive_F_Setpoint; 
+      L     7.500000e+001; 
+      >R    ; // setpoint < 75Hz ?
+      SPB   N004; 
+
+      L     #Drive_F_Setpoint; 
+      L     1.000000e+002; // 2-Nachkommastellen retten
+      *R    ; 
+      RND   ; //conversion of a 32-bit IEEE floating-point number to 32-bit integer
+      L     24576; // 16384 = 4000HEX = 50Hz
+      *D    ; 
+      L     7500; 
+      /D    ; 
+      T     #SEND.f_setpoint; 
+
+N004: NOP   0; 
+
+NETWORK
+TITLE =stateword + actual frequency 
+// -------------------------------------
+// OUT-Variablen FC                     
+// -------------------------------------
+// PZD 1 - Zustandswort
+      U     #REC.SW1.Bit_2; 
+      =     #Drive_in_operation; 
+
+      U     #REC.SW1.Bit_3; 
+      =     #Drive_Fault_Active; 
+
+      U     #REC.SW1.Bit_7; 
+      =     #Drive_Alarm_Active; 
+
+      U     #REC.SW1.Bit_12; 
+      =     #Freno; 
+
+// PZD 2 - Drehzahlistwert
+      L     #REC.f_act; 
+      ITD   ; 
+      DTR   ; 
+      L     5.000000e+001; //16383= 4000HEX = 50Hz
+      *R    ; 
+      L     1.638400e+004; 
+      /R    ; 
+      L     1.000000e+002; 
+      *R    ; 
+      TRUNC ; 
+      ITD   ; 
+      DTR   ; 
+      L     1.000000e+002; 
+      /R    ; 
+      T     #Drive_F_Act; 
+
+NETWORK
+TITLE =Control word PZD MM4;
+
+      L     LD     4; //Control word MM4;
+      T     PAD [#Address_E_A]; 
+
+      BE    ; 
+
+END_FUNCTION
+

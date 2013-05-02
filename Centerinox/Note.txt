@@ -1,0 +1,14 @@
+******  12/01/2011 ******
+Collegato il cavo Y2 (sblocco riparo operatore) sotto A36.1 da rimettere sul morsetto 34 del sick
+
+CAD-CAM
+Togliere la virgola sul comando MSG
+IF con Doppio uguale (==)
+M7=Refrigerante Mola 1   -    M8=Refrigerante mola 2
+Disingombro prima di M00 a Z100 e non Z-100
+
+B-90 e non B90
+M4 e non M3
+Sostituire i GOTOB con GOTO
+Inserire le label prima di M00
+N92 da togliere

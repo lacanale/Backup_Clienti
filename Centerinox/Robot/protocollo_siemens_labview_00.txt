@@ -1,0 +1,53 @@
+*********************
+Comunicazione tipo di lavorazione:
+
+Nella DB110.DBW6 LW va a scrivere il codice della lavorazione da eseguire (dato numerico)
+
+Nella DB110.DBX0.0 LW scrive 1 per indicare che Siemens può leggere il nuovo codice della lavorazione
+
+Nella DB110.DBX100.0 S va a scrivere per indicare che ha accettato la richiesta.
+Nella DB110.DBW106 S va a scrivere il codice della lavorazione (echo)
+
+A questo punto L mette a 0 la DB110.DBX0.0 ad indicare la chiusura della comunicazione.
+
+
+
+**********************
+Gestione della morsetta
+
+APERTURA:
+
+Per aprire la morsetta LW mette a 1 la DB110.DBX1.3
+S ad operazione completata mette a 1  la DB110.DBX101.3
+
+CHIUSURA:
+La stessa cosa sopra gli indirizzi sono DB110.DBX101.4 - DB110.DBX1.4
+
+**********************
+CONSENSI:
+
+Stato della macchina:
+S->L
+DB110.DBX100.1 : Macchina pronta per carico scarico
+
+
+L->S
+DB110.DBX0.2 : se=0 vuol dire che il ROBOT è nella macchina, la macchina non può partire.
+DB110.DBX0.3 : se=1 vuol dire che la macchina può partire con la lavorazione
+
+
+************************
+Da
+fare:
+
+DB110.DBW110: Stato della macchina
+- lavorazione 
+- allarme
+- emergenza
+
+
+DB110.DBW112: Codici esito lavorazione
+- 1:ok
+- 2:penzzo mancante
+- 3:tastatura...
+

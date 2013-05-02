@@ -1,0 +1,11 @@
+g0z200
+brisk
+osp1[z]=200.01
+osp2[z]=200.00
+ost1[z]=0.0
+ost2[z]=0.0
+fa[z]=5000
+osctrl[z]=(0,0)
+waitp(z)
+os[z]=1
+

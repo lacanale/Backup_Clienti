@@ -1,0 +1,262 @@
+; *********************************************************
+; Ricerca orientamento placchetta all'interno della morsa
+; *********************************************************
+N10 DEF Real X_Fuori_Ingombro,Y_Fuori_Ingombro,Z_Fuori_Ingombro
+N20 DEF Real Y_Offset_Morsa,F_Tastatura,F_Veloce,Z_ContattoLaterale,Z_ContattoLaterale1,Z_ContattoLaterale2,Y_RicercaForo,Z_Ricercaforo,OffsetY
+N30 DEF Real AngoloShift,SinMis,CosMis,Y_tast_lat_bassa,G_Offset_Z
+N40 DEF Real Y_foro1,Z_foro1,Y_foro2,Z_foro2,Deflessione_tastatore
+N50 DEF REAL Y_p1,Z_p1,Y_p2,Z_p2,Y_F1,Z_F1,Y_F2,Z_F2,Yr_f1,Zr_f1,Yr_f2,Zr_f2
+N60 DEF real X_Morsa,X_Placchetta
+;*********** Variabili da post-processor ******************
+
+N70 R800 = R111 ; Larghezza Placchetta
+N80 R801 = R112 ; Altezza Placchetta
+N90 R802 = R113 ; Spessore Placchetta
+N100 R803 = R115 ; Interasse fori
+N110 R804 = R800 ;
+N120 R810 = R116 ; Y centro foro
+N130 R811 = (R800/2) - (R800-R803)/2 ; Z centro foro
+;R900 = offset_y
+;R901 = offset_Z
+;R902 = Angolo 
+;*********** Impostazione variabili macchina **************
+N140 X_Fuori_Ingombro=300
+N150 Y_Fuori_Ingombro=300
+N160 Z_Fuori_Ingombro=300
+N170 Y_Offset_Morsa=-0.3
+N180 Deflessione_tastatore=0.4425
+N190 Y_tast_lat_bassa=10
+N200 F_Tastatura=100
+N210 F_Veloce=1000
+
+
+;Posizionamento di sicurezza
+;***********************************************************
+N220 R800=R800 / 2 ;Considero metà placchetta
+
+
+N230 M5 M9 ; Stop mandrino e refrigerante
+N240 G500  ; Origine Macchina
+N250 G0 X=X_Fuori_Ingombro 
+N260 Y=Y_Fuori_Ingombro
+N270 G0 Z=Z_Fuori_Ingombro
+N280 G0 A0 B-90
+
+N290 OVRRAP=6
+N300 TPL:
+;*************** Tastatura parete laterale *****************
+N310 T5 D1 ; Utensile tastatore azzerato in asse con l'asse A 
+N320 G0 Z=-((R800)+5) Y=Y_Offset_Morsa+(R801-2) X10; Posizionamento per tastatura parete laterale
+N330 G1 f500 X=-R802/2 meas=+1; Mi posiziono al centro dello spessore placchetta
+N350 If $AC_MEA[1] == True GotoF Fail_on
+N360 STOPRE
+;
+N370 G1 Z=-(R800-10) F=F_Tastatura meas=+1; Tastatatura parete laterale
+N380 If $AC_MEA[1] == False Gotof Fail_off
+N390 STOPRE
+;
+N400 G0 Z=-(R800+5)
+
+N410 Z_ContattoLaterale1=$AA_MW[Z]
+N420 Y_p1=Y_Offset_Morsa+(R801-2)
+N430 Z_p1=Z_ContattoLaterale1+Deflessione_tastatore
+;
+; Tastatatura parete laterale
+;***********************************************************
+N440 G1 f500 Y=Y_tast_lat_bassa meas=+1 
+N450 If $AC_MEA[1] == True GotoF Fail_on
+N460 STOPRE
+;
+N470 G1 Z=-(R800-10) F=F_Tastatura meas=+1
+N480 If $AC_MEA[1] == False GotoF Fail_off
+N490 STOPRE
+N500 G0 Z=-(R800+5)
+N510 Z_ContattoLaterale2=$AA_MW[Z]
+
+N520 Y_p2=Y_tast_lat_bassa
+N530 Z_p2=Z_ContattoLaterale2+Deflessione_tastatore
+
+; Svincolo asse X
+N540 G0 X10
+;
+;calcolo angolo di shift placchetta
+N550 CosMis=Y_Offset_Morsa+(R801-2)-Y_tast_lat_bassa
+N560 SinMis=Z_ContattoLaterale2 - Z_ContattoLaterale1
+N570 AngoloShift=ATAN2(SinMis,CosMis)
+
+N580 g0 g91 A = -AngoloShift
+N590 g90
+;if AngoloShift > 3 gotob TPL 
+
+N600 if AngoloShift<0
+N610    Y_f1=R804*sin(-AngoloShift)+Y_Offset_Morsa 
+N620 else   
+N630    Y_f1=0+Y_Offset_Morsa 
+N640 endif
+
+N650    Z_f1=(Y_f1-Y_p1)/(Y_p2-Y_p1)*(Z_p2-Z_p1)+Z_p1
+	
+N660    Yr_f1=Z_f1*sin(-AngoloShift)+Y_f1*cos(-AngoloShift)
+N670    Zr_f1=Z_f1*cos(-AngoloShift)-Y_f1*sin(-AngoloShift)
+    
+N680    Y_foro1=Yr_f1+R810 
+N690    Z_foro1=Zr_f1+(R804/2-R803/2) 
+
+;*************** Tastatura primo foro **********************
+N700 G1 Y=Y_foro1 Z=Z_foro1 F500
+
+N710 G1 f300 X2
+N720 G1 f100 X=-R802/2 meas=+1; Mi posiziono al centro dello spessore placchetta
+N730 If $AC_MEA[1] == True GotoF Fail_on                                             
+N740 STOPRE
+;
+N750 G1 G91 Z2 MEAS=+1 F=F_Tastatura
+N760 If $AC_MEA[1] == False GotoF Fail_off
+N770 STOPRE
+;
+;Torno al centro del foro
+N780 G1 G91 Z-1
+N790 STOPRE
+;
+;ricerca Y in alto
+N800 G91 G1 Y+2 MEAS=+1 F=F_Tastatura
+N810 If $AC_MEA[1] == False GotoF Fail_off
+N820 STOPRE
+
+N830 Y-0.5;
+N840 R820=$AA_MW[Y]
+
+;ricerca Y in basso
+N850 G91 G1 Y-3 MEAS=+1 F=F_Tastatura
+N860 If $AC_MEA[1] == False GotoF Fail_off
+N870 STOPRE
+;
+N880 Y0.5;
+N890 R821=$AA_MW[Y]
+;
+;Calcolo il centro di Y
+N900 R822=(R820+R821)/2
+;
+;mi sposto al centro del foro
+N910 G90 G1 Y=R822
+N920 STOPRE
+;
+;ricerca laterale Z
+N930 G91 G1 Z+3 MEAS=+1 F=F_Tastatura
+N940 If $AC_MEA[1] == False GotoF Fail_off
+N950 STOPRE
+;
+N960 R824=$AA_MW[Z]
+;
+N970 G91 G1 Z-1  F=F_Tastatura
+;
+;Calcolo spessore placchetta
+N980 G91 G1 X-2 MEAS=+1 F=F_Tastatura
+N990 If $AC_MEA[1] == False GotoF Fail_off
+N1000 STOPRE
+N1010 X_Morsa=$AA_MW[X]
+N1020 G1 X=(R113+3) F500 ;R113=Spessore Teorico
+N1030 G90 Y=Y_Offset_Morsa+(R801-2) 
+;
+N1040 G91 G1 X-4 MEAS=+1 F=F_Tastatura
+N1050 If $AC_MEA[1] == False GotoF Fail_off
+N1060 STOPRE
+;
+;Calcolo spessore
+N1070 X_Placchetta=$AA_MW[X]
+N1080 R904=X_Placchetta - X_MORSA
+N1090 IF ABS(R904-R113)>1 
+N1100 SETAL(65001)
+N1110 M00
+N1120 M30
+N1130 endif 
+SPESSORE_MISURATO=R904
+;
+N1140 G90 G1 X5 F500
+;
+;posiziona foro 2
+N1150 G90 G1 Z=(R824+R803-1) Y=R822 F1500
+N1160 G1 f300 X2
+N1170 G1 f100 X=-R802/2 meas=+1; Mi posiziono al centro dello spessore placchetta
+N1180 If $AC_MEA[1] == True GotoF Fail_on                                         
+;
+;ricerca Y in alto
+N1190 G91 G1 Y+2 MEAS=+1 F=F_Tastatura
+N1200 If $AC_MEA[1] == False GotoF Fail_off
+;
+N1210 Y-0.5
+N1220 R830=$AA_MW[Y]
+;
+;ricerca Y in basso
+N1230 G91 G1 Y-3 MEAS=+1 F=F_Tastatura
+; Se foro non trovato
+N1240 STOPRE
+N1250 If $AC_MEA[1] == False GotoF Fail_off
+;
+N1260 Y0.5
+N1270 R831=$AA_MW[Y]
+;
+;Calcolo il centro di Y2
+N1280 R832=(R830+R831)/2
+;
+;mi sposto al centro del foro
+N1290 G90 G1 Y=R832
+N1300 STOPRE
+;
+;ricerca laterale Z2
+N1310 G91 G1 Z-3 MEAS=+1 F=F_Tastatura
+N1320 If $AC_MEA[1] == False GotoF Fail_off
+;
+N1330 R834=$AA_MW[Z]
+;
+N1340 G91 G1 Z+1  F=F_Tastatura
+N1350 G90 G1 X10
+;
+;calcolo offset Y (ruotato))
+N1360 R826=(R822+R832)/2
+N1370 R827=R826-R810 
+;
+;calcolo offset Z (ruotato)
+N1380 R825=(R824+R834)/2 
+N1390 R828=R825
+;
+;calcolo angolo di shift fine placchetta
+N1400 R902=AngoloShift+ATAN2(R822-R832,R834-R824)
+;
+;calcolo shift corretti (piano)
+;R900=R828*SIN(R902)+R827*COS(R902);DELTA Y
+;R901=R828*COS(R902)+R827*SIN(R902);DELTA Z
+N1410 R900=R827
+N1420 R901=R828
+
+;DIAMETRO FORO
+N1430 R903=(R820-R821)+Deflessione_tastatore*2
+
+
+N1440 G500  ; Origine Macchina
+N1450 D0
+N1460 G0 X=X_Fuori_Ingombro Y=Y_Fuori_Ingombro
+N1470 G0 Z=Z_Fuori_Ingombro
+N1480 G0 A=-R902 B-90
+;
+;lo shift viene richiamato da chi lo usa
+;TRANS X=R101 Y=R102+R900 Z=R103+R901 B=R104 A=-(R105+R902)
+;
+;
+;65000=Tastatore impegnato prima del ciclo tastatura laterale
+;65001=Contatto tastatore fallito durante tastatura laterale
+;65002=Tastatore impegnato prima del ciclo tastatura ricerca 1° foro
+;65003=Contatto tastatore fallito durante tastatura ricerca 1° foro
+
+N1490 M17
+;
+N1500 Fail_on:
+N1510  MSG("TASTATORE GIA IMPEGNATO")
+N1520  M00
+N1530  M30
+ 
+N1540 Fail_off:
+N1550  MSG("CONTATTO FALLITO")
+N1560 M00
+N1570 M30
+

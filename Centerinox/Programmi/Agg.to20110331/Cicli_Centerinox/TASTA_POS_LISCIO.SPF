@@ -1,0 +1,190 @@
+; *********************************************************
+; Ricerca orientamento placchetta all'interno della morsa
+; *********************************************************
+N10 DEF Real X_Fuori_Ingombro,Y_Fuori_Ingombro,Z_Fuori_Ingombro,Deflessione_tastatore,RaggioTastatore
+N20 DEF Real Y_Offset_Morsa,F_Tastatura,F_Veloce,Z_ContattoLaterale,OffsetY,OffsetZ
+N30 DEF Real AngoloShift,SinMis,CosMis
+N40 DEF Real Y_Foro1,Y_Foro2,Z_Foro1,Z_Foro2
+N50 DEF REAL Y_f1,Y_f2,Yr_f1,Yr_f2
+N60 DEF real X_Morsa,X_Placchetta
+N70 DEF Real Altezza,Larghezza,Spessore,Interasse,Y_CentroForo
+;
+;*********** Variabili da post-processor ******************
+N80 Larghezza = R111 ; Larghezza Placchetta
+N90 Altezza = R112 ; Altezza Placchetta
+N100 Spessore = R113 ; Spessore Placchetta
+N110 Interasse = R115 ; Interasse fori
+N120 Y_CentroForo = R116 ; Y centro foro
+;
+;*********** Impostazione variabili macchina **************
+N130 X_Fuori_Ingombro=300
+N140 Y_Fuori_Ingombro=300
+N150 Z_Fuori_Ingombro=300
+N160 Y_Offset_Morsa=-0.3
+N170 Deflessione_tastatore=0.325
+N180 F_Tastatura=100
+N190 F_Veloce=500
+N200 RaggioTastatore=0.4
+;
+N210 OVRRAP=6
+
+;Posizionamento di sicurezza
+;***********************************************************
+N220 M5 M9 ; Stop mandrino e refrigerante
+N230 G500  ; Origine Macchina
+N240 G0 X=X_Fuori_Ingombro 
+N250 Y=Y_Fuori_Ingombro
+N260 G0 Z=Z_Fuori_Ingombro
+N270 G0 A0 B-90
+
+;tastatura Attraverso i fori
+;***********************************************************
+;seleziona gruppo di fori
+N280 If Larghezza>32 GotoF L_30
+N290 If Larghezza>22 GotoF L_20
+;
+;Interasse 10mm
+N300 L_10:
+N310 Z_Foro1=-5
+N320 Z_Foro2=5
+N330 GotoF FineSelezione
+;
+;Interasse 20mm
+N340 L_20:
+N350 Z_Foro1=-10
+N360 Z_Foro2=10
+N370 GotoF FineSelezione
+;
+;Interasse 30mm
+N380 L_30:
+N390 Z_Foro1=-15
+N400 Z_Foro2=15
+;
+N410 FineSelezione:
+N420 Y_Foro1=-1.5
+N430 Y_Foro2=-1.5
+;
+;Richiamo tastatore
+N440 T5 D1
+;
+;Posizionamento primo foro
+N450 G0 Y=Y_Foro1 Z=Z_Foro1
+N460    X=10
+;
+;Accostamento interno foro
+N470 Meas=+1 G1 X=-(Spessore/2) F=F_Veloce
+N480 If $AC_MEA[1] == True GotoF Fail_on
+N490 STOPRE
+;
+;Misura In Y+
+N500 Meas=+1 G1 Y=0.3 F=F_Tastatura
+N510 If $AC_MEA[1] == False GotoF Fail_off
+N520 Stopre
+;
+N530 Y_f1=$AA_MW[Y]
+;
+N540 G1 Y=Y_Foro1 F=F_Veloce 
+N550 G1 X10 
+;
+;Posizionamento 2 foro
+N560 G0 Y=Y_Foro2 Z=Z_Foro2
+;
+;Accostamento interno foro
+N570 Meas=+1 G1 X=-(Spessore/2) F=F_Veloce
+N580 If $AC_MEA[1] == True GotoF Fail_on
+N590 STOPRE
+;
+;Misura In Y+
+N600 Meas=+1 G1 Y=0.3 F=F_Tastatura
+N610 If $AC_MEA[1] == False GotoF Fail_off
+N620 Stopre
+;
+N630 Y_f2=$AA_MW[Y]
+;
+N640 G1 Y=Y_Foro1 F=F_Veloce 
+N650 G1 X10 
+;
+;calcolo angolo di shift placchetta
+N660 SinMis=Y_f2-Y_f1
+N670 CosMis=Z_Foro2-Z_Foro1
+N680 AngoloShift=ATAN2(SinMis,CosMis)
+;
+N690 g0 g91 A = - AngoloShift
+N700 g90
+;
+;Ricalcolo la posizione di Y_p1
+N710 Yr_f1=Z_Foro1*sin(-AngoloShift)+Y_f1*cos(-AngoloShift)
+;
+;calcolo l'offset in Y della placchetta
+N720 OffsetY=Yr_f1 
+; 
+;*************** Tastatura parete laterale *****************
+N730 G0 Z=((Larghezza/2)+5) Y=Altezza-2 
+N740 Meas=+1 G1 X=-(Spessore/2) F=F_Veloce
+N750 If $AC_MEA[1] == True GotoF Fail_on
+N760 STOPRE
+;
+N770 Meas=+1 G1 Z=((Larghezza/2)-5)  F=F_tastatura
+N780 STOPRE
+;
+N790 Z_ContattoLaterale=$AA_MW[Z]
+N800 G1 Z=((Larghezza/2)+5)  F=F_veloce 
+N810 G90
+;
+N820 OffsetZ=Z_ContattoLaterale-Larghezza/2
+;
+;Calcolo spessore placchetta
+N830 G1 Y8 F=F_veloce
+N840 G90 G1 X=-(Spessore+1) MEAS=+1 F=F_Tastatura
+N850 If $AC_MEA[1] == False GotoF Fail_off
+N860 STOPRE
+N870 X_Morsa=$AA_MW[X]
+N880 G1 X2 F=F_Veloce
+N890 Y=Altezza-2 Z=((Larghezza/2)-5)
+;
+N900 G1 X=-(Spessore) MEAS=+1 F=F_Tastatura
+N910 If $AC_MEA[1] == False GotoF Fail_off
+N920 STOPRE
+;
+;Calcolo spessore
+N930 X_Placchetta=$AA_MW[X]
+N940 G1 X10 F=F_veloce
+
+N950 SPESSORE_MISURATO=X_Placchetta - X_Morsa
+N960 IF ABS(SPESSORE_MISURATO-Spessore)>1 GotoF ErroreSpessore 
+;
+;
+;calcolo shift corretti (piano)
+N970 R900=OffsetY             ;Shift Y
+N980 R901=OffsetZ            ;Shift Z
+N990 R902=AngoloShift         ;Shift angolo
+N1000 R903=0                  ;Diametro forellino
+N1010 R904=SPESSORE_MISURATO  ;Spessore reale
+;
+;Fine ciclo - disingombro
+N1020 G500  ; Origine Macchina
+N1030 D0
+N1040 G0 X=X_Fuori_Ingombro Y=Y_Fuori_Ingombro
+N1050 G0 Z=Z_Fuori_Ingombro
+N1060 G0 A=-R902 B-90
+;
+;lo shift viene richiamato da chi lo usa
+;TRANS X=R101 Y=R102+R900 Z=R103+R901 B=R104 A=-(R105+R902)
+;
+STOPRE
+N1070 M17
+;
+N1080 Fail_on:
+N1090  MSG("TASTATORE GIA IMPEGNATO")
+N1100  M00
+N1110  M30
+ 
+N1120 Fail_off:
+N1130  MSG("CONTATTO FALLITO")
+N1140 M00
+N1150 M30
+
+N1160 ErroreSpessore:
+N1170 MSG("SPESSORE INCONGRUENTE")
+N1180 M00
+N1190 M30

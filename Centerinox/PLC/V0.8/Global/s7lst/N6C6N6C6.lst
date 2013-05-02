@@ -1,0 +1,20 @@
+"V01.00.000"
+"$_Languages"
+"9(1) Inglese (Stati Uniti)";"7(1) Tedesco (Germania)";"513(1) Key"
+"$_Timestamp"
+"02.10.2010  16:19:58";"";""
+"$_Typ(NetworkComment)"
+" ---------------------------------------
+ IN-Variablen FC
+ --------------------------------------
+ PZD1 - Steuerwort 1                  // set single bit in the control word 1";" ---------------------------------------
+ IN-Variablen FC
+ --------------------------------------
+ PZD1 - Steuerwort 1                  // set single bit in the control word 1";""
+" -------------------------------------
+ OUT-Variablen FC                     
+ -------------------------------------
+ PZD 1 - Zustandswort";" -------------------------------------
+ OUT-Variablen FC                     
+ -------------------------------------
+ PZD 1 - Zustandswort";""

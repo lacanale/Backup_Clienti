@@ -1,0 +1,266 @@
+; *********************************************************
+; Ricerca orientamento placchetta all'interno della morsa
+; *********************************************************
+DEF Real X_Fuori_Ingombro,Y_Fuori_Ingombro,Z_Fuori_Ingombro
+DEF Real Y_Offset_Morsa,F_Tastatura,F_Veloce,Z_ContattoLaterale,Z_ContattoLaterale1,Z_ContattoLaterale2,Y_RicercaForo,Z_Ricercaforo,OffsetY
+DEF Real AngoloShift,SinMis,CosMis,Y_tast_lat_bassa,G_Offset_Z
+DEF Real Y_foro1,Z_foro1
+
+;*********** Variabili da post-processor ******************
+R800 = 50.0 ; Larghezza Placchetta
+R801 = 30.0 ; Altezza Placchetta
+R802 = 2.0  ; Spessore Placchetta
+R803 = 45.5 ; Interasse fori
+R810 = 6.5 ; Y centro foro
+R811 = (R800/2) - (R800-R803)/2 ; Z centro foro
+;R900 = offset_y
+;R901 = offset_Z
+;R902 = Angolo 
+;*********** Impostazione variabili macchina **************
+X_Fuori_Ingombro=300
+Y_Fuori_Ingombro=300
+Z_Fuori_Ingombro=300
+Y_Offset_Morsa=-0.2
+Y_tast_lat_bassa=10
+F_Tastatura=100
+F_Veloce=1000
+
+
+;Posizionamento di sicurezza
+;***********************************************************
+R800=R800 / 2 ;Considero metà placchetta
+
+OVRRAP=6
+M5 M9 ; Stop mandrino e refrigerante
+G500  ; Origine Macchina
+G0 X=X_Fuori_Ingombro 
+Y=Y_Fuori_Ingombro
+G0 Z=Z_Fuori_Ingombro
+G0 A0 B-90
+
+
+TPL:
+;*************** Tastatura parete laterale *****************
+T5 D1 ; Utensile tastatore azzerato in asse con l'asse A 
+G0 Z=-((R800)+5) Y=Y_Offset_Morsa+(R801-2) X10; Posizionamento per tastatura parete laterale
+G1 f500 X=-R802/2 meas=+1; Mi posiziono al centro dello spessore placchetta
+STOPRE 
+If $AC_MEA[1] == True 
+;SETAL(65000)
+endif
+G1 Z=-(R800-1) F=F_Tastatura meas=+1; Tastatatura parete laterale
+G0 Z=-(R800+5)
+STOPRE
+If $AC_MEA[1] == false 
+;Setal(65001) 
+endif
+Z_ContattoLaterale1=$AA_MW[Z]
+;***********************************************************
+G1 f500 Y=Y_tast_lat_bassa meas=+1
+STOPRE 
+If $AC_MEA[1] == True 
+;SETAL(65000)
+endif
+G1 Z=-(R800-1) F=F_Tastatura meas=+1; Tastatatura parete laterale
+G0 Z=-(R800+5)
+STOPRE
+If $AC_MEA[1] == false 
+;Setal(65001) 
+endif
+Z_ContattoLaterale2=$AA_MW[Z]
+; Svincolo asse X
+G0 X10
+;
+;calcolo angolo di shift placchetta
+CosMis=Y_Offset_Morsa+(R801-2)-Y_tast_lat_bassa
+SinMis=Z_ContattoLaterale2 - Z_ContattoLaterale1
+AngoloShift=ATAN2(SinMis,CosMis)
+
+g0 g91 A = -AngoloShift
+g90
+if AngoloShift > 3 gotob TPL 
+
+; Verifica grossolana spostamento placchetta
+G1 f500 X=-R802/2 meas=+1; Mi posiziono al centro dello spessore placchetta
+STOPRE 
+If $AC_MEA[1] == True 
+;SETAL(65000)
+endif
+G1 Z=-(R800-1) F=F_Tastatura meas=+1; Tastatatura parete laterale
+G0 Z=-(R800+5)
+STOPRE
+If $AC_MEA[1] == false 
+;Setal(65001) 
+endif
+Z_ContattoLaterale=$AA_MW[Z]
+G_Offset_Z=-(R800 + Z_ContattoLaterale)
+G0 X10
+;
+y_foro1=(R811+G_Offset_Z)*SIN(-$AA_IM[A])+R810*COS(-$AA_IM[A]);DELTA Y
+Z_foro1=-((R811+G_Offset_Z)*COS(-$AA_IM[A])-R810*SIN(-$AA_IM[A]));DELTA Z
+;
+;Calcolo posizioni fori
+;Y_foro1=R810
+;Z_foro1=-(R811+G_Offset_Z)
+;
+;*************** Tastatura primo foro **********************
+M0
+G1 Y=Y_foro1 Z=Z_foro1
+
+G1 f300 X=-R802/2 meas=+1; Mi posiziono al centro dello spessore placchetta
+STOPRE 
+If $AC_MEA[1] == True 
+;SETAL(65000)
+endif                                                
+;
+G1 G91 Z2 MEAS=+1 F=F_Tastatura; Tastatatura 1° foro
+;
+; Se foro non trovato
+STOPRE
+If $AC_MEA[1] == False 
+; setal(65000)
+Endif
+;
+;Torno al centro del foro
+G1 G91 Z-1
+STOPRE
+If $AC_MEA[1] == True 
+ ;SETAL(65000)
+endif
+;
+;ricerca Y in alto
+G91 G1 Y+2 MEAS=+1 F=F_Tastatura
+Y-0.5
+; Se foro non trovato
+STOPRE
+If $AC_MEA[1] == False 
+; setal(65000)
+Endif
+;
+R820=$AA_MW[Y]
+
+;ricerca Y in basso
+G91 G1 Y-3 MEAS=+1 F=F_Tastatura
+Y0.5
+; Se foro non trovato
+STOPRE
+If $AC_MEA[1] == False 
+; setal(65000)
+Endif
+;
+R821=$AA_MW[Y]
+;
+;Calcolo il centro di Y
+R822=(R820+R821)/2
+;
+;mi sposto al centro del foro
+G90 G1 Y=R822
+STOPRE
+If $AC_MEA[1] == True 
+; setal(65000)
+Endif
+;
+;ricerca laterale Z
+G91 G1 Z+3 MEAS=+1 F=F_Tastatura
+; Se foro non trovato
+STOPRE
+If $AC_MEA[1] == False 
+; setal(65000)
+Endif
+;
+R824=$AA_MW[Z]
+;
+G91 G1 Z-1  F=F_Tastatura
+G90 G1 X10
+;
+;posiziona foro 2
+G90 G1 Z=(R824+R803-1) F1500
+G1 f500 X=-R802/2 meas=+1; Mi posiziono al centro dello spessore placchetta
+STOPRE 
+If $AC_MEA[1] == True 
+;SETAL(65000)
+endif                                                
+;
+;ricerca Y in alto
+G91 G1 Y+2 MEAS=+1 F=F_Tastatura
+Y-0.5
+; Se foro non trovato
+STOPRE
+If $AC_MEA[1] == False 
+; setal(65000)
+Endif
+;
+R830=$AA_MW[Y]
+;
+;ricerca Y in basso
+G91 G1 Y-3 MEAS=+1 F=F_Tastatura
+Y0.5
+; Se foro non trovato
+STOPRE
+If $AC_MEA[1] == False 
+; setal(65000)
+Endif
+;
+R831=$AA_MW[Y]
+;
+;Calcolo il centro di Y2
+R832=(R830+R831)/2
+;calcolo l'offset
+                           R833=Y_foro1+R832
+;
+;mi sposto al centro del foro
+G90 G1 Y=R832
+STOPRE
+If $AC_MEA[1] == True 
+; setal(65000)
+Endif
+;
+;ricerca laterale Z2
+G91 G1 Z-3 MEAS=+1 F=F_Tastatura
+; Se foro non trovato
+STOPRE
+If $AC_MEA[1] == False 
+; setal(65000)
+Endif
+R834=$AA_MW[Z]
+;
+G91 G1 Z+1  F=F_Tastatura
+G90 G1 X10
+;
+;calcolo offset Y (ruotato))
+R826=(R822+R832)/2
+R827=R810-R826 
+;
+;calcolo offset Z (ruotato)
+R825=(R824+R834)/2 
+R828=R825
+;
+;calcolo angolo di shift fine placchetta
+R902=AngoloShift+ATAN2(R822-R832,R834-R824)
+;
+;calcolo shift corretti (piano)
+R900=R828*SIN(R902)+R827*COS(R902);DELTA Y
+R901=R828*COS(R902)+R827*SIN(R902);DELTA Z
+
+G500  ; Origine Macchina
+D0
+G0 X=X_Fuori_Ingombro Y=Y_Fuori_Ingombro
+G0 Z=Z_Fuori_Ingombro
+G0 A0 B-90
+;
+;65000=Tastatore impegnato prima del ciclo tastatura laterale
+;65001=Contatto tastatore fallito durante tastatura laterale
+;65002=Tastatore impegnato prima del ciclo tastatura ricerca 1° foro
+;65003=Contatto tastatore fallito durante tastatura ricerca 1° foro
+
+
+
+
+
+
+
+
+
+
+
+M17

@@ -1,0 +1,110 @@
+;Programma campione gestione lavorazioni
+N10 Def Int Nr_Prog,Error
+N20 Def String[30] Prog_Path
+;
+;Attesa conferma robot da implementare
+;WHILE ($A_IN[8]==FALSE) DO
+;   MSG("Attesa consenso programma da robot")
+;   G4F1
+;   STOPRE
+;END_WHILE      
+;
+;Selettore richiamo programmi
+N30 Msg("Codice di lavoro"<<$A_DBB[0])
+N40 G4f.5
+;Nr_Prog=ROUND($A_DBB[0]) da implementare
+N50 Nr_Prog=1
+N60 Prog_Path="E:PLACCHETTE_S02\PEZZI\"<<Nr_Prog<<"\"
+;
+;cancella file di log
+N70 DELETE(Error,"/_N_WKS_DIR/_N_PROT_WPD/_N_LOG_MPF")
+;
+;If PLACCHETTA_PRESENTE==FALSE GotoF Scarico
+;
+;Richiamo parametri placchetta
+N80 EXTCALL(Prog_Path<<"Init.spf")
+;
+;Selezione tipo di ricerca angolo
+N90 If R117==1       ;Placchetta con occhielli
+N100   CALL("TASTA_POS")
+N110 Endif
+N120 GotoF Avanti
+;
+N130 If R117==2      ;Placchetta senza occhielli
+N140    CALL("TASTA_POS_LISCIO")
+N150 Endif
+N160 GotoF Avanti
+;
+N170 MSG("SELEZIONE TIPO RICERCA FALLITO")
+N180 M00
+N190 M30
+;
+N200 WRITE(Error,"/_N_WKS_DIR/_N_PROT_WPD/_N_LOG_MPF","R900="<<R900<<";R901="<<R901<<";R902="<<R902)
+;
+N210 Avanti:
+;Semaforo attesa rielaborazione CAD
+N220 WHILE NOT((R921==0) AND (R920==0)) ;attesa fine task precedente
+N230   MSG("Attesa fine elaborazione")
+N240   G4F1
+N250 STOPRE  
+N260 ENDWHILE
+N270 Stopre
+N280 R920=1 R921=0  ;richiedi relaborazione programma
+N290 Stopre
+N300 G4F2
+N310 WHILE NOT((R921==1) AND (R920==1))  ;attesa fine elaborazione
+N320   MSG("Attesa fine elaborazione")
+N330   G4F1
+N340 STOPRE
+N350 ENDWHILE
+N360 R920=0         ;azzera richiesta 
+;
+;Richiamo programma di sgrossatura
+N370 EXTCALL(Prog_Path<<"Sgrosso.spf")
+;
+;Richiamo Sub tastatura pezzo sgrossato
+N380 WRITE(Error,"/_N_WKS_DIR/_N_PROT_WPD/_N_LOG_MPF","Z="<<R120<<";Y="<<R121<<";Quota"<<R122)
+N390 CALL("CONTROLLO_SGROSSO")
+;
+N400 WRITE(Error,"/_N_WKS_DIR/_N_PROT_WPD/_N_LOG_MPF","Quota Sgrossatura"<<R910)
+;
+;Semaforo attesa rielaborazione CAD
+N410 WHILE NOT((R921==0) AND (R920==0))  ;attesa fine task precedente
+N420   MSG("Attesa fine elaborazione")
+N430   G4F1  
+N440 STOPRE
+N450 ENDWHILE
+N460 Stopre
+N470 R920=1   ;richiedi relaborazione programma
+N480 Stopre
+N490 G4F2
+N500 WHILE NOT((R921==1) AND (R920==1))  ;attesa fine elaborazione
+N510   MSG("Attesa fine elaborazione")
+N520   G4F1
+N530 STOPRE
+N540 ENDWHILE
+N550 R920=0         ;azzera richiesta 
+;
+;Richiamo programma di finitura
+N560 EXTCALL(Prog_Path<<"Finitura.spf")
+;
+;Richiamo Sub tastatura pezzo finito
+N570 WRITE(Error,"/_N_WKS_DIR/_N_PROT_WPD/_N_LOG_MPF","Z="<<R130<<";Y="<<R131<<";Quota"<<R132)
+N580 CALL("CONTROLLO_FINITO")
+;
+N590 WRITE(Error,"/_N_WKS_DIR/_N_PROT_WPD/_N_LOG_MPF","Quota Finitura"<<R911)
+;
+;controlla il richiamo della diamantatura
+;IF R910>XXXX THEN
+;   CALL("DIAMANTA_SGROSSO.SPF")
+;END_IF   
+;
+;IF R911>XXXX THEN
+;   CALL("DIAMANTA_FINITO.SPF")
+;END_IF   
+;
+N600 Scarico:
+;Richiamo ciclo di scarico Robot
+;CALL("SCARICO.SPF")
+;
+N610 M30

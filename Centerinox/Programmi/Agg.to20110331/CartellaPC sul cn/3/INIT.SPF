@@ -1,0 +1,7 @@
+;R111=larghezza
+;R112=altezza
+;R113=spessore
+;R115=interasse fori (solo placchetta con fori)
+;R116=quota Y centro dei fori
+;R117=tipo di placchetta 1=con fori 2=senza fori
+M17

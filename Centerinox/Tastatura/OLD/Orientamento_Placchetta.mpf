@@ -1,0 +1,131 @@
+; *********************************************************
+; Ricerca orientamento placchetta all'interno della morsa
+; *********************************************************
+DEF Real X_Fuori_Ingombro,Y_Fuori_Ingombro,Z_Fuori_Ingombro
+DEF Real Y_Offset_Morsa,F_Tastatura,F_Veloce,Z_ContattoLaterale1,Z_ContattoLaterale2,Y_RicercaForo,Z_Ricercaforo,OffsetY
+DEF Real AngoloShift,SinMis,CosMis
+;*********** Variabili da post-processor ******************
+R800 = 50.0 ; Larghezza Placchetta
+R801 = 50.0 ; Altezza Placchetta
+R802 = 2.0  ; Spessore Placchetta
+R803 = 45.5 ; Interasse fori
+R810 = 6.5 ; Y centro foro
+R811 = (R800/2) - (R800-R803)/2) ; Z centro foro
+
+;*********** Impostazione variabili macchina **************
+X_Fuori_Ingombro=300
+Y_Fuori_Ingombro=300
+Z_Fuori_Ingombro=300
+Y_Offset_Morsa=-0.2
+F_Tastatura=100
+F_Veloce=100
+
+
+;Posizionamento di sicurezza
+;***********************************************************
+R800=R800 / 2 ;Considero metà placchetta
+
+M5 M9 ; Stop mandrino e refrigerante
+G500  ; Origine Macchina
+G0 X_Fuori_Ingombro Y_Fuori_Ingombro
+G0 Z_Fuori_Ingombro
+G0 A0 B-90
+
+TPL:
+;*************** Tastatura parete laterale *****************
+T5 D1 ; Utensile tastatore azzerato in asse con l'asse A 
+G0 Z=-((R800)+2) Y=Y_Offset_Morsa+(R801-2) ; Posizionamento per tastatura parete laterale
+G0 X=R802/2 ; Mi posiziono al centro dello spessore placchetta
+STOPRE 
+If $AC_MEA[1] == True Setal(65000)
+G1 G31 Z-(R800-1) MEAS=+1 F_Tastatura; Tastatatura parete laterale
+G0 Z=-((R800)+2)
+STOPRE
+If $AC_MEA[1] == false Setal(65001) 
+Z_ContattoLaterale1=$AA_MM[Z]
+;***********************************************************
+G0 Y2
+If $AC_MEA[1] == True Setal(65000)
+G1 G31 Z-(R800-1) MEAS=+1 F_Tastatura; Tastatatura parete laterale
+G0 Z=-((R800)+2)
+STOPRE
+If $AC_MEA[1] == false Setal(65001) 
+Z_ContattoLaterale2=$AA_MM[Z]
+; Svincolo asse X
+G0 X10
+;
+;calcolo angolo di shift placchetta
+CosMis=Y_Offset_Morsa+(R801-2)-2
+SinMis=Z_ContattoLaterale2 - Z_ContattoLaterale1
+AngoloShift=ATAN2(SinMis,CosMis)
+
+G0 A = -AngoloShift
+if AngoloShift > 1 gotob TPL 
+
+; Rotazione asse A per compensazione angolo
+
+M30
+
+
+
+
+
+
+;*************** Tastatura primo foro **********************
+OffsetY=0.0
+Ritenta:
+G1 X=R802+1 ; Mi posiziono ad 1mm dalla faccia placchetta
+G1 Y=R810 + OffsetY Z=R811 + (Z_ContattoLaterale-(R800/2)) ; Aggiungo l'offset della parte tastata
+STOPRE 
+If $AC_MEA[1] == True Setal(65002)
+G1 G31 X=R802-0.2 MEAS=+1 F_Tastatura; Tastatatura 1° foro
+
+; Ritenta se tasteggio fallito
+If $AC_MEA[1] == True 
+  OffsetY=OffsetY+0.1
+  GotoB Ritenta  
+endif
+
+; Se foro trovato
+If $AC_MEA[1] == False 
+
+
+Endif
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+;65000=Tastatore impegnato prima del ciclo tastatura laterale
+;65001=Contatto tastatore fallito durante tastatura laterale
+;65002=Tastatore impegnato prima del ciclo tastatura ricerca 1° foro
+;65003=Contatto tastatore fallito durante tastatura ricerca 1° foro
+
+
+
+
+
+
+
+
+
+
+
+

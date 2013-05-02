@@ -1,0 +1,114 @@
+;Queste devono diventare UGUD
+N10 DEF Real X_Fuori_Ingombro,Y_Fuori_Ingombro,Z_Fuori_Ingombro,Y_Offset_Morsa,DeflessioneTastatore
+;
+N20 DEF Real Distanza_X_Morsa
+N30 DEF Real TastaSgrossoPiu,TastaSgrossoMeno,CentroSgrosso,QuotaSgrossoX
+N40 DEF Real TastaFinitoPiu,TastaFinitoMeno,CentroFinito,QuotaFinitoX
+N50 DEF Real AltezzaP,LarghezzaP,SpessoreP,Z_Sgrosso,Z_Finito
+;
+;*********** Variabili da post-processor ******************
+N180 LarghezzaP = R111 ; Larghezza Placchetta
+N190 AltezzaP = R112 ; Altezza Placchetta
+N200 SpessoreP = SPESSORE_MISURATO ;R113 Spessore Placchetta
+;;
+;*********** Impostazione variabili macchina **************
+N60 X_Fuori_Ingombro=300
+N70 Y_Fuori_Ingombro=300
+N80 Z_Fuori_Ingombro=300
+N90 Y_Offset_Morsa=-0.3
+N100 DeflessioneTastatore=0.34
+N110 Distanza_X_Morsa=115.66 ; 
+;distanza fra lo zero X e la faccia anteriore della morsetta girata in posizione di lavoro
+;
+N120 Diametro_mola_sgrosso=$TC_DP6[1,1]*2 
+N130 Diametro_mola_finitura=$TC_DP6[2,1]*2 
+;
+N140 Z_Sgrosso=LarghezzaP/2-10;5mm dal bordo
+N150 Z_Finito=-LarghezzaP/2+10 ;5mm dal bordo opposto
+;
+N160 QuotaSgrossoX=-(SpessoreP+1)*0.707 ;1= mm di affondo
+N170 QuotaFinitoX=-(SpessoreP+1)*0.707 ;1= mm di affondo
+;
+N210 OVRRAP=6
+;
+;Disingombro
+N220 G500
+N230 D0
+N240 G0 G53 X=X_Fuori_Ingombro Y=Y_Fuori_Ingombro
+;       G53 Z=Z_Fuori_Ingombro
+N250    G53 B=-90
+;richiamo origine placchetta tastata   
+N270 TRANS X=R101 Y=R102+R900 Z=R103+R901 B=R104 A=-(R105+R902)
+
+;misura mola sgrosso ------------------------ 
+N540 T5 D1 ;tastatore
+N550 G0 Y=AltezzaP+10 Z=Z_Sgrosso A0 
+N560 X10
+N570 G1 X=-(SpessoreP+1) F500
+;
+N580 MEAS=+1 G1 Y=AltezzaP-0.5 F100
+N590 If $AC_MEA[1] == True GotoF Fail_on
+;
+N600 MEAS=+1 G1 Z=Z_Sgrosso+5 F100
+N610 If $AC_MEA[1] == FALSE GotoF Fail_off
+;
+N620 TastaSgrossoPiu=$AA_MW[Z]
+;
+N630 G1 Z=Z_Sgrosso
+N640 MEAS=+1 G1 Z=Z_Sgrosso-5 F100
+N650 If $AC_MEA[1] == FALSE GotoF Fail_off
+;
+N660 TastaSgrossoMeno=$AA_MW[Z]
+;
+N670 G1 Z=Z_Sgrosso F500
+;
+N680 CentroSgrosso=(TastaSgrossoPiu+TastaSgrossoMeno)/2
+N690 STOPRE
+;
+;rileva diametro mola sgrosso
+N700 G1 Z=CentroSgrosso F100
+N710 MEAS=+1 G1 Y=AltezzaP-3 F100
+N720 If $AC_MEA[1] == FALSE GotoF Fail_off 
+;
+;Misura fondo gola
+R10=$AA_MW[Y] 
+;
+G1 Y=AltezzaP
+G1 X10 F500
+;
+;RICHIAMO LA POSIZIONE DEL FORO 2
+G1 Y6.5 Z=LarghezzaP/2-2
+;
+N570 MEAS=+1 G1 X=-(SpessoreP/2) F100
+N590 If $AC_MEA[1] == True GotoF Fail_on
+;
+;ricerca Y in alto
+N790 G91 G1 Y2 MEAS=+1 F100
+N800 If $AC_MEA[1] == False GotoF Fail_off
+N810 STOPRE
+N820 ;
+N830 R11=$AA_MW[Y]
+N840      Y-0.5
+;
+;ricerca Y in basso
+N850 G91 G1 Y-3 MEAS=+1 F100
+N860 If $AC_MEA[1] == False GotoF Fail_off
+N870 STOPRE
+;
+N880 ;
+N890 R12=$AA_MW[Y]
+N900      Y0.5;
+;
+G1 G90 X10 F500
+;
+;Calcolo il centro di Y
+N910 R13=(R11+R12)/2
+;
+R14=R10-R13-DeflessioneTastatore
+;
+N1480 G500  ; Origine Macchina
+N1490 D0
+N1500 G0 X=X_Fuori_Ingombro Y=Y_Fuori_Ingombro
+N1510 G0 Z=Z_Fuori_Ingombro
+;
+M17

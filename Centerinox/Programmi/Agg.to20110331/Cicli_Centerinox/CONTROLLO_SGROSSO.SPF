@@ -1,0 +1,61 @@
+N10 DEF Real X_Fuori_Ingombro,Y_Fuori_Ingombro,Z_Fuori_Ingombro,Y_Offset_Morsa,DeflessioneTastatore
+N20 DEF Real Z_Pos,Y_Pos,QuotaTastata,QuotaNominale
+N50 DEF Real AltezzaP,LarghezzaP,SpessoreP
+;
+;*********** Variabili da post-processor ******************
+N180 LarghezzaP = R111 ; Larghezza Placchetta
+N190 AltezzaP = R112 ; Altezza Placchetta
+N200 SpessoreP = SPESSORE_MISURATO ;R113 Spessore Placchetta
+N201 Z_Pos=R120 Y_Pos=R121 QuotaNominale=R122
+
+;
+;*********** Impostazione variabili macchina **************
+N60 X_Fuori_Ingombro=300
+N70 Y_Fuori_Ingombro=300
+N80 Z_Fuori_Ingombro=300
+N90 Y_Offset_Morsa=-0.3
+N100 DeflessioneTastatore=0.4
+;
+PROGRAMMA NON COLLAUDATO
+M30
+;
+N210 OVRRAP=6
+;
+;Disingombro
+N220 G500
+N230 D0
+N240 G0 G53 X=X_Fuori_Ingombro Y=Y_Fuori_Ingombro
+;       G53 Z=Z_Fuori_Ingombro
+N250    G53 B=-90
+;richiamo origine placchetta tastata   
+N270 TRANS X=R101 Y=R102+R900 Z=R103+R901 B=R104 A=-(R105+R902)
+;
+;misura mola sgrosso ------------------------ 
+N540 T5 D1 ;tastatore
+N550 G0 Y=Y_Pos+10 Z=Z_Pos 
+N560 X10
+N570 G1 X=-(SpessoreP+1) F500
+;
+N580 MEAS=+1 G1 Y=Y_Pos-3 F100
+N590 If $AC_MEA[1] == False GotoF Fail_off
+;
+QuotaTastata=$AA_MW[Y]
+R910=QuotaTastata
+;
+G1 F500 Y=Y_Pos+10
+;
+;Disingombro
+N220 G500
+N230 D0
+N240 G0 G53 X=X_Fuori_Ingombro Y=Y_Fuori_Ingombro
+;       G53 Z=Z_Fuori_Ingombro
+N250    G53 B=-90
+;
+M17
+
+
+
+
+
+
+

@@ -1,0 +1,32 @@
+*********** Macchina 1 ( Vinina alla parete esterna) ******************
+
+
+
+
+
+
+
+
+
+
+
+
+*********** Macchina 2 ( Interna) ******************
+T1 SGROSSo  Diam=301.27  H=102.5
+T2 FINITORE Diam=301.35  H=191.995
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

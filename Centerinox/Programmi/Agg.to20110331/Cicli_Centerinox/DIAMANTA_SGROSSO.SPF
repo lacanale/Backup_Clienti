@@ -1,0 +1,80 @@
+;profilatura mola da sgrosso
+DEF REAL Diam_M,Diam_D,Raggio_M,Raggio_D,Affondo,Quota_X,Quota_Z,Diam_act
+DEF INT Passate
+;************* impostazioni*************
+Diam_M=300.0    ;diametro mola
+Diam_D=99.87    ;diametro diamantatore
+Raggio_M=3.00   ;spessore mola
+Raggio_D=6.02   ;spessore diamantatore
+Affondo=0.004   ;incremento ogni passata
+PASSATE=2      ;nr delle passate
+;***************************************
+;
+
+;
+D0 
+G53 G0X400Y300
+G53 Z300
+G53 A0B0
+OVRRAP=6
+
+
+;
+T1G57G17
+M13H3800    ;rotazione moletta
+M4S1260    ;rotazione mola
+M8
+G0Z0B0
+;
+Quota_X=(Diam_M+Diam_D)/2
+Quota_Z=(Raggio_M+Raggio_D)/2
+;
+AROT Z45
+ATRANS X=Quota_X
+;
+;posizione iniziale
+Z-7
+X5 Y0 F500 ;accostamento
+;
+CICLO:
+;incremento affondo
+ATRANS X=-Affondo
+STOPRE
+;
+;passata in avanti
+G1 Z=-4.629 X=-6.186 f30
+G1 Z=-4.5 X=-4.5
+G2 Z=0 X=0 K=AC(0) I=AC(-4.5)
+G2 Z=4.5 X=-4.5 K=AC(0) I=AC(-4.5)
+G1 Z=4.629 X=-6.186
+;
+;incremento affondo
+STOPRE
+ATRANS X=-Affondo
+;
+STOPRE
+;passata in ritorno
+G1 Z=4.629 X=-6.186
+G1 Z=4.5 X=-4.5
+G3 Z=0 X=0 K=AC(0) I=AC(-4.5)
+G3 Z=-4.5 X=-4.5 K=AC(0) I=AC(-4.5)
+G1 Z=-4.629 X=-6.186
+;
+;
+REPEAT CICLO P=Passate
+;
+;Memorizza quota finale
+Diametro_mola_sgrosso=Diam_M - Affondo*Passate
+MSG("DIAMETRO MOLA="<<Diametro_mola_sgrosso)
+;
+;distacco
+X50 F1000
+;
+ROT
+TRANS
+G53 D0 G0 X400 Y300
+M5
+M15
+M9
+M17
+
