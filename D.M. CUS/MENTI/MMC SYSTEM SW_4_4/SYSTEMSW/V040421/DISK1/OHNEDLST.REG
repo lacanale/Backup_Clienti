@@ -1,0 +1,20 @@
+REGEDIT4
+
+[HKEY_LOCAL_MACHINE\System\CurrentControlSet\control\TimeZoneInformation]
+"DisableAutoDaylightTimeSet"=dword:00000001
+
+[HKEY_LOCAL_MACHINE\Enum\ROOT\*PNP0400]
+
+[HKEY_LOCAL_MACHINE\Enum\ROOT\*PNP0400\0000]
+"BootConfig"=hex:00,04,00,00,00,00,00,00,14,00,00,00,02,00,00,00,00,00,0c,00,\
+  78,03,7a,03,00,00,00,03,00,00,00,00
+"VerifyKey"=hex:78,03,50,4c
+
+[HKEY_LOCAL_MACHINE\Config\0001\Display\Settings]
+"BitsPerPixel"="8"
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\MS-DOS Emulation]
+"DisplayParams"=hex:a9,00,7f,00,80,02,e0,01,60,00,60,00,24,00,24,00,18,00,43,\
+  6f,75,72,69,65,72,20,4e,65,77,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,\
+  00,00,00,00,00,00
+

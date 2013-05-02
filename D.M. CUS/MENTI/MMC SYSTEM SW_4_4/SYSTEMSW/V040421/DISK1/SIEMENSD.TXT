@@ -1,0 +1,956 @@
+_________________________________________________________________________
+
+   			MMC103  SW4.4.21   6FC5253-4AX_0-4AB_
+_________________________________________________________________________
+
+Installation auf MMC103:
+
+Voraussetzung für die Installation dieser Software ist ein MMC103 (nicht MMC102 !)
+mit bereits entsprechend den Anforderungen der MMC103-SW installiertem WINDOWS 95.
+Diese Voraussetzung werden erfüllt von
+- MMC103 mit Windows 95 ab Werk (MLFB 6FC5210-0DA20-2AA0,  -0DA21-2AA0, 0DA20-2AA1,
+  -0DA21-2AA1)
+- MMC103 vom SIEMENS-Service hochgerüstet von SW3.x auf SW4.2 (Serienstand)
+Alle anderen Installationen von Windows 95 erfüllen nicht die Voraussetzungen für den Betrieb
+der MMC103-SW4.4.  Ein MMC103 mit SW4.1 ist zunaechst mittels Streamer-Band 4.2 oder Ghost-Image zu aktualisieren 
+(weil sonst die Win95 CAB-Dateien fehlen) und dann auf SW4.4.21 hochzuruesten.
+Es wird dringend empfohlen, SW4.4 nur auf MMC103 mit min. 32 MB RAM + Cache zu betreiben. 
+Bei MMC103 mit 16 MB RAM muss eine geringere Performance und schnellerer Verschleiss der Festplatte in Kauf genommen werden.
+
+Allgemeine Hinweise zur Hochruestung eines MMC103:
+
+Bei Hochruestung von SW4.2 bzw. SW4.3 auf SW4.4 ist das Sichern der Anwenderdaten nicht 
+mehr zwingend erforderlich, weil die Datenhaltung nicht mehr geloescht und neu installiert, 
+sondern nur noch aktualisiert wird (ausser bei Installation auf PC !). Die Anwenderdaten bleiben dabei erhalten. Beachten Sie aber, dass in der MMC-SW die Standardzyklen (Version 04.04.06) enthalten sind. Daher sollten vor Hochruestung alle Siemens-Zyklen im Verzeichnis "Standardzyklen" aus der NC entladen werden und ggf. ebenso GUD7 und SMAC im Verzeichnis "Definitionen".
+Ein installiertes AUTOTURN 4.3 bzw. 4.4 und alle Dateien in den Verzeichnissen \USER, \ADD_ON, \OEM bleiben erhalten. 
+Daher ist es wichtig, dass Aenderungen der MMC .INI-Dateien in diesen Verzeichnissen vorgenommen werden, und nicht in \MMC2.
+
+ACHTUNG: Aenderungen in von Siemens gelieferten Systemdateien (z.B. Dateien im Verzeichnis 
+"Standardzyklen", Dateien in \MMC2) gehen verloren !
+
+Bei Hochruestung von SW4.1 auf SW4.4 ist das Sichern der Anwenderdaten erforderlich, weil 
+in diesem Fall die Datenhaltung neu installiert wird. Archive mit Anwenderdaten, die im Verzeichnise 
+"Archive" (\DH\ARC.DIR) abgelegt werden, koennen auf Wunsch automatisch gesichert und wieder hergestellt werden. 
+Eine entsprechende Abfrage erfolgt waehrend der Installation.
+Alle Dateien in den Verzeichnissen \USER, \ADD_ON, \OEM bleiben erhalten.
+
+
+HOCHRUESTANLEITUNG FUER DEN MMC103 AUF SOFTWARESTAND 4.4:
+
+1.) Softwarehochruestung ueber Floppy-Laufwerk des MMC103
+
+2.) Softwarehochruestung ueber PC/PG direkt auf MMC103
+
+3.) Softwarehochruestung ueber Festplatte von PC/PG auf MMC103
+
+4.) Installation der MMC103-Software auf einem PC / PG
+
+5.) Verbesserungen gegenueber SW4.4.14
+
+6.) Kompatibilitaet
+
+7.) Tips und Tricks
+
+
+
+====================================================================
+1.) SOFTWAREHOCHRUESTUNG UEBER FLOPPY-LAUFWERK DES MMC103
+    von SW-Stand 4.x nach 4.4.21
+====================================================================
+
+Fuer die Installation sind die Disketten 1 bis 17 notwendig.
+
+Waehrend des MMC-Hochlaufs (nach Einschalten der Steuerung) bei 
+anstehender Meldung "Starting Windows 95 ..." betaetigen Sie einmal kurz 
+die Taste 6 auf der Bedientafeltastatur.
+Nach Durchlauf der Scandisk-Pruefung wird folgendes Menue angezeigt:
+
+PLEASE SELECT:
+1       Install/Update MMC System
+2       Install/Update Standard Software
+3       DOS Shell
+4       Start Windows (Service Mode)
+5       MMC System Check
+6       Reboot System (Warmboot)
+7       Backup/Restore with VALITEK Streamer
+8       Start PC Link
+9       End (Load MMC)
+
+Your Choice [1,2,3,4,5,6,7,8,9] ?
+
+Betaetigen Sie Taste 1.
+Das System fordert die Eingabe eines Passwortes an mit:
+
+passwd:
+	Geben Sie eins der Passworte der Stufe 1 oder 2
+	fuer Hersteller oder Service ein.
+
+
+Danach Anwahl "1  Install from Floppy Disk" 
+
+Die Installation erfolgt nun gefuehrt durch die SINUMERIK.
+ 
+Nach Einlesen der 17. Diskette wird zunaechst die bestehende System-SW geloescht.
+		Bei Hochruestung von SW4.1 erfolgt vor dem Loeschen der Daten-
+		haltung die Abfrage, ob vorhandene Archive erhalten bleiben sollen:
+		There are ARCHIVES in the Directory DH\ARC.DIR
+		Do You want to save these ARCHIVES and to restore the Userdata at 
+		the end of the Installation ?
+		Your Choise :[Y,N] 
+		Geben Sie "Y" ein, damit werden alle auf dem MMC103 liegenden 
+		Archiv-Dateien von C:\DH\ARC.DIR nach C:\ARC.DIR gesichert und 
+		sind nach der Installation wieder im Verzeichnis Archive abgelegt.
+ 
+Anschliessend wird SISETUP unter Windows 95 gestartet und es erfolgt die Abfrage nach der Voreinstellung fuer die 
+Dialogprogrammierung: MILL  oder  TURN   (Technologie Drehen oder Fraesen). 
+Auswahl mit Taste "END" auf der Bedientafel bzw. "TAB" auf der MFII-Tastatur.
+Diese Auswahl stellt nur eine Voreinstellung dar, die spaeter in der Datei DPDH.INI, Eintrag Technology=, 
+geaendert werden kann.
+
+Nachdem SISETUP mit der Installation fertig ist und sich beendet hat, erscheint noch folgende Meldung:
+"Please scan the following output from DH-update:
+  ok:  xx nodes created
+  Importing file (100% complete)"
+
+Dies bedeutet, dass die Aktualisierung der Datenhaltung erfolgreich war. Es wurden die im 
+"Anhang DH-Update" (siehe unten) aufgelisteten Dateien neu ins System eingebracht.
+Nach dem Reboot des MMC erfolgt der Systemhochlauf mit SW4.4.21
+
+
+====================================================================
+2.) SOFTWAREHOCHRUESTUNG UEBER PC/PG DIREKT AUF MMC103
+    von SW-Stand 4.x nach 4.4.21
+====================================================================
+
+Fuer die Installation sind die Disketten 1 bis 17 notwendig.
+
+STEUERUNG AUSSCHALTEN !
+
+Verbinden Sie mit dem Uebertragungskabel(V24 Kabel) die serielle 
+Schnittstelle COM1/COM2 vom PC/PG mit der Schnittstelle X6 (COM1) 
+oder X7 (COM2) oder X8 (LPT1) des MMC. Die Erkennung der 
+Schnittstelle erfolgt automatisch.
+
+Legen Sie die Installationsdiskette 1 am PC/PG ein. 
+Waehlen Sie das Disketten-Laufwerk aus und rufen Sie das Installationsprogramm 
+DOSSETUP.BAT von Diskette auf.
+
+Am PC/PG wird der folgende Text ausgegeben:
+
+You have two Choices:
+
+1.      Install directly from floppy to MMC101/102 (single 
+        installation Only some batchfiles will be copied to the 
+        selected diskdrive)
+2.      Install once to local Harddisk and then multiple to 
+        MMC101/102 (You will need about xx MB free space on your 
+        harddisk!)
+Continue with installation (y/n)? [n]
+
+Weiter mit Return
+Das System meldet sich mit:
+Please check the installation parameters:
+Installation from drive      : A:
+Copy files to disk           : N                  
+		N =>Installation von Diskette direkt auf MMC103
+		Y =>Kopieren der Disketten auf HD des PC um Installation von HD auf MMC 	
+			durchzufuehren)
+Copy (batch) files to directory : C:\MMC102
+		Name des Verzeichnisses in das die Disketten kopiert werden (nicht aenderbar !)
+
+Would you like to change anything (y/n)? [n]
+
+Weiter mit Return 
+Das System meldet:
+Now we are ready for transfering the files to the MMC101/102 disk
+First you have to set this computer into "Server Mode"  (by hitting "y")
+Then reboot MMC101/102 and press key "6" at the 
+"Starting Windows 95 ..."prompt. Then select "Install/Update MMC System"
+and"Install via Serial/Parallel Line".Now you are ready for 
+transfering ....
+Transfer the installation files to MMC101/102 (y/n)? [n]
+
+WICHTIG:Wenn sich Ihr PC/PG in diesem Zustand befindet MUSS sich die
+Sinumerik im ausgeschalteten Zustand befinden (Sollte die Sinumerik
+eingeschaltet sein,so schalten Sie sie jetzt aus)
+
+PC/PG in den "Server Mode" schalten (Taste "Y" und "Return" betaetigen).
+
+Wenn die Verbindung zum MMC hergestellt ist, Sinumerik EINSCHALTEN,
+Waehrend des MMC-Hochlaufs bei anstehender Meldung "Starting Windows 95 ..."
+betaetigen Sie einmal kurz die Taste 6 auf der Bedientafeltastatur.
+Es wird folgendes Menue angezeigt:
+
+PLEASE SELECT:
+1       Install/Update MMC System
+2       Install/Update Standard Software
+3       DOS Shell
+4       Start Windows (Service Mode)
+5       MMC System Check
+6       Reboot System (Warmboot)
+7       Backup/Restore with VALITEK Streamer
+8       Start PC Link
+9       End (Load MMC)
+
+Your Choice [1,2,3,4,5,6,7,8,9] ?
+
+Betaetigen Sie Taste 1.
+Das System fordert die Eingabe eines Passwortes an mit:
+passwd:
+	Geben Sie eins der Passworte der Stufe 1 - 2
+	fuer Hersteller oder Service ein.
+
+Danach Anwahl "Install via Serial/Parallel Line"(Taste "2").
+
+Sinumerik meldet:
+Installation of MMC101/102 SystemsoftwareV4.4
+
+Die Installation erfolgt nun gefuehrt von der Sinumerik aus.
+Nach Einlesen der 16. Diskette wird zunaechst die bestehende System-SW geloescht.
+		Bei Hochruestung von SW4.1 erfolgt vor dem Loeschen der Daten-
+		haltung die Abfrage, ob vorhandene Archive erhalten bleiben sollen:
+		There are ARCHIVES in the Directory DH\ARC.DIR
+		Do You want to save these ARCHIVES and to restore the Userdata at 
+		the end of the Installation ?
+		Your Choise :[Y,N] 
+		Geben Sie "Y" ein, damit werden alle auf dem MMC103 liegenden 
+		Archiv-Dateien von C:\DH\ARC.DIR nach C:\ARC.DIR gesichert und 
+		sind nach der Installation wieder im Verzeichnis Archive abgelegt.
+ 
+Anschliessend wird SISETUP unter Windows 95 gestartet und es erfolgt die Abfrage nach der Voreinstellung 
+fuer die Dialogprogrammierung:
+MILL  oder  TURN   (Technologie Drehen oder Fraesen). 
+Auswahl mit Taste "END" auf der Bedientafel bzw. "TAB" auf der MFII-Tastatur.
+Diese Auswahl stellt nur eine Voreinstellung dar, die spaeter in der Datei DPDH.INI
+geaendert werden kann.
+
+Nachdem SISETUP mit der Installation fertig ist und sich beendet hat, erscheint noch folgende Meldung:
+"Please scan the following output from DH-update:
+  ok:  xx nodes created
+  Importing file (100% complete)"
+
+Dies bedeutet, dass die Aktualisierung der Datenhaltung erfolgreich war. Es wurden die im 
+"Anhang DH-Update" (siehe unten) aufgelisteten Dateien neu ins System eingebracht.
+Nach dem Reboot des MMC erfolgt der Systemhochlauf mit SW4.4.
+
+Beenden Sie den PC/PG-Servermode mit Alt + F4.
+
+
+====================================================================
+3.) SOFTWAREHOCHRUESTUNG UEBER FESTPLATTE VON PC/PG AUF MMC103
+    von SW-Stand 4.x nach 4.4.21
+====================================================================
+
+Fuer die Installation sind die Disketten 1 bis 17 notwendig.
+
+STEUERUNG AUSSCHALTEN !
+
+Verbinden Sie mit einem seriellen Uebertragungskabel (V.24-Kabel) die serielle 
+Schnittstelle COM1/COM2 vom PC/PG mit der Schnittstelle X6 (COM1) 
+oder X7 (COM2) oder mit einem InterLink-Kabel (Parallelkabel) die Parallel-Schnittstelle 
+des PC/PG mit X8 (LPT1) des MMC. Die Erkennung der Schnittstelle erfolgt automatisch.
+
+Legen Sie die Installationsdiskette 1 am PC/PG ein. 
+Waehlen Sie das Disketten-Laufwerk aus und rufen Sie das Installationsprogramm 
+DOSSETUP.BAT von Diskette auf.
+
+Am PC/PG wird der folgende Text ausgegeben:
+
+You have two Choices:
+
+1.      Install directly from floppy to MMC101/102 (single 
+        installation Only some batchfiles will be copied to the 
+        selected diskdrive)
+2.      Install once to local Harddisk and then multiple to 
+        MMC101/102 (You will need about xx MB free space on your 
+        harddisk!)
+Continue with installation (y/n)? [n]
+
+Weiter mit Return
+Das System meldet sich mit:
+Please check the installation parameters:
+Installation from drive      : A:
+Copy files to disk           : N                  
+		N =>Installation von Diskette direkt auf MMC103
+		Y =>Kopieren der Disketten auf HD des PC um Installation von HD auf MMC 	
+			durchzufuehren)
+Copy (batch) files to directory : C:\MMC102
+		Name des Verzeichnisses in das die Disketten kopiert werden (nicht aenderbar !).
+
+Would you like to change anything (y/n)? [n]
+
+Eingabe "Y" und "Return"
+Aendern von "Copy files to disk" auf "Y" (2.Abfrage "2" und "Return")
+
+Erneute Abfrage:
+Please check the installation parameters:
+Installation from drive         :      A:
+Copy files to disk              :      Y
+Copy (batch) files to directory : C:\MMC102 
+
+Would you like to change anything (y/n)? [n]
+
+Taste "Return"
+
+Die Disketten 1 - 17 werden nun in das Verzeichnis C:\MMC102  kopiert.
+Nach der letzten Diskette erfolgt folgende Meldung:
+
+Now we are ready for transfering the files to the MMC101/102 disk
+First you have to set this computer into "Server Mode"  (by hitting "y")
+Then reboot MMC101/102 and press key "6" at the 
+"Starting Windows 95 ..."prompt. Then select "Install/Update MMC System"
+and"Install via Serial/Parallel Line".Now you are ready for 
+transfering ....
+Transfer the installation files to MMC101/102 (y/n)? [n]
+
+WICHTIG:Wenn sich Ihr PC/PG in diesem Zustand befindet MUSS sich die
+Sinumerik im ausgeschalteten Zustand befinden (Sollte die Sinumerik
+eingeschaltet sein,so schalten Sie sie jetzt aus)
+
+PC/PG in den "Server Mode" schalten (Taste "Y" und "Return"
+betaetigen).
+
+Wenn die Verbindung zum MMC hergestellt ist, Sinumerik EINSCHALTEN,
+Waehrend des MMC-Hochlaufs bei anstehender Meldung "Starting Windows 95 ..."
+betaetigen Sie einmal kurz die Taste 6 auf der Bedientafeltastatur.
+Es wird folgendes Menue angezeigt:
+
+PLEASE SELECT:
+1       Install/Update MMC System
+2       Install/Update Standard Software
+3       DOS Shell
+4       Start Windows (Service Mode)
+5       MMC System Check
+6       Reboot System (Warmboot)
+7       Backup/Restore with VALITEK Streamer
+8       Start PC Link
+9       End (Load MMC)
+
+Your Choice [1,2,3,4,5,6,7,8,9] ?
+
+Betaetigen Sie Taste 1.
+Das System fordert die Eingabe eines Passwortes an mit:
+
+passwd:
+	Geben Sie eins der Passworte der Stufe 1 - 2
+	fuer Hersteller oder Service ein.
+
+Danach Anwahl "Install via Serial/Parallel Line" (Taste "2").
+
+Sinumerik meldet:
+Installation of MMC101/102 Systemsoftware V4.4
+
+Die Installation erfolgt nun gefuehrt von der Sinumerik aus.
+Nach Transfer aller Daten vom PC/PG wird zunaechst die bestehende System-SW geloescht.
+		Bei Hochruestung von SW4.1 erfolgt vor dem Loeschen der Daten-
+		haltung die Abfrage, ob vorhandene Archive erhalten bleiben sollen:
+		There are ARCHIVES in the Directory DH\ARC.DIR
+		Do You want to save these ARCHIVES and to restore the Userdata at 
+		the end of the Installation ?
+		Your Choise :[Y,N] 
+		Geben Sie "Y" ein, damit werden alle auf dem MMC103 liegenden 
+		Archiv-Dateien von C:\DH\ARC.DIR nach C:\ARC.DIR gesichert und 
+		sind nach der Installation wieder im Verzeichnis Archive abgelegt.
+ 
+Anschliessend wird SISETUP unter Windows 95 gestartet und es erfolgt die Abfrage nach der Voreinstellung 
+fuer die Dialogprogrammierung:
+MILL  oder  TURN   (Technologie Drehen oder Fraesen). 
+Auswahl mit Taste "END" auf der Bedientafel bzw. "TAB" auf der MFII-Tastatur.
+Diese Auswahl stellt nur eine Voreinstellung dar, die spaeter in der Datei DPDH.INI
+geaendert werden kann.
+
+Nachdem SISETUP mit der Installation fertig ist und sich beendet hat, erscheint noch folgende Meldung:
+"Please scan the following output from DH-update:
+  ok:  xx nodes created
+  Importing file (100% complete)"
+
+Dies bedeutet, dass die Aktualisierung der Datenhaltung erfolgreich war. Es wurden die im 
+"Anhang DH-Update" (siehe unten) aufgelisteten Dateien neu ins System eingebracht.
+Nach dem Reboot des MMC erfolgt der Systemhochlauf mit SW4.4.
+
+Beenden Sie den PC/PG-Servermode mit Alt + F4.
+
+Zur Installation von SW4.4 direkt von der Festplatte des PC/PG auf weiteren Steuerungen, waehlen Sie 
+das Verzeichnis C:\MMC102 (d.h. das Verzeichnis, in das der Inhalt der 17 Disketten kopiert wurde) an
+und rufen INSTALL2.BAT auf. Damit wird der Datentransfer zur SINUMERIK gestartet, wie oben
+beschrieben.
+
+
+====================================================================
+4.) Installation der MMC103-Software auf einem PC / PG
+====================================================================
+Die Installation der MMC103-SW 4.4 auf einem PC bzw. PG ist nur unter Windows 95 moeglich.
+Der "virtuelle Arbeitsspeicher" (Swap-Bereich) von Windows 95 muss > 90 Mb sein, d.h. bei der
+Standardeinstellung von Windows 95 muss der freie Festplattenspeicher auf C. nach Installation 
+der MMC-SW noch > 90 Mb betragen.
+Vor der Installation muss Windows 95 neu gestartet werden, und es darf ausser dem Explorer 
+keine andere Applikation gestartet sein. 
+Achtung: Bei Installation wird eine bestehende MMC-Datenhaltung (Verzeichnis DH) geloescht.
+
+Zur Installation der MMC103-SW 4.4 auf einem PC oder PG (ohne oder mit MPI-Karte) legen Sie die 
+Diskette 1 von 17 ins Laufwerk und rufen das darauf vorhandene Programm SETUP.EXE auf.
+Zu Beginn des Setups erfolgen Abfragen nach dem Verzeichnis, in das die MMC-SW installiert werden soll, 
+ob die MMC-SW im Modus "LOCAL" (ohne Verbindung zu einer NCU) oder "ONLINE" 
+(mit MPI-Verbindung zu einer NCU) betrieben werden soll und nach der Voreinstellung fuer die Dialogprogrammierung 
+(Mill / Turn).
+Nach der Auswahl "ONLINE" wird die Installation der STEP7-MPI-Treiber angeboten. 
+Diese sind erforderlich, wenn auf dem PC kein STEP7 installiert ist.
+Setup fordert nacheinander die benoetigten Installationsdisketten an.
+Sofern auf dem PC kein englischsprachiges Win95 installiert ist, wird waehrend der Installation
+der MMC-SW ein Versionskonflikt fuer die Dateien compobj.dll und msjetint.dll gemeldet. Diese
+sind mit "Beibehalten der vorhandenen Version" zu quittieren.
+
+Der Ersthochlauf der MMC-SW im Online-Betrieb erfolgt in der Regel mit dem Alarm 120201
+"Warten auf Kommunikation zu NC/PLC", weil die Verbindung zur NCU sich nicht automatisch konfiguriert.
+Die Einstellungen sind im Bedienbereich Inbetriebnahme unter MMC / Bedientafel vorzunehmen
+(Kennwort setzen !). Meist wird ein PC / PG am MPI-Bus (187,5 kBaud) betrieben, mit NCK-Adresse = 3, 
+PLC-Adresse = 2 und MMC-Adresse = 0 (falls noch ein weiterer MMC an der NCU angeschlossen ist).
+
+
+====================================================================
+5.)  Verbesserungen gegenueber SW4.4.14
+====================================================================
+
+Parameter:
+==========
+* Variable $A_DBB kann jetzt protokolliert werden.
+* Abszisse und Ordinate bei den Schutzbereichen werden richtig dargestellt
+* Bei Sprachumschaltung werden jetzt alle Texte richtig umgeschaltet.
+* Nachkommastellen bei Inch/metrisch-Umschaltung in Settingdaten jetzt korrekt.
+
+ncdde.exe:
+==========
+* Nach NC-Reset bleiben keine PLC-Fehler-/Betriebsmeldungen mehr im MMC stehen.
+* Sporadischer Absturz mit "Page fault" behoben.
+* Es koennen jetzt Datenbits in PLC-Datenbausteinen im Bereich > 8kByte addressiert
+  werden.
+
+Diagnose:
+=========
+* Absturz bei osteuropaeischen Sprachen in Diagnose-Serviceanzeigen behoben.
+* Fehler bei Blaettern in Service-Bildern behoben (trat besonders mit 810D auf)
+
+
+Simulation:
+===========
+* Nach Loeschen von dpwp.ini und anschliessendem Laden der Simulation 
+  im Hochlauf wird jetzt eine korrekte dpwp.ini erzeugt.
+* Der Bezeichner eines Werkzeuges darf jetzt mit einer Nummer beginnen.
+* dpcstcyc.spf:
+  Messzyklen koennen jetzt simuliert werden.
+* dpsim.tea:
+  Hinweis:
+  Falls in der Simulation Probleme mit dem Softwareendschaltern auftreten, 
+  in der Datei MMC2\DP\DPSIM.TEA die Maschinendaten
+  $MA_POS_LIMIT_MINUS / PLUS [AXn]
+  aendern.
+* Fehler bei Erstanwahl der Simulation - falls DPNCSIM über Regie vorgeladen wurde - 
+  ist behoben. (Simulation mußte ein zweites Mal angewaehlt werden).
+
+
+arserver.exe:
+=============
+* V24-Fehlermeldungen (Ueberlauf des HW-Puffers mit Zeichenverlust) werden jetzt 
+  angezeigt mit anschliessendem Abbruch des Auftrags.
+* Problem mit Flash-File-System und Archivieren: Temp-Files bleiben stehen, damit ist ein 
+  spaeteres Loeschen nicht mehr moeglich, behoben (Vorsorge fuer MMC SW 4.4 & NCK SW 5.1)
+* Ein Serien-IB-Archiv kann jetzt immer - unabhaengig von den aktuellen Zugriffsrechten - 
+  in die NC eingelesen werden. Betrifft das Ueberschreiben von schon in der NC vorhandenen
+  Daten.
+* Der Archiv-Server hat das Problem, daß ein Abbruch beim Archiv-Erstellen, wenn die zu 
+  archivierende Datei klein ist (ca. 8 kByte), einen Nachlauf von ca 30 Sec. beim ARServer 
+  hat, behoben. Die Folge war, daß Folgeauftraege vom ARServer nicht mehr bearbeitet wurden.
+  Fehlerbild:
+  Ein Stoppen der V24 Uebertragung (Auslesen) bei Programmen die kleiner 8K wirkt nicht, 
+  d.h. der Server meldet fertig, ist es aber nicht. Wenn man dann eine neue Uebertragung 
+  startet gibt es eine Fehlermeldung. Wenn nichts uebertragen wird, weil z.B. die Gegenstelle 
+  nicht bereit ist, laeuft der ARServer auf einen Time-Out-Fehler.
+  Bis zu diesem Time-Out Fehler ist keine neue Uebertragung moeglich.
+
+
+Inbetriebnahme:
+===============
+* Alle positiven Festpunktzahlen als NCK-Adresse zugelassen.
+  (Vorher waren die Ziffern 8 und 9 nicht möglich).
+* Unterstuetzung des neuen 2-Achs-Leistungsteils auch fuer das 810D Grundgeraet moeglich.
+
+
+regie.ini:
+==========
+* Temperatur- und Luefterueberwachung der MMC-CPU sind abgeschaltet.
+  (Aktivieren mit NMIMask=20 in Regie.ini)
+
+reg_cmd.exe:
+============
+* Die Alarmquittungstaste CANCEL wird jetzt an die PLC gemeldet (DB19, DBX20.2).
+  Loeschen dieses Bits durch das PLC-Anwenderprogramm.
+* Der vom MMC angewaehlte Kanal wird jetzt auch im Hochlauf an die PLC gemeldet.																ERLde27795
+
+
+regie.dll:
+==========
+M:N, Kanalmenue:
+* Poken des Machine-Switches im 1:1 Fall		
+     - damit laeuft Maschine hoch bei 1:1 und Kanalmenue      
+     - damit funktioniert nach Umschalten von M:N auf 1:1 die Datenhaltung wieder
+
+* Wenn 1-1, dann nur die lokale NC anzeigen			
+     - bei MMC Verbindung 1:1 werden im Kanalmenue nur die Kanaele der 	
+       entsprechenden NCU angezeigt               			                      
+
+
+
+Tastatur-Treiber (kbd.drv): 
+===========================
+* Es wird jetzt ein fuer MMC angepasster Win95-Treiber eingesetzt.
+  Dies bedeutet jedoch nicht, dass der MMC103 mit einer MFII-Tastatur mit deutscher
+  Belegung bedient werden kann !
+* Keyboard-NumPad Error	(Problem mit MFII an OP031 und NumLock)	
+ 
+                  
+rencdde.dll
+===========
+* akive Tastatursperre (von PLC) wird jetzt auch im MMC Hochlauf erkannt	
+* Synchrone/Asynchrone DDE-Transaktionen (sporad. Systemabsturz in ddeml.dll
+  beseitigt)
+
+
+Maschine:
+=========
+* Korrekter Bildaufbau bei "schneller" Kanalumschaltung
+* Korrekte Beschriftung der Softkeys nach Kanal- und Bereichsumschaltung
+* Satzsuchlauf: Softkey "Berechnung Satzendpkt." verschwindet nicht mehr.
+* Betrieb mit NCK-SW 5.1 ist moeglich.
+* Das Starten eines Satzsuchlaufs aus dem Bild "Suchposition" wird nicht mehr mit der 
+  Dialogmeldung "Suchlauf nur im Reset moeglich" abgelehnt, obwohl der Kanal im Reset ist.
+* Ankratzbild: Das Vorzeichen zur Verrechnung der WZ-Laenge ist jetzt wieder wie bei
+  SW4.3 eingestellt. Ueber den Eintrag in der Datei MASCHINE.INI
+  [SetZero]
+  Display_Sign_Switch=1		;Wirkung wie in SW 4.3.17
+  ;Display_Sign_Switch=0	;Wirkung wie in SW 4.4.20
+  kann ggf. wieder der Zustand von SW 4.4.x hergestellt werden.
+* JOG, nur mit NCK 5.1: Mit Anzeige-MD 9422 MA_PRESET_MODE=2 wird statt "Preset" 
+  "Istwertsetzen" angeboten.
+
+Header:
+=======
+* Verbesserung in der Anzeige der Betriebsart im Zusammenhang mit BAG / M:N-Umschaltung.
+
+tmdb.exe
+========
+* Betrifft den Zyklenabgleich fuer die Simulation im Hochlauf des MMC bei 810D.
+  Das Problem, dass bei einer grossen Anzahl von Zyklen in der NC (besonders bei 810D)
+  der MMC nicht hochlaeuft oder der NCK Alarm 5000 meldet, ist behoben.
+
+
+mmc.ini
+=======
+* Eintrag "MMCScreenOffTimeInMinutes=" richtig geschrieben	
+* Abschnitt BTSS-Settings fuer ShopMill erweitert
+
+
+dctl.vbx
+========
+* Ein Rekursionsproblem wurde beseitigt. Der Fehler aesserte sich darin, dass in bestimmten Situation
+  keine neuen Kommunikationsauftraege mehr eingerichtet wurden und damit z.B. die Applikation DIAGNOSE
+  nicht hochlief.
+
+
+rh.exe
+======
+* Das Error-Handling wurde verbessert. Wenn beim Schreiben in das Notizbuch ein fehler auftritt, wird
+  statt eines nicht quittierbaren Windows-Systemfensters ein MMC-modales Fenster angezeigt, welches
+  auch quittiert werden kann.
+
+
+dhserver.exe
+============
+* Absturz des DHServers beim Einlesen von großen Archiven beseitigt	
+  Dieser Fehler hat in der Vergangenheit auch dazu geführt, dass die __dhinf.000 Datei 
+  in c:\dh sporadisch defekt war (==>keine korrekte Anzeige der Dateien mehr).
+* Verbesserte Pruefung und Restaurierung der __dhinf.000-Datei in c:\dh im MMC-Hochlauf.
+* Sporadischer zum Absturz des DHServers bei einem synchronen Listing von der NCK beseitigt. 
+* Beim Laden/Entladen einer Datei wird der Zeitstempel beibehalten.
+* Der Datenhaltungsserver kann jetzt auch Netzlaufwerkspfade - Pfade, die ein \\ enthalten - 
+   behandeln (wichtig für ShopMill).
+
+
+mbdde.exe
+=========
+* Absturz beim Loeschen zweier gleicher Alarme beseitigt
+* Problem mit mehrfach auftretenden Meldungen (Kommen, gehen, ..), dass die Meldungen nicht mehr
+  gehen, beseitigt.
+* Fehlerbehebung bei Schreiben des Alarmprotokolls durch Exception-Handling beseitigt.
+  (Fehlermeldung "Abnormal Programmtermination" im MMC-Hochlauf).	
+* Fehlerbehebung bei Alarmen der Art "Aktion 5 im Zustand .... nicht erlaubt"	
+  Der Alarm wird jetzt mit einem Text fuer "5" (indizierter Alarmtext angezeigt)
+* Fehlerbehebung fuer osteurop. Sprachen (ansi2oem)
+
+
+aeditor.exe
+===========
+* Projektierung der Zyklenunterstuetzung: cycle90 / cycle900 werden jetzt unterschieden.
+
+
+Werkzeugverwaltung:
+===================
+* Die WZV ist jetzt vertraeglich mit NCU-SW 5.1 bzw. CCU-SW 3.1, d.h. die WZV laeuft mit dem          Funktionsumfang, der mit NCK-SW 13.x  möglich war, jetzt auch mit NCK-SW 17.x
+* Werkzeug-Schrank und die Konfiguration der NC wurden dahingehend harmonisiert, dass 
+   Werkzeuge mit OEM-Daten jetzt immer in den Schrank gesichert werden koennen.
+* Nach einer Kanalumschaltung wird jetzt sofort
+	- die Anzeige des Zwischenspeichers in der Magazinliste 
+  	  der Werkzeugverwaltung aktualisiert. 
+	- auch beim Be- und Entladen von Werkzeugen wird die Auswahl der Beladeplaetze                                     angezeigt.
+* Es werden jetzt auch mehr als 5 Zwischenspeicherplaetze korrekt bearbeitet.
+* SINCOM:
+  - Funktioniert jetzt auch, wenn in der NC keine Werkzeug-Anwenderdaten 
+    und Schneiden-Anwenderdaten definiert sind.
+  - Die Ueberwachungsdaten VWG-Standzeit, Istwert Standzeit, VWG-Stückzahl, 
+    Istwert Stückzahl werden jetzt in dieser Reihenfolge, entsprechend der Beschreibung, 
+    an den Leitrechner geliefert.
+
+
+Simulation:
+===========
+* D-Wert fuer Einstechstahl wird jetzt richtig berechnet.
+* Die Simulation kennt jetzt auch die Systemvariablen zur Option SW-Nocken und die 
+   Variablen DRIVE_IS_ACTIVE.
+* Ein beim Start von DPSIM schon aktiver DPNCSIM (Simulationskern) wird nicht mehr erst 
+   beendet und dann wieder gestartet (fuer SINUTRAIN).
+* Kein Absturz mehr mit "Runtime Error 6 overflow".
+
+
+Dialogprogrammierung:
+=====================
+* Fehler im Geometrie-Prozessor bei Uebergangskreisbogen (Case 7059102) behoben.
+* Im erzeugten DIN-Code wird nicht mehr faelschlicherweise der String "ok" abgesetzt.
+* Bei schneller Tastatureingabe - speziell bei 810D - gehen Kommentarzeichen nicht
+  mehr verloren.
+  
+
+Dienste:
+========
+* Das Erstellen eines Hochruestarchivs ist wieder moeglich, ebenso das Einlesen, auch mit 810D.
+* Dienste: "Daten verwalten" verzweigt auch bei Aufruf aus ETC-Leiste (SIB) in den richtigen Zustand.
+
+
+MMC-Command (comic.exe)
+=======================
+* Aehnliche Anwendervariablen werden jetzt korrekt angezeigt.
+
+
+Allgemein:
+==========
+* SW 4.4.21 ist tauglich fuer osteuropaeische und ostasiatische Sprachen (Koreanisch),
+  jedoch nicht fuer Russisch.
+Nur bei Installation auf eine Steuerung:
+* die Ghostsoftware (Version 5.1b) wird installiert mit den 
+   entsprechenden Aenderungen in den Menues (Punkt 7 Backup/Restore).
+* Automatische Sommerzeitumschaltung wird deaktiviert.
+* Druckerschnittstelle funktioniert jetzt.
+* Der Bildschirm wird wieder auf 256 Farben eingestellt.
+* Herunterfahren des MMC: Nach Einrichten des EXIT-SKs im Bereichsmenue (Regie.ini)
+  faehrt die Regie die MMC-SW und Windows 95 herunter. Der MMC bleibt mit Bild "Save to power off. 
+  Press any key to reboot" stehen und kann dann ausgeschaltet werden. 
+
+
+
+MMC auf PC / PG:
+================
+* Kein Runtime Error mehr beim Scollen mit Maus in der Zyklenunterstuetzung.
+* Tastatur ungleich Englisch (USA): Eingaben mit <Alt Gr> + <Taste> .
+  werden jetzt vom Editor angenommen, falls das Zeichen druckbar ist.
+* DrWatson wird jetzt ebenfalls beendet beim Beenden der MMC-SW.
+
+
+==========================================================================================
+                                      OEM
+==========================================================================================
+* DRIVERS (kbd.drv, scantab.exe, vkd_mmc2.386, vmmc2d.386, hooks.dll):
+  Das Problem, daß beim Tasten-Mapping eventuell Tasten im Treiber zurueckgehalten wurden 
+  und erst nach einiger Zeit 'im Schwall' ausgegeben wurden, ist behoben.
+
+
+Tastatur-Treiber (kbd.drv): 
+===========================
+* Es wird jetzt ein fuer MMC angepasster Win95-Treiber eingesetzt.
+  Mit diesem Treiber ist es moeglich, Tasten(kombinationen) ganz auszublenden bzw. 
+  durch ein Mapping auf eine andere Tasten(kombination) umzudefinieren.
+  Dies bedeutet jedoch nicht, dass der MMC103 mit einer MFII-Tastatur mit deutscher
+  Belegung bedient werden kann !
+  Beschreibung der moeglichen Einstellungen in SYSTEM.INI, Section [386Enh]:
+
+# -------------------------------------------
+# SIEMENS KEYBOARD-DRIVER SECTION (START)
+# -------------------------------------------
+
+# State of driver after startup
+# (0=NORMAL, 1=PERMANENT-SHIFT ACTIVE)
+keybStartState=0
+
+# Type of Keyboard to be used
+# (0=MMC103, 1=MFII)
+keybType=0
+
+# Activation of Key-Sequences to be ignored
+# SeqAct holds a BIT-Pattern for a max of 8 sequences
+# which could be ignored by the keyboard-driver
+# if bit-n is set in Seq-Act, the according sequence
+# will be ignored
+# The following 8 sequences are implemented
+# 0  CTRL-ALT-DEL
+# 1  ALT-F4
+# 2  ALT-TAB
+# 3  LEFTSHIFT-ALT-TAB
+# 4  RIGHTSHIFT-ALT-TAB
+# 5  CTRL-ESC
+# 6  ALT-ESC
+# 7  ALT-SPACE
+SeqAct=0
+# MAX VALUE for SeqAct=255 !!
+# Mapping-feature
+# You can map a sequence of at least 8 scancodes
+# on one scancode
+# SYNTAX: MAPXXX_Y=ZZZ
+#         XXX: Scancode where you want to map on
+#              MUST have 3 digits (leading zeros)
+#           Y: sequence-number (range 0-7)
+#         ZZZ: scancode which should occur
+#         ALL VALUES MUST BE GIVEN DEZIMAL !!
+
+# EXAMPLE: Map our VSK's to Shift-Fx
+# REMOVE '#' in front of MAP... to activate
+# VSK1 (scancode 0x5E = 94dez) -> Shift-F1 (scancodeseq. 0x2a,0x3b,0xbb,0xaa)
+			  	  Shift-Down = 0x2a = 42dez
+			  	  F1-Down    = 0x3b = 59dez
+			  	  F1-Up      = 0xbb = (0x3b | 0x80) = 187dez
+			  	  Shift-Up   = 0xaa = (0x2a | 0x80) = 170dez
+#MAP094_0=42
+#MAP094_1=59
+#MAP094_2=187
+#MAP094_3=170
+# VSK2 (scancode 0x5F = 95dez) -> Shift-F2 (scancodeseq. 0x2a,0x3c,0xbc,0xaa)
+			  	  Shift-Down = 0x2a = 42dez
+			  	  F2-Down    = 0x3c = 60dez
+			  	  F2-Up      = 0xbc = (0x3c | 0x80) = 188dez
+			  	  Shift-Up   = 0xaa = (0x2a | 0x80) = 170dez
+#MAP095_0=42
+#MAP095_1=60
+#MAP095_2=188
+#MAP095_3=170
+# VSK3 (scancode 0x62 = 98dez) -> Shift-F3 (scancodeseq. 0x2a,0x3d,0xbd,0xaa)
+			  	  Shift-Down = 0x2a = 42dez
+			  	  F3-Down    = 0x3d = 61dez
+			  	  F3-Up      = 0xbd = (0x3d | 0x80) = 189dez
+			  	  Shift-Up   = 0xaa = (0x2a | 0x80) = 170dez
+#MAP098_0=42
+#MAP098_1=61
+#MAP098_2=189
+#MAP098_3=170
+;MAP VSK4(63== 99) to SH-F4
+#MAP099_0=42
+#MAP099_1=62
+#MAP099_2=190
+#MAP099_3=170
+;MAP VSK5(64== 100) to SH-F5
+#MAP100_0=42
+#MAP100_1=63
+#MAP100_2=191
+#MAP100_3=170
+;MAP VSK6(65== 101) to SH-F6
+#MAP101_0=42
+#MAP101_1=64
+#MAP101_2=192
+#MAP101_3=170
+;MAP VSK7(66== 102) to SH-F7
+#MAP102_0=42
+#MAP102_1=65
+#MAP102_2=193
+#MAP102_3=170
+;MAP VSK8(67== 103) to SH-F8
+#MAP103_0=42
+#MAP103_1=66
+#MAP103_2=194
+#MAP103_3=170
+# -------------------------------------------
+# SIEMENS KEYBOARD-DRIVER SECTION (END)
+# -------------------------------------------
+
+
+* REGIE.INI, Option GimmeKeys:
+Es besteht jetzt die Moeglichkeit fuer einzelne Applikationen/Bedienbereiche, die bisher
+vom MMC (der Regie) verwaltete Tasten (Bereichsumschalttaste, Cancel, Kanalumschalt-Taste 
+und Maschinenbereichstaste) selbst zu behandeln. Wird die Bereichsumschalt-Taste von der Applikation
+selbst verarbeitet, muss der Regie dafuer eine Ersatz-Tastenkombination dafuer definiert werden.
+Die Mimik wird in Regie.Ini im Abschnitt [TaskConfiguration] eingestellt ueber die neuen Eintraege
+GIMMEKEYS und ShowAppMenuKey.
+
+Beispiel:
+[TaskConfiguration]
+TaskX = name := oemframe, ..., GIMMEKEYS := n, ShowAppMenuKey := m
+
+wobei fuer n und m folgendes gilt:
+
+n = 32Bit Bitmaske, definiert, welche REGIE-Tasten die Applikation selbst behandeln will
+bit0 ->		Bereichsumschaltung
+ 		1=OEMApp will F10 selbst behandeln, 0=OEMApp will F10 standardmaessig behandeln (Bereichsumschaltung)
+bit1 -> 	Kanalumschalttaste
+ 		1=OEMApp will F11 selbst behandeln, 0=OEMApp will F11 standardmaessigig behandeln
+bit2 -> 	Cancel-Taste (BigMäc)
+ 		1=OEMApp will ESC selbst behandeln, 0=OEMApp will ESC standardmaessig behandeln
+bit3 -> 	Maschinenbereichstaste
+ 		1=OEMApp will SH-F10 selbst behandeln, 0=OEMApp will SH-F10 standardmaessig behandeln
+
+BSP:	GIMMEKEYS:=15	=> OEMApp will F10,F11,ESC,SH-F10 selbst behandeln
+ 		GIMMEKEYS:=1	=> OEMApp will F10 selbst behandeln, F11,ESC,SH-F10 werden standardmaessig behandelt
+
+m = 32Bit Bitmaske, definiert, welche Taste innerhalb dieser App die Bereichsumschaltung aktivieren soll (F10 Ersatz)
+bit0-7 -> virtueller keycode der zu definierenden Bereichsumschalttaste (siehe winuser.h VK_xxx Eintraege)
+bit16  -> 1=Shift muß betaetigt sein, 0=Shift darf nicht betaetigt sein
+ 
+BSP:	ShowAppMenuKey := 65659
+ 		65659 = 0x1007B	VK_F12 = 0x7B
+ 		==> Shift-F12 löst fuer diese App. die Bereichsumschaltfunktion aus
+
+ 		VK_F1 = 0x70, VK_F1 = 0x71, ..., VK_F24 = 0x87
+
+
+* OEMFRAME.EXE, OEMFRAME.INI
+  Neue Parametriermoeglichkeiten via OEMFRAME.INI
+  nDelayInitComplete=xxx
+  Verzögern des WM_INITCOMPLETE's, desweiteren kann OEMFrame auch veranlasst werden 
+  kein INITCOMPLETE zu senden. Der OEMFrame hinterlegt jetzt 16bit- Task & WindowHandle 
+  in seinem INI-File (damit kann eine 32bitOEMApp eine 32bit Regie.dll mit 16bit reg_cmd.exe
+  nutzen)
+
+* Beim Wechseln von einer 32Bit Applikation in Maschine mittels M-Taste (Shift F10) 
+  wird der Eingabefocus jetzt an Maschine weitergereicht.
+
+* Probleme mit COMIC+INDEX falls app.ini in mehreren
+  Verzeichnissen vorhanden (Pfad des hochpriorsten Verz.
+  wurde an ALGetPrivateProfile... gegeben -> KEINE Suche
+  in den anderen Verzeichnissen						
+
+* Aenderungen fuer ShopMill (SwitchToTask2)				
+							
+
+* SYSTEM.INI
+  Beispiel fuer Mapping von Tasten auf alle unsere Spezialtasten erweitert.					
+  Kommentare fuer neue Keyboard-Treiber-Features (Map/Seq) eingefuegt.
+  Die Datei wird nur unter c:\tools\SIEMENS.ORG eingespielt, d.h. eine aktive System.ini 
+  wird nicht ueberschrieben.
+
+* winexe32.exe & winexe32.ini:
+  Statt dem alten winexec.exe bei Problemen mit INI-File winexe32.exe verwenden.
+
+Ablaufsteuerung:
+Alle neuen Applikationen werden mit einer fehlerbereinigten Ablaufsteuerung erzeugt:
+* Softkey-Highlight wird jetzt auch in der ETC-Ebene ausgefuehrt
+* Zustandswechsel mit SetState werden jetzt auch schon vor Erreichen des INIT-States ausgefuehrt.
+  Behebt das Problem der ersten Bildanwahl ueber PLC, wenn fuer die Applikation in regie.ini "Preload=True" gesetzt ist.
+  Die Bildanwahl wird jetzt ausgefuehrt.
+* Arbeitet eine Applikation mit Bildanwahl von PLC und sie wird per Bedienung in Bild 1 abgewaehlt.
+  Erfolgt die neue Bildanwahl fuer Bild 2, so blendet die Ablaufsteuerung jetzt nicht mehr das alte Bild 1 uebr Bild 2.
+
+
+Windows 95:
+* Die Windows-HW-Erkennung (Plug&Play) wird wegen der Probleme mit MPI in Zusammenhang mit 
+  automatischer Hardwareerkennung (nach einer Hardware-Erkennung wird MPI nicht mehr 
+  erkannt) umgangen.
+  Dazu wird die Datei win95\system\sysdetmg.dll umbenannt in sysdet.del. Dies hat zur Folge, 
+  dass die automatische Hardwareerkennung von Windows "leer" durchlaufen wird.
+  Der Windows-Bediener sieht zwar die Box mit dem Text:
+    Do you want Windows to search for your new Hardware?
+  und kann auch "Yes" anwaehlen. Der Fortschrittsbalken fuer die Hardwareerkennung geht bis 
+  etwa 15%, dann kommt die Meldung:
+    Windows has finished detecting Hardware, 
+    but did not find new devices on your system. 
+    To manually install a specific device, click "Next".
+  Neue Hardware kann also nur noch manuell installiert werden.
+
+* Der Bildschirm ist wieder auf 256 Farben eingestellt. Andere Einstellungen, z.B. TrueColor
+  24 Bit, koennen im Servicemode vorgenommen werden.
+
+===========================================================================================
+6.)                                  Kompatibilitaet
+===========================================================================================
+* MMC103 mit der SW 4.4.21 ist kombinierbar mit der 840D NCU Software 3.6, 3.7, 4.x, 5.1  
+  der 810D-Software 1.6, 1.7, 2.x, 3.1 der FM-NC SW 3.6, 3.7. Fuer den Betrieb mit NCU571 bzw.
+  FM-NC gelten folgende Einschraenkungen: 
+	Bei Satzsuchlauf ist die Funktion "Suchposition" nicht verfuegbar. 
+	Die Funktion "Programmsaetze", d.h. die erweiterte aktuelle Satzanzeige ist nicht verfuegbar.
+	Die Funktion "Programmkorrektur" wird nur angeboten, wenn das Teileprogramm auf einen 
+        Fehler gelaufen ist (z.B. NC-Alarm 12550) und der NCK einen Satz zur Korrektur anbietet. 
+	M:N-Konfigurationen, auch 2 MMCs an einer NCU sind nicht zulaessig.
+ 
+* Die Simulation basiert auf NCK 4.4 (2.4) und ist u.U. nicht mit Maschinendaten von NCK 5.1
+  ablauffaehig.
+* AUTOTURN 4.3 bzw. 4.4 ist ablauffaehig.
+* Es duerfen nur die "Europaeischen Sprachen" und andere Spracherweiterungen SW 4.4.14 bzw.
+  4.4.16 installiert werden. Der in einigen Sprachpaketen 4.4.16 enthaltene MMC-Patch 4.4.16 
+  darf NICHT installiert werden.
+
+  
+====================================================================
+7.)                                  Tips und Tricks
+====================================================================
+Die Voreinstellung der Technologie (Drehen / Fraesen) der Dialogprogrammierung kann
+in der Datei DPDH.INI geaendert werden. In der Section DPMAIN ist der Eintrag TECHNOLOGY
+auf =M bzw. =T zu setzen. Diese Aenderung sollte im Verzeichnis C:\USER vorgenommen werden.
+Ggf. muss auch noch die GUD7 im Verzeichnis Dialogprogrammierung/Simulationsdaten mit der
+GUD7 im Verzeichnis Definitionen abgeglichen werden.
+
+Nach erfolgreichem Abschluss der Installation von Zusatz-HW in der ISA/PCI-Erweiterungsbox 
+und sonstigen Applikationen, die Eintraege in der Win95-Registry machen, sollten alle Dateien 
+im Verzeichnis C:\TOOLS\USER.AKT in das Verzeichnis C:\TOOLS\USER.SAV kopiert werden. 
+Damit wird verhindert, dass in Fehlerfaellen das System ohne die Zusatz-HW/SW hochlaeuft.
+
+Die Dateien *.AWB und *.LST im Verzeichnis "Anwenderzyklen" duerfen nur geloescht werden, 
+wenn in der Dialogprogrammierung keine Anwenderbilder benutzt werden.
+
+Installation einer Maus:
+An einem MMC103 kann nur eine serielle Maus (an COM1) betrieben werden.
+Vorgehen zum Aktivieren der Maus:
+Hochlauf der Steuerung mit Taste "6" ins Service-Menue.
+Anwahl "4 Start Windows (Service Mode)" 
+Anwahl "2 Windows (changing environment for MMC2)"
+Datei c:\win95\system.ini mit Notepad editieren:
+In den Zeilen
+	;mouse.drv=mouse.drv
+	;mouse=*vmouse
+jeweils das ";" entfernen.
+Windows 95 mit "Shutdown" beenden.
+Abfrage "Save Environment for next MMC start (Y/N) ?" mit Y beantworten.
+Die darauf folgende Abfrage mit "2" beantworten.
+Rueckkehr ins Hauptmenue und MMC-Hochlauf mit "9".
+
+
+NC-Serien-IB: Ueberspringen von "NCK Urloeschen" :
+Ab NCK 4.3 gibt es in der Datei IBN.SYF einen Eintrag (ein Kommando) zum Urloeschen der NCK vor einer Serien-IB. 
+Mit diesem Eintrag kann es passieren, daß bei gesetztem Maschinendatum 11210 UPLOAD_MD_CHANGES_ONLY waehrend der 
+Erstellung des SIB-Archivs das Archiv wegen inkonsistentem Archivinhalt sich spaeter nicht mehr einlesen laesst, 
+so daß ein wiederholtes Einlesen des Archivs erforderlich ist.
+Sollte dieser seltene Fall eintreten, darf natuerlich die NCK nicht jedesmal urgeloescht werden, da man sonst nicht 
+weiterkommt. Deshalb gibt es fuer diesen Fall folgende Einstellmoeglichkeiten in der Datei DINO.INI:
+...
+;	options for data in/out (archives), questions and priority of COM-interfaces
+[Function]
+...
+;	1: ask before overwriting CFG_RESET.INI, 0: don't ask
+Ask_for_CFG_RESET.INI=0
+...
+Bei einer Serieninbetriebnahme mit INI-Eintrag Ask_for_CFG_RESET.INI=1 erfolgt nun bei 
+_NC_ACT\CFG_RESET.INI die Nachfrage: "Die markierte Datei existiert bereits!
+Ueberschreiben?". Damit besteht die Moeglichkeit diese Datei und damit das NCK
+Urloeschen zu ueberspringen (mit Softkey NEIN).
+
+
+BIOS-Einstellungen wieder herstellen bei Power-BIOS 2.12:
+Fuer den Fall, dass durch Aktionen bei der Inbetriebnahme Einstellungen
+des BIOS des MMC103 veraendert wurden, kann mit folgendem Vorgehen der
+Originalzustand wieder hergestellt werden:
+Im Hochlauf das BIOS-Setup anwaehlen mit Alt+Ctrl+Esc.
+Menuepunkt "Load defaults" waehlen.
+Button "Setup" waehlen (mit Taste Tab, Input)
+Zurueck mit "Exit" und "Save".
+

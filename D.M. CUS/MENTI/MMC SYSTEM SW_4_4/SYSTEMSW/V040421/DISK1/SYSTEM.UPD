@@ -1,0 +1,78 @@
+[boot]
+system.drv=system.drv
+drivers=mmsystem.dll
+user.exe=user.exe
+gdi.exe=gdi.exe
+sound.drv=mmsound.drv
+dibeng.drv=dibeng.dll
+comm.drv=comm.drv
+shell=d:\tmp\setup.exe
+taskman.exe=
+keyboard.drv=keyboard.drv
+fonts.fon=vgasys.fon
+fixedfon.fon=vgafix.fon
+oemfonts.fon=vgaoem.fon
+386Grabber=vgafull.3gr
+display.drv=pnpdrvr.drv
+;mouse.drv=mouse.drv
+*DisplayFallback=0
+
+[keyboard]
+subtype=
+type=4
+keyboard.dll=
+oemansi.bin=
+
+[boot.description]
+keyboard.typ=Standard 101/102-Key or Microsoft Natural Keyboard
+aspect=100,96,96
+display.drv=Chips and Tech. 65550 PCI
+mouse.drv=(No mouse)
+system.drv=Standard PC
+
+[386Enh]
+ebios=*ebios
+device=*vcd
+device=*vpd
+device=*int13
+keyboard=*vkd
+display=*vdd,*vflatd
+;mouse=*vmouse
+woafont=dosapp.fon
+
+[power.drv]
+
+[drivers]
+wavemapper=*.drv
+
+[iccvid.drv]
+
+[mciseq.drv]
+
+[mci]
+
+[NonWindowsApp]
+
+[vcache]
+
+[nwnp32]
+
+[MSNP32]
+
+[display]
+
+[drivers32]
+
+[Password Lists]
+KM=C:\WIN95\KM.PWL
+
+[TTFontDimenCache]
+0 12=5 12
+0 13=6 12
+0 14=7 14
+0 15=7 15
+0 16=8 16
+0 18=10 18
+0 20=10 20
+0 22=12 22
+

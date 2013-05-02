@@ -1,0 +1,251 @@
+[Globals]
+APPNAME = MMC-LNG
+LONGNAME = SINUMERIK 840D Spanish, French, Italian Languages V4.4
+INSTPATH = C:\
+WINSYSNEEDED = 45000
+OTHERNEEDED = 0
+GETDHPATH = 1
+LOGFILE = 1
+SHOWPATHFORM = 0
+DONTSHOW1PKG = 1
+EXITWIN95=1
+
+[LANGUAGES]
+French, $(FR)
+Spanish, $(SP)
+Italian, $(IT)
+
+[NeededFiles]
+1, ydhstart.arj, arj, 1, $(WINDIR)
+
+[SWPackages]
+MMC2_BASIS, MMC2 Basic System, 0, 2278886, c:\mmc2\reg_cmd.exe
+DIGI, Digitizing, 0, 3200, c:\add_on\digi.exe
+AUTOTURN, AUTOTURN, 0, 3337100, c:\add_on\wp.exe
+
+[MMC2_BASIS]
+$(FR), mmc2_fr.arj, arj, 1, $(INSTDIR)
+$(IT), mmc2_it.arj, arj, 1, $(INSTDIR)
+$(SP), mmc2_sp.arj, arj, 1, $(INSTDIR)
+$(FR), inp_fr.arj, arj, 2, $(DHPATH)
+$(IT), inp_it.arj, arj, 2, $(DHPATH)
+$(SP), inp_sp.arj, arj, 2, $(DHPATH)      
+$(FR), dh_fr.arj, arj, 2, $(DHPATH)
+$(IT), dh_it.arj, arj, 2, $(DHPATH)
+$(SP), dh_sp.arj, arj, 2, $(DHPATH)      
+$(IT), onlineit.arj, arj, 2, $(INSTDIR)
+$(SP), onlinesp.arj, arj, 2, $(INSTDIR)
+$(FR), onlinefr.arj, arj, 3, $(INSTDIR)
+
+
+[DIGI]
+$(FR), digi_fr.arj, arj, 3, $(INSTDIR)
+$(IT), digi_it.arj, arj, 3, $(INSTDIR)
+$(SP), digi_sp.arj, arj, 3, $(INSTDIR)
+
+[AUTOTURN]
+$(FR), wop_dh_f.arj, arj, 3, $(INSTDRV)\ 
+$(FR), wop_fr.arj, arj, 4, $(INSTDIR)
+$(IT), wop_it.arj, arj, 4, $(INSTDIR)
+$(SP), wop_sp.arj, arj, 4, $(INSTDIR)
+$(IT), wop_dh_i.arj, arj, 4, $(INSTDRV)\
+$(SP), wop_dh_s.arj, arj, 5, $(INSTDRV)\
+
+
+[PostInstall]
+@ECHO OFF
+if exist $(WINDIR)writeini.exe del $(WINDIR)writeini.exe
+if exist $(DHPATH)f\inp.txt $(WINDIR)ydhstart -l dh_fr.log -f -n $(DHPATH)f
+if exist $(DHPATH)e\inp.txt $(WINDIR)ydhstart -l dh_sp.log -f -n $(DHPATH)e
+if exist $(DHPATH)i\inp.txt $(WINDIR)ydhstart -l dh_it.log -f -n $(DHPATH)i
+deltree /Y $(DHPATH)f
+deltree /Y $(DHPATH)e
+deltree /Y $(DHPATH)i
+
+if "$(IT)"=="1" goto it
+goto ITLangOk
+
+:it
+find "LanguageList" $(INSTDIR)mmc2\mmc.ini > $(INSTDIR)lng.tmp
+Rem errorlevel 2 -> mmc.ini nicht vorhanden
+Rem errorlevel 1 -> String nicht vorhanden
+if errorlevel 2 goto ITUser
+if errorlevel 1 goto ITUser
+find "IT" $(INSTDIR)lng.tmp > NUL
+if errorlevel 1 goto L_ITMmc2
+REM Sprache ist bereits in LanguageList
+goto ITUser
+:L_ITMmc2
+REM Sprache ist NICHT in LanguageList 
+if exist $(INSTDIR)mmc2\mmc.ini writeini -v -a $(INSTDIR)mmc2\mmc.ini LANGUAGE "LanguageList" ", IT"
+if exist $(INSTDIR)mmc2\mmc.ini writeini -v -a $(INSTDIR)mmc2\mmc.ini LANGUAGE "FontList" ", Europe"
+if exist $(INSTDIR)mmc2\mmc.ini writeini -v -a $(INSTDIR)mmc2\mmc.ini LANGUAGE "FontListKO" ", Europe2"
+if exist $(INSTDIR)mmc2\mmc.ini writeini -v -a $(INSTDIR)mmc2\mmc.ini LANGUAGE "LBList" ", italiano"
+
+:ITUser
+find "LanguageList" $(INSTDIR)user\mmc.ini > $(INSTDIR)lng.tmp
+if errorlevel 2 goto ITadd_on
+if errorlevel 1 goto ITadd_on
+find "IT" $(INSTDIR)lng.tmp > NUL
+if errorlevel 1 goto L_ITUser
+goto ITadd_on
+:L_ITUser
+if exist $(INSTDIR)user\mmc.ini writeini -v -a $(INSTDIR)user\mmc.ini LANGUAGE "LanguageList" ", IT"
+if exist $(INSTDIR)user\mmc.ini writeini -v -a $(INSTDIR)user\mmc.ini LANGUAGE "FontList" ", Europe"
+if exist $(INSTDIR)user\mmc.ini writeini -v -a $(INSTDIR)user\mmc.ini LANGUAGE "FontListKO" ", Europe2"
+if exist $(INSTDIR)user\mmc.ini writeini -v -a $(INSTDIR)user\mmc.ini LANGUAGE "LBList" ", italiano"
+
+:ITadd_on
+find "LanguageList" $(INSTDIR)add_on\mmc.ini > $(INSTDIR)lng.tmp
+if errorlevel 2 goto IToem
+if errorlevel 1 goto IToem
+find "IT" $(INSTDIR)lng.tmp > NUL
+if errorlevel 1 goto L_ITAdd
+goto IToem
+:L_ITAdd
+if exist $(INSTDIR)add_on\mmc.ini writeini -v -a $(INSTDIR)add_on\mmc.ini LANGUAGE "LanguageList" ", IT"
+if exist $(INSTDIR)add_on\mmc.ini writeini -v -a $(INSTDIR)add_on\mmc.ini LANGUAGE "FontList" ", Europe"
+if exist $(INSTDIR)add_on\mmc.ini writeini -v -a $(INSTDIR)add_on\mmc.ini LANGUAGE "FontListKO" ", Europe2"
+if exist $(INSTDIR)add_on\mmc.ini writeini -v -a $(INSTDIR)add_on\mmc.ini LANGUAGE "LBList" ", italiano"
+
+:IToem
+find "LanguageList" $(INSTDIR)oem\mmc.ini > $(INSTDIR)lng.tmp
+if errorlevel 2 goto ITLangOk
+if errorlevel 1 goto ITLangOk
+find "IT" $(INSTDIR)lng.tmp > NUL
+if errorlevel 1 goto L_ITOem
+goto ITLangOk
+:L_ITOem
+if exist $(INSTDIR)oem\mmc.ini writeini -v -a $(INSTDIR)oem\mmc.ini LANGUAGE "LanguageList" ", IT"
+if exist $(INSTDIR)oem\mmc.ini writeini -v -a $(INSTDIR)oem\mmc.ini LANGUAGE "FontList" ", Europe"
+if exist $(INSTDIR)oem\mmc.ini writeini -v -a $(INSTDIR)oem\mmc.ini LANGUAGE "FontListKO" ", Europe2"
+if exist $(INSTDIR)oem\mmc.ini writeini -v -a $(INSTDIR)oem\mmc.ini LANGUAGE "LBList" ", italiano"
+
+:ITLangOk
+if "$(FR)"=="1" goto fr
+goto FRLangOk
+
+:fr
+find "LanguageList" $(INSTDIR)mmc2\mmc.ini > $(INSTDIR)lng.tmp
+Rem errorlevel 2 -> mmc.ini nicht vorhanden
+Rem errorlevel 1 -> String nicht vorhanden
+if errorlevel 2 goto FRUser
+if errorlevel 1 goto FRUser
+find "FR" $(INSTDIR)lng.tmp > NUL
+if errorlevel 1 goto L_FRMmc2
+REM Sprache ist bereits in LanguageList
+goto FRUser
+:L_FRMmc2
+REM Sprache ist NICHT in LanguageList 
+if exist $(INSTDIR)mmc2\mmc.ini writeini -v -a $(INSTDIR)mmc2\mmc.ini LANGUAGE "LanguageList" ", FR"
+if exist $(INSTDIR)mmc2\mmc.ini writeini -v -a $(INSTDIR)mmc2\mmc.ini LANGUAGE "FontList" ", Europe"
+if exist $(INSTDIR)mmc2\mmc.ini writeini -v -a $(INSTDIR)mmc2\mmc.ini LANGUAGE "FontListKO" ", Europe2"
+if exist $(INSTDIR)mmc2\mmc.ini writeini -v -a $(INSTDIR)mmc2\mmc.ini LANGUAGE "LBList" ", francais"
+
+:FRUser
+find "LanguageList" $(INSTDIR)user\mmc.ini > $(INSTDIR)lng.tmp
+if errorlevel 2 goto FRadd_on
+if errorlevel 1 goto FRadd_on
+find "FR" $(INSTDIR)lng.tmp > NUL
+if errorlevel 1 goto L_FRUser
+goto FRadd_on
+:L_FRUser
+if exist $(INSTDIR)user\mmc.ini writeini -v -a $(INSTDIR)user\mmc.ini LANGUAGE "LanguageList" ", FR"
+if exist $(INSTDIR)user\mmc.ini writeini -v -a $(INSTDIR)user\mmc.ini LANGUAGE "FontList" ", Europe"
+if exist $(INSTDIR)user\mmc.ini writeini -v -a $(INSTDIR)user\mmc.ini LANGUAGE "FontListKO" ", Europe2"
+if exist $(INSTDIR)user\mmc.ini writeini -v -a $(INSTDIR)user\mmc.ini LANGUAGE "LBList" ", francais"
+
+:FRadd_on
+find "LanguageList" $(INSTDIR)add_on\mmc.ini > $(INSTDIR)lng.tmp
+if errorlevel 2 goto FRoem
+if errorlevel 1 goto FRoem
+find "FR" $(INSTDIR)lng.tmp > NUL
+if errorlevel 1 goto L_FRAdd
+goto FRoem
+:L_FRAdd
+if exist $(INSTDIR)add_on\mmc.ini writeini -v -a $(INSTDIR)add_on\mmc.ini LANGUAGE "LanguageList" ", FR"
+if exist $(INSTDIR)add_on\mmc.ini writeini -v -a $(INSTDIR)add_on\mmc.ini LANGUAGE "FontList" ", Europe"
+if exist $(INSTDIR)add_on\mmc.ini writeini -v -a $(INSTDIR)add_on\mmc.ini LANGUAGE "FontListKO" ", Europe2"
+if exist $(INSTDIR)add_on\mmc.ini writeini -v -a $(INSTDIR)add_on\mmc.ini LANGUAGE "LBList" ", francais"
+
+:FRoem
+find "LanguageList" $(INSTDIR)oem\mmc.ini > $(INSTDIR)lng.tmp
+if errorlevel 2 goto FRLangOk
+if errorlevel 1 goto FRLangOk
+find "FR" $(INSTDIR)lng.tmp > NUL
+if errorlevel 1 goto L_FROem
+goto FRLangOk
+:L_FROem
+if exist $(INSTDIR)oem\mmc.ini writeini -v -a $(INSTDIR)oem\mmc.ini LANGUAGE "LanguageList" ", FR"
+if exist $(INSTDIR)oem\mmc.ini writeini -v -a $(INSTDIR)oem\mmc.ini LANGUAGE "FontList" ", Europe"
+if exist $(INSTDIR)oem\mmc.ini writeini -v -a $(INSTDIR)oem\mmc.ini LANGUAGE "FontListKO" ", Europe2"
+if exist $(INSTDIR)oem\mmc.ini writeini -v -a $(INSTDIR)oem\mmc.ini LANGUAGE "LBList" ", francais"
+
+:FRLangOk
+if "$(SP)"=="1" goto sp
+goto LangOk
+
+:sp
+find "LanguageList" $(INSTDIR)mmc2\mmc.ini > $(INSTDIR)lng.tmp
+Rem errorlevel 2 -> mmc.ini nicht vorhanden
+Rem errorlevel 1 -> String nicht vorhanden
+if errorlevel 2 goto SPUser
+if errorlevel 1 goto SPUser
+find "SP" $(INSTDIR)lng.tmp > NUL
+if errorlevel 1 goto L_SPMmc2
+REM Sprache ist bereits in LanguageList
+goto SPUser
+:L_SPMmc2
+REM Sprache ist NICHT in LanguageList 
+if exist $(INSTDIR)mmc2\mmc.ini writeini -v -a $(INSTDIR)mmc2\mmc.ini LANGUAGE "LanguageList" ", SP"
+if exist $(INSTDIR)mmc2\mmc.ini writeini -v -a $(INSTDIR)mmc2\mmc.ini LANGUAGE "FontList" ", Europe"
+if exist $(INSTDIR)mmc2\mmc.ini writeini -v -a $(INSTDIR)mmc2\mmc.ini LANGUAGE "FontListKO" ", Europe2"
+if exist $(INSTDIR)mmc2\mmc.ini writeini -v -a $(INSTDIR)mmc2\mmc.ini LANGUAGE "LBList" ", espanol"
+
+:SPUser
+find "LanguageList" $(INSTDIR)user\mmc.ini > $(INSTDIR)lng.tmp
+if errorlevel 2 goto SPadd_on
+if errorlevel 1 goto SPadd_on
+find "SP" $(INSTDIR)lng.tmp > NUL
+if errorlevel 1 goto L_SPUser
+goto SPadd_on
+:L_SPUser
+if exist $(INSTDIR)user\mmc.ini writeini -v -a $(INSTDIR)user\mmc.ini LANGUAGE "LanguageList" ", SP"
+if exist $(INSTDIR)user\mmc.ini writeini -v -a $(INSTDIR)user\mmc.ini LANGUAGE "FontList" ", Europe"
+if exist $(INSTDIR)user\mmc.ini writeini -v -a $(INSTDIR)user\mmc.ini LANGUAGE "FontListKO" ", Europe2"
+if exist $(INSTDIR)user\mmc.ini writeini -v -a $(INSTDIR)user\mmc.ini LANGUAGE "LBList" ", espanol"
+
+:SPadd_on
+find "LanguageList" $(INSTDIR)add_on\mmc.ini > $(INSTDIR)lng.tmp
+if errorlevel 2 goto SPoem
+if errorlevel 1 goto SPoem
+find "SP" $(INSTDIR)lng.tmp > NUL
+if errorlevel 1 goto L_SPAdd
+goto SPoem
+:L_SPAdd
+if exist $(INSTDIR)add_on\mmc.ini writeini -v -a $(INSTDIR)add_on\mmc.ini LANGUAGE "LanguageList" ", SP"
+if exist $(INSTDIR)add_on\mmc.ini writeini -v -a $(INSTDIR)add_on\mmc.ini LANGUAGE "FontList" ", Europe"
+if exist $(INSTDIR)add_on\mmc.ini writeini -v -a $(INSTDIR)add_on\mmc.ini LANGUAGE "FontListKO" ", Europe2"
+if exist $(INSTDIR)add_on\mmc.ini writeini -v -a $(INSTDIR)add_on\mmc.ini LANGUAGE "LBList" ", espanol"
+
+:SPoem
+find "LanguageList" $(INSTDIR)oem\mmc.ini > $(INSTDIR)lng.tmp
+if errorlevel 2 goto LangOk
+if errorlevel 1 goto LangOk
+find "SP" $(INSTDIR)lng.tmp > NUL
+if errorlevel 1 goto L_SPOem
+goto LangOk
+:L_SPOem
+if exist $(INSTDIR)oem\mmc.ini writeini -v -a $(INSTDIR)oem\mmc.ini LANGUAGE "LanguageList" ", SP"
+if exist $(INSTDIR)oem\mmc.ini writeini -v -a $(INSTDIR)oem\mmc.ini LANGUAGE "FontList" ", Europe"
+if exist $(INSTDIR)oem\mmc.ini writeini -v -a $(INSTDIR)oem\mmc.ini LANGUAGE "FontListKO" ", Europe2"
+if exist $(INSTDIR)oem\mmc.ini writeini -v -a $(INSTDIR)oem\mmc.ini LANGUAGE "LBList" ", espanol"
+
+:LangOk
+del $(INSTDIR)lng.tmp
+
+if NOT exist $(INSTDRV)\ADD_ON\WP.EXE goto nowop
+if exist $(INSTDIR)mmc2\language\re_fr.ini writeini $(INSTDIR)mmc2\language\re_fr.ini HSoftkeyTexts "HSK6  " " \"Autoturn\""
+if exist $(INSTDIR)mmc2\language\re_it.ini writeini $(INSTDIR)mmc2\language\re_it.ini HSoftkeyTexts "HSK6  " " \"Autoturn\""
+if exist $(INSTDIR)mmc2\language\re_sp.ini writeini $(INSTDIR)mmc2\language\re_sp.ini HSoftkeyTexts "HSK6  " " \"Autoturn\""
+:nowop

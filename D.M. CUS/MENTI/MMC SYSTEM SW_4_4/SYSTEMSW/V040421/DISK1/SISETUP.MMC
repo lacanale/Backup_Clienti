@@ -1,0 +1,90 @@
+[Globals]
+APPNAME = MMC103
+LONGNAME = Man Machine Communication 103
+INSTPATH = c:\
+WINSYSNEEDED = 300000
+OTHERNEEDED = 40000000
+LOGFILE = 1
+SHOWPATHFORM = 0
+NOCONFIRM = 1
+ASKSIMUL = 1
+EXITWIN95 = 1
+
+[NeededFiles]
+1, ydhstart.arj, arj, 1, $(WINDIR)
+1, mmc2.arj, arj, 1, $(INSTDIR)
+1, mmc2.a01, arj, 2, $(INSTDIR)
+1, mmc2.a02, arj, 3, $(INSTDIR)
+1, mmc2.a03, arj, 4, $(INSTDIR)
+1, mmc2.a04, arj, 5, $(INSTDIR)
+1, mmc2.a05, arj, 6, $(INSTDIR)
+1, mmc2.a06, arj, 7, $(INSTDIR)
+1, mmc2.a07, arj, 8, $(INSTDIR)
+1, mmc2.a08, arj, 9, $(INSTDIR)
+1, dhupd.arj, arj, 9, C:\DH\
+1, win95new.arj, arj, 9, $(INSTDIR)
+1, tools.arj, arj, 10, C:\
+1, syslock.arj, arj, 10, C:\
+1, step7drv.arj,arj,16,$(WINDIR)
+
+[WriteIni]
+$(INSTDIR)mmc2\mmc.ini
+$(INSTDIR)mmc2\mmc2conf.ini
+
+[mmc.ini]
+1, Directories, TempDir, D:\TMP
+1, Directories, AlDir, D:\ALTMP
+1, Global, ProductCode, MMC
+
+[mmc2conf.ini]
+1, ExitWindow, ExitWindow, true
+
+[PostInstall]
+@ECHO OFF
+ECHO Updating Systemfiles .....
+start /w %TMP%\mmcupd.exe /Q /R:N
+start /w %TMP%\miscupd.exe /Q /R:N
+start /w %TMP%\mfcupd.exe /Q /R:N
+start /w %TMP%\datavb16.exe /Q /R:N
+start /w %TMP%\vb40ocx.exe /Q /R:N
+ECHO Setting up STEP7 Drivers .....
+start /w %TMP%\step7inf.exe /Q /R:N
+start /w REGEDIT /S $(WINDIR)TEMP\SINUMPIX.REG
+start /w REGEDIT /S $(WINDIR)TEMP\S7ODEFAX.REG
+start /w REGEDIT /S $(WINDIR)TEMP\S7OTMPIX.REG
+start /w REGEDIT /S $(WINDIR)TEMP\S7OWINCX.REG
+DEL $(WINDIR)TEMP\*.REG
+ECHO Setting up Virusscan .....
+IF NOT EXIST C:\SYSLOCK.EXE GOTO VirEnd
+IF EXIST C:\SYSLOCK.DAT ATTRIB +S +H +R C:\SYSLOCK.DAT
+FIND /I "SYSLOCK.EXE" C:\CONFIG.SYS > NUL
+IF ERRORLEVEL 1 GOTO InsConfig
+goto VirEnd
+:InsConfig
+ECHO DEVICE=C:\SYSLOCK.EXE> %TMP%\CONFIG.NEW
+TYPE C:\CONFIG.SYS >> %TMP%\CONFIG.NEW
+COPY %TMP%\CONFIG.NEW C:\CONFIG.SYS
+:VirEnd
+writeini c:\msdos.sys Options BootWarn 0
+if exist C:\DH\inp.txt $(WINDIR)ydhstart -l C:\dh_upd.log -f -n C:\DH
+if not exist $(WINDIR)S7DPMPI.INI copy $(INSTDIR)mmc2\S7DPMPI.INI $(WINDIR)S7DPMPI.INI
+if "$(TURN)"=="1" writeini $(INSTDIR)mmc2\dpdh.ini DPMAIN TECHNOLOGY t 
+if "$(TURN)"=="0" copy $(INSTDIR)mmc2\dp\gud7mill.def $(INSTDIR)dh\dp.dir\sim.dir\gud7.def
+if not exist C:\TOOLS\WINDOWS.AKT md C:\TOOLS\WINDOWS.AKT
+if not exist C:\TOOLS\WINDOWS.AKT\SYSTEM.DAT copy C:\TOOLS\WINDOWS.ORG\*.* C:\TOOLS\WINDOWS.AKT
+echo READY > C:\TOOLS\WINDOWS.AKT\READY.GUN
+if not exist C:\TOOLS\USER.AKT md C:\TOOLS\USER.AKT
+if not exist C:\TOOLS\USER.AKT\SYSTEM.DAT copy C:\TOOLS\SIEMENS.ORG\*.* C:\TOOLS\USER.AKT
+echo READY > C:\TOOLS\USER.AKT\READY.GUN
+COPY C:\TOOLS\PVERSION.RC C:\TOOLS\PVERSION.BAT
+md C:\ADD_ON
+md C:\USER
+md C:\OEM
+if exist c:\tools\user.akt\system.ini writeini c:\tools\user.akt\system.ini 386Enh MinPagingFileSize  "92160" 
+if exist c:\tools\user.akt\system.ini writeini c:\tools\user.akt\system.ini 386Enh MaxPagingFileSize "92160" 
+if exist c:\tools\user.sav\system.ini writeini c:\tools\user.sav\system.ini 386Enh MinPagingFileSize  "92160" 
+if exist c:\tools\user.sav\system.ini writeini c:\tools\user.sav\system.ini 386Enh MaxPagingFileSize "92160" 
+if not exist C:\BOOTLOG.MMC echo Initial File > C:\BOOTLOG.MMC
+if exist $(WINDIR)WINSTART.BAT del $(WINDIR)WINSTART.BAT
+if exist C:\DH\inp.txt del C:\DH\inp.txt
+echo "changed Registry with new entries" > c:\tools\mmcsav.tmp

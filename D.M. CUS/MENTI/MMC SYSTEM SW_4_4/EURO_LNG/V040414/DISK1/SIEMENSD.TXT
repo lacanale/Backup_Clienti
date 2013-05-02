@@ -1,0 +1,303 @@
+=========================================================================
+Installation der Sprachen spanisch, franzoesisch, italienisch fuer SW 4.4:
+=========================================================================
+Dieses Sprachpaket enthaelt die Sprachen Franzoesisch, Italienisch und Spanisch 
+fuer folgende Software-Produkte:
+	MMC103 SW4.4 (Basissystem)
+	Autoturn SW 4.4
+	Digitalisieren SW 4.4
+	IBN-Tool  fuer PG/PC SW 4.4
+Das Sprachpaket besteht aus 5 Disketten und ist nur fuer MMC-SW 4.4 geeignet.
+
+ACHTUNG:
+Bei der Installation wird der DOS/Windows - Befehl 'find.exe' verwendet. Dieser Befehl
+ist nicht kompatibel mit dem gleichnamigen MKS-Toolkit-Befehl 'find.exe'! 
+Falls Sie das MKS-Toolkit installiert haben, muss das MKS-Verzeichnis im 'PATH'
+nach den Windows-Verzeichnissen stehen.
+
+1.) Installation ueber Floppy-Laufwerk des MMC103
+
+2.) Installation ueber PC/PG direkt auf MMC103
+
+3.) Installation ueber Festplatte von PC/PG auf MMC103
+
+4.) Installation auf PC
+
+
+====================================================================
+1.) INSTALLATION  UEBER FLOPPY-LAUFWERK DES MMC103
+====================================================================
+Waehrend des MMC-Hochlaufs (nach Einschalten der Steuerung) bei 
+anstehender Meldung "Starting Windows 95 ..." betaetigen Sie einmal kurz 
+die Taste 6 auf der Bedientafeltastatur.
+Nach Durchlauf der Scandisk-Pruefung wird folgendes Menue angezeigt:
+
+PLEASE SELECT:
+1       Install/Update MMC System
+2       Install/Update Standard Software
+3       DOS Shell
+4       Start Windows (Service Mode)
+5       MMC System Check
+6       Reboot System (Warmboot)
+7       Backup/Restore with VALITEK Streamer
+8       Start PC Link
+9       End (Load MMC)
+
+Your Choice [1,2,3,4,5,6,7,8,9] ?
+
+Betaetigen Sie Taste 1.
+Das System fordert die Eingabe eines Passwortes an mit:
+
+passwd:
+	Geben Sie eins der Passworte der Stufe 1 oder 2
+	fuer Hersteller oder Service ein.
+
+
+Danach Anwahl "1  Install from Floppy Disk" 
+
+Die Installation erfolgt nun gefuehrt durch die SINUMERIK.
+Das im Setup angebotene Auswahlmenue laesst sich am besten mit
+der Taste TAB bedienen.
+
+Nach Entnahme der letzten Diskette und Betaetigen einer Taste wird 
+ein MMC-Hochlauf ausgeloest.
+
+
+====================================================================
+2.) INSTALLATION  UEBER PC/PG DIREKT AUF MMC103
+====================================================================
+
+STEUERUNG AUSSCHALTEN !
+
+Verbinden Sie mit dem Uebertragungskabel(V24 Kabel) die serielle 
+Schnittstelle COM1/COM2 vom PC/PG mit der Schnittstelle X6 (COM1) 
+oder X7 (COM2) oder X8 (LPT1) des MMC. Die Erkennung der 
+Schnittstelle erfolgt automatisch.
+
+Legen Sie die Installationsdiskette 1 am PC/PG ein. 
+Waehlen Sie das Disketten-Laufwerk aus und rufen Sie das Installationsprogramm 
+DOSSETUP.BAT von Diskette auf.
+
+Am PC/PG wird der folgende Text ausgegeben:
+
+You have two Choices:
+
+1.      Install directly from floppy to MMC101/102 (single 
+        installation Only some batchfiles will be copied to the 
+        selected diskdrive)
+2.      Install once to local Harddisk and then multiple to 
+        MMC101/102 (You will need about xx MB free space on your 
+        harddisk!)
+Continue with installation (y/n)? [n]
+
+Weiter mit Return
+Das System meldet sich mit:
+Please check the installation parameters:
+Installation from drive      : A:
+Copy files to disk           : N                  
+		N =>Installation von Diskette direkt auf MMC103
+		Y =>Kopieren der Disketten auf HD des PC um Installation von HD auf MMC 	
+			durchzufuehren)
+Copy (batch) files to directory : C:\MMC102      (nicht aenderbar)
+		Name des Verzeichnisses in das die Disketten kopiert werden
+
+Would you like to change anything (y/n)? [n]
+
+Weiter mit Return 
+Das System meldet:
+
+Now we are ready for transfering the files to the MMC101/102 disk
+First you have to set this computer into "Server Mode" 
+(by hitting "y")
+Then reboot MMC101/102 and press key "6" at the 
+"Starting Windows 95 ..."prompt. Then select "Install/Update MMC System"
+and"Install via Serial/Parallel Line".Now you are ready for 
+transfering ....
+Transfer the installation files to MMC101/102 (y/n)? [n]
+
+WICHTIG:Wenn sich Ihr PC/PG in diesem Zustand befindet MUSS sich die
+Sinumerik im ausgeschalteten Zustand befinden (Sollte die Sinumerik
+eingeschaltet sein,so schalten Sie sie jetzt aus)
+
+PC/PG in den "Server Mode" schalten (Taste "Y" und "Return" betaetigen).
+
+Wenn die Verbindung zum MMC hergestellt ist, Sinumerik EINSCHALTEN,
+Waehrend des MMC-Hochlaufs bei anstehender Meldung "Starting Windows 95 ..."
+betaetigen Sie einmal kurz die Taste 6 auf der Bedientafeltastatur.
+Es wird folgendes Menue angezeigt:
+
+PLEASE SELECT:
+1       Install/Update MMC System
+2       Install/Update Standard Software
+3       DOS Shell
+4       Start Windows (Service Mode)
+5       MMC System Check
+6       Reboot System (Warmboot)
+7       Backup/Restore with VALITEK Streamer
+8       Start PC Link
+9       End (Load MMC)
+
+Your Choice [1,2,3,4,5,6,7,8,9] ?
+
+Betaetigen Sie Taste 1.
+Das System fordert die Eingabe eines Passwortes an mit:
+
+passwd:
+	Geben Sie eins der Passworte der Stufe 1 - 2
+	fuer Hersteller oder Service ein.
+
+Danach Anwahl "Install via Serial/Parallel Line"(Taste "2").
+
+Sinumerik meldet:
+
+Installation of MMC101/102 Spanish, French, Italian Languages V4.4
+
+Die Installation erfolgt nun gefuehrt von der Sinumerik aus.
+
+Nach Entnahme der letzten Diskette und Betaetigen einer Taste wird 
+ein MMC-Hochlauf ausgeloest.
+
+Beenden Sie den PC/PG-Servermode mit Alt + F4.
+
+
+====================================================================
+3.) INSTALLATION UEBER FESTPLATTE VON PC/PG AUF MMC103
+====================================================================
+
+STEUERUNG AUSSCHALTEN !
+
+Verbinden Sie mit einem seriellen Uebertragungskabel (V.24-Kabel) die serielle 
+Schnittstelle COM1/COM2 vom PC/PG mit der Schnittstelle X6 (COM1) 
+oder X7 (COM2) oder mit einem InterLink-Kabel (Parallelkabel) die Parallel-Schnittstelle 
+des PC/PG mit X8 (LPT1) des MMC. Die Erkennung der Schnittstelle erfolgt automatisch.
+
+Legen Sie die Installationsdiskette 1 am PC/PG ein. 
+Waehlen Sie das Disketten-Laufwerk aus und rufen Sie das Installationsprogramm 
+DOSSETUP.BAT von Diskette auf.
+
+Am PC/PG wird der folgende Text ausgegeben:
+
+You have two Choices:
+
+1.      Install directly from floppy to MMC101/102 (single 
+        installation Only some batchfiles will be copied to the 
+        selected diskdrive)
+2.      Install once to local Harddisk and then multiple to 
+        MMC101/102 (You will need about xx MB free space on your 
+        harddisk!)
+Continue with installation (y/n)? [n]
+
+Weiter mit Return
+Das System meldet sich mit:
+Please check the installation parameters:
+Installation from drive      : A:
+Copy files to disk           : N                  
+		N =>Installation von Diskette direkt auf MMC103
+		Y =>Kopieren der Disketten auf HD des PC um Installation von HD auf MMC 	
+			durchzufuehren)
+Copy (batch) files to directory : C:\MMC102      (nicht aenderbar)
+		Name des Verzeichnisses in das die Disketten kopiert werden.
+
+Would you like to change anything (y/n)? [n]
+
+Eingabe "Y" und "Return"
+Aendern von "Copy files to disk" auf "Y" (2.Abfrage "2" und "Return")
+
+Erneute Abfrage:
+
+Please check the installation parameters:
+Installation from drive         :      A:
+Copy files to disk              :      Y
+Copy (batch) files to directory : C:\MMC102 
+
+Would you like to change anything (y/n)? [n]
+
+Taste "Return"
+
+Die Disketten 1 - 5 werden nun in das Verzeichnis C:\MMC102  kopiert.
+Nach der letzten Diskette erfolgt folgende Meldung:
+
+Now we are ready for transfering the files to the MMC101/102 disk
+First you have to set this computer into "Server Mode" 
+(by hitting "y")
+Then reboot MMC101/102 and press key "6" at the 
+"Starting Windows 95 ..."prompt. Then select "Install/Update MMC System"
+and"Install via Serial/Parallel Line".Now you are ready for 
+transfering ....
+Transfer the installation files to MMC101/102 (y/n)? [n]
+
+WICHTIG:Wenn sich Ihr PC/PG in diesem Zustand befindet MUSS sich die
+Sinumerik im ausgeschalteten Zustand befinden (Sollte die Sinumerik
+eingeschaltet sein,so schalten Sie sie jetzt aus)
+
+PC/PG in den "Server Mode" schalten (Taste "Y" und "Return"
+betaetigen).
+
+Wenn die Verbindung zum MMC hergestellt ist, Sinumerik EINSCHALTEN,
+Waehrend des MMC-Hochlaufs bei anstehender Meldung "Starting Windows 95 ..."
+betaetigen Sie einmal kurz die Taste 6 auf der Bedientafeltastatur.
+Es wird folgendes Menue angezeigt:
+
+PLEASE SELECT:
+1       Install/Update MMC System
+2       Install/Update Standard Software
+3       DOS Shell
+4       Start Windows (Service Mode)
+5       MMC System Check
+6       Reboot System (Warmboot)
+7       Backup/Restore with VALITEK Streamer
+8       Start PC Link
+9       End (Load MMC)
+
+Your Choice [1,2,3,4,5,6,7,8,9] ?
+
+Betaetigen Sie Taste 1.
+Das System fordert die Eingabe eines Passwortes an mit:
+
+passwd:
+	Geben Sie eins der Passworte der Stufe 1 - 2
+	fuer Hersteller oder Service ein.
+
+Danach Anwahl "Install via Serial/Parallel Line" (Taste "2").
+
+Sinumerik meldet:
+
+Installation of MMC101/102 Spanish, French, Italian Languages V4.4
+
+Die Installation erfolgt nun gefuehrt von der Sinumerik aus.
+
+Nach Entnahme der letzten Diskette und Betaetigen einer Taste wird 
+ein MMC-Hochlauf ausgeloest.
+
+Beenden Sie den PC/PG-Servermode mit Alt + F4.
+
+
+====================================================================
+4.) INSTALLATION AUF PC
+====================================================================
+
+Sind eine oder mehrere der Software-Produkte
+	MMC103 SW4.4 (Basissystem)
+	Autoturn SW 4.4
+	Digitalisieren SW 4.4
+	IBN-Tool  fuer PG/PC SW 4.4
+auf einem PC bzw. PG installiert, so koennen auch dafuer diese europaeischen Sprachen Installiert
+werden.
+
+Zur Installation sollten auf dem PC/PG keine Applikationen ausser dem Explorer gestartet sein.
+
+1. Diskette ins Floppy-Laufwerk einlegen und ueber den Explorer SETUP.EXE von dieser
+Diskette starten.
+Es wird dann ueber Menues angeboten, die gewuenschte(n) Sprache(n) fuer die gewuenschte(n)
+Software-Produkte auszuwaehlen. 
+Sind die o.g. Software-Produkte nicht im selben Verzeichnis installiert (z.B. MMC103 in 
+C:\MMC103 und IBN-Tool in C:\IBN95), so muss die Installation mehrfach, aber jeweils 
+nur fuer das betreffende Produkt, durchgefuehrt werden.
+
+
+
+
+
+
+
+
