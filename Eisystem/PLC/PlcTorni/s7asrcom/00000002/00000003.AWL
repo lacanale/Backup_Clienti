@@ -1,0 +1,2521 @@
+//**************************************************************************
+//
+//   NST_UDT.AWL
+//
+//   PLC user interface assignment (810D/840D/840Di/FM-NC)
+//
+//   UDT  2 AL/MSG-UDT
+//   UDT 10 NCK-UDT
+//   UDT 11 BAG-UDT
+//   UDT 19 MMC-UDT
+//   UDT 21 Channel UDT
+//   UDT 31 Axis/Spindle UDT
+//   UDT 77 Mcp
+//   UDT 1002 new Alarms
+//
+//**************************************************************************
+
+
+//********** FM/BM-UDT **********
+
+TYPE UDT 2
+//**************************************************************************
+
+
+  STRUCT    
+   C1 : STRUCT  //From Channel 1
+    FDD_5100xx : ARRAY  [0 .. 15 ] OF //Feed disable A.no.51000-510015
+    BOOL ;  
+    FDD_RID_5101xx : ARRAY  [0 .. 31 ] OF //Feed and read-in disable A.no.510100-510131
+    BOOL ;  
+    RID_5102xx : ARRAY  [0 .. 31 ] OF //Read-in disable A.no.510200-510231
+    BOOL ;  
+    NCSD_5103xx : ARRAY  [0 .. 15 ] OF //NC start disable A.no.510300-510315
+    BOOL ;  
+    FdStop_1_5111xx : ARRAY  [0 .. 15 ] OF //Feed stop GEOaxis 1 A.no.511100-511115
+    BOOL ;  
+    FdStop_2_5112xx : ARRAY  [0 .. 15 ] OF //Feed stop GEOaxis 2 A.no.511200-511215
+    BOOL ;  
+    FdStop_3_5113xx : ARRAY  [0 .. 15 ] OF //Feed stop GEOaxis 3 A.no.511300-511315
+    BOOL ;  
+   END_STRUCT ; 
+   C2 : STRUCT  //From Channel 2
+    FDD_5200xx : ARRAY  [0 .. 15 ] OF //Feed disable A.no.520000-520015
+    BOOL ;  
+    FDD_RID_5201xx : ARRAY  [0 .. 31 ] OF //Feed and read-in disable A.no.520100-520131
+    BOOL ;  
+    RID_5202xx : ARRAY  [0 .. 31 ] OF //Read-in disable A.no.520200-520231
+    BOOL ;  
+    NCSD_5203xx : ARRAY  [0 .. 15 ] OF //NC start disable A.no.520300-520315
+    BOOL ;  
+    FdStop_1_5211xx : ARRAY  [0 .. 15 ] OF //Feed stop GEOaxis 1 A.no.521100-521115
+    BOOL ;  
+    FdStop_2_5212xx : ARRAY  [0 .. 15 ] OF //Feed stop GEOaxis 2 A.no.521200-521215
+    BOOL ;  
+    FdStop_3_5213xx : ARRAY  [0 .. 15 ] OF //Feed stop GEOaxis 3 A.no.521300-521315
+    BOOL ;  
+   END_STRUCT ; 
+   C3 : STRUCT  //From Channel 3
+    FDD_5300xx : ARRAY  [0 .. 15 ] OF //Feed disable A.no.530000-530015
+    BOOL ;  
+    FDD_RID_5301xx : ARRAY  [0 .. 31 ] OF //Feed and read-in disable A.no.530100-530131
+    BOOL ;  
+    RID_5302xx : ARRAY  [0 .. 31 ] OF //Read-in disable A.no.530200-530231
+    BOOL ;  
+    NCSD_5303xx : ARRAY  [0 .. 15 ] OF //NC start disable A.no.530300-530315
+    BOOL ;  
+    FdStop_1_5311xx : ARRAY  [0 .. 15 ] OF //Feed stop GEOaxis 1 A.no.531100-531115
+    BOOL ;  
+    FdStop_2_5312xx : ARRAY  [0 .. 15 ] OF //Feed stop GEOaxis 2 A.no.531200-531215
+    BOOL ;  
+    FdStop_3_5313xx : ARRAY  [0 .. 15 ] OF //Feed stop GEOaxis 3 A.no.531300-531315
+    BOOL ;  
+   END_STRUCT ; 
+   C4 : STRUCT  //From Channel 4
+    FDD_5400xx : ARRAY  [0 .. 15 ] OF //Feed disable A.no.540000-540015
+    BOOL ;  
+    FDD_RID_5401xx : ARRAY  [0 .. 31 ] OF //Feed and read-in disable A.no.540100-540131
+    BOOL ;  
+    RID_5402xx : ARRAY  [0 .. 31 ] OF //Read-in disable A.no.540200-540231
+    BOOL ;  
+    NCSD_5403xx : ARRAY  [0 .. 15 ] OF //NC start disable A.no.540300-540315
+    BOOL ;  
+    FdStop_1_5411xx : ARRAY  [0 .. 15 ] OF //Feed stop GEOaxis 1 A.no.541100-541115
+    BOOL ;  
+    FdStop_2_5412xx : ARRAY  [0 .. 15 ] OF //Feed stop GEOaxis 2 A.no.541200-541215
+    BOOL ;  
+    FdStop_3_5413xx : ARRAY  [0 .. 15 ] OF //Feed stop GEOaxis 3 A.no.541300-541315
+    BOOL ;  
+   END_STRUCT ; 
+   C5 : STRUCT  //From Channel 5
+    FDD_5500xx : ARRAY  [0 .. 15 ] OF //Feed disable A.no.550000-550015
+    BOOL ;  
+    FDD_RID_5501xx : ARRAY  [0 .. 31 ] OF //Feed and read-in disable A.no.550100-550131
+    BOOL ;  
+    RID_5502xx : ARRAY  [0 .. 31 ] OF //Read-in disable A.no.550200-550231
+    BOOL ;  
+    NCSD_5503xx : ARRAY  [0 .. 15 ] OF //NC start disable A.no.550300-550315
+    BOOL ;  
+    FdStop_1_5511xx : ARRAY  [0 .. 15 ] OF //Feed stop GEOaxis 1 A.no.551100-551115
+    BOOL ;  
+    FdStop_2_5512xx : ARRAY  [0 .. 15 ] OF //Feed stop GEOaxis 2 A.no.551200-551215
+    BOOL ;  
+    FdStop_3_5513xx : ARRAY  [0 .. 15 ] OF //Feed stop GEOaxis 3 A.no.551300-551315
+    BOOL ;  
+   END_STRUCT ; 
+   C6 : STRUCT  //From Channel 6
+    FDD_5600xx : ARRAY  [0 .. 15 ] OF //Feed disable A.no.560000-560015
+    BOOL ;  
+    FDD_RID_5601xx : ARRAY  [0 .. 31 ] OF //Feed and read-in disable A.no.560100-560131
+    BOOL ;  
+    RID_5602xx : ARRAY  [0 .. 31 ] OF //Read-in disable A.no.560200-560231
+    BOOL ;  
+    NCSD_5603xx : ARRAY  [0 .. 15 ] OF //NC start disable A.no.560300-560315
+    BOOL ;  
+    FdStop_1_5611xx : ARRAY  [0 .. 15 ] OF //Feed stop GEOaxis 1 A.no.561100-561115
+    BOOL ;  
+    FdStop_2_5612xx : ARRAY  [0 .. 15 ] OF //Feed stop GEOaxis 2 A.no.561200-561215
+    BOOL ;  
+    FdStop_3_5613xx : ARRAY  [0 .. 15 ] OF //Feed stop GEOaxis 3 A.no.561300-561315
+    BOOL ;  
+   END_STRUCT ; 
+   C7 : STRUCT  //From Channel 7
+    FDD_5700xx : ARRAY  [0 .. 15 ] OF //Feed disable A.no.570000-570015
+    BOOL ;  
+    FDD_RID_5701xx : ARRAY  [0 .. 31 ] OF //Feed and read-in disable A.no.570100-570131
+    BOOL ;  
+    RID_5702xx : ARRAY  [0 .. 31 ] OF //Read-in disable A.no.570200-570231
+    BOOL ;  
+    NCSD_5703xx : ARRAY  [0 .. 15 ] OF //NC start disable A.no.570300-570315
+    BOOL ;  
+    FdStop_1_5711xx : ARRAY  [0 .. 15 ] OF //Feed stop GEOaxis 1 A.no.571100-511115
+    BOOL ;  
+    FdStop_2_5712xx : ARRAY  [0 .. 15 ] OF //Feed stop GEOaxis 2 A.no.571200-511215
+    BOOL ;  
+    FdStop_3_5713xx : ARRAY  [0 .. 15 ] OF //Feed stop GEOaxis 3 A.no.571300-511315
+    BOOL ;  
+   END_STRUCT ; 
+   C8 : STRUCT  //From Channel 8
+    FDD_5800xx : ARRAY  [0 .. 15 ] OF //Feed disable A.no.580000-580015
+    BOOL ;  
+    FDD_RID_5801xx : ARRAY  [0 .. 31 ] OF //Feed and read-in disable A.no.580100-510131
+    BOOL ;  
+    RID_5802xx : ARRAY  [0 .. 31 ] OF //Read-in disable A.no.580200-580231
+    BOOL ;  
+    NCSD_5803xx : ARRAY  [0 .. 15 ] OF //NC start disable A.no.580300-580315
+    BOOL ;  
+    FdStop_1_5811xx : ARRAY  [0 .. 15 ] OF //Feed stop GEOaxis 1 A.no.581100-511115
+    BOOL ;  
+    FdStop_2_5812xx : ARRAY  [0 .. 15 ] OF //Feed stop GEOaxis 2 A.no.581200-511215
+    BOOL ;  
+    FdStop_3_5813xx : ARRAY  [0 .. 15 ] OF //Feed stop GEOaxis 3 A.no.581300-511315
+    BOOL ;  
+   END_STRUCT ; 
+
+    _1FdStop6001xx : ARRAY  [0 .. 15 ] OF //Feed stop axis/spindle 1
+    BOOL ;  
+    _2FdStop6002xx : ARRAY  [0 .. 15 ] OF //Feed stop axis/spindle 2
+    BOOL ;  
+    _3FdStop6003xx : ARRAY  [0 .. 15 ] OF //Feed stop axis/spindle 3
+    BOOL ;  
+    _4FdStop6004xx : ARRAY  [0 .. 15 ] OF //Feed stop axis/spindle 4
+    BOOL ;  
+    _5FdStop6005xx : ARRAY  [0 .. 15 ] OF //Feed stop axis/spindle 5
+    BOOL ;  
+    _6FdStop6006xx : ARRAY  [0 .. 15 ] OF //Feed stop axis/spindle 6
+    BOOL ;  
+    _7FdStop6007xx : ARRAY  [0 .. 15 ] OF //Feed stop axis/spindle 7
+    BOOL ;  
+    _8FdStop6008xx : ARRAY  [0 .. 15 ] OF //Feed stop axis/spindle 8
+    BOOL ;  
+    _9FdStop6009xx : ARRAY  [0 .. 15 ] OF //Feed stop axis/spindle 9
+    BOOL ;  
+   _10FdStop6010xx : ARRAY  [0 .. 15 ] OF //Feed stop axis/spindle 10
+    BOOL ;  
+   _11FdStop6011xx : ARRAY  [0 .. 15 ] OF //Feed stop axis/spindle 11
+    BOOL ;  
+   _12FdStop6012xx : ARRAY  [0 .. 15 ] OF //Feed stop axis/spindle 12
+    BOOL ;  
+   _13FdStop6013xx : ARRAY  [0 .. 15 ] OF //Feed stop axis/spindle 13
+    BOOL ;  
+   _14FdStop6014xx : ARRAY  [0 .. 15 ] OF //Feed stop axis/spindle 14
+    BOOL ;  
+   _15FdStop6015xx : ARRAY  [0 .. 15 ] OF //Feed stop axis/spindle 15
+    BOOL ;  
+   _16FdStop6016xx : ARRAY  [0 .. 15 ] OF //Feed stop axis/spindle 16
+    BOOL ;  
+   _17FdStop6017xx : ARRAY  [0 .. 15 ] OF //Feed stop axis/spindle 17
+    BOOL ;  
+   _18FdStop6018xx : ARRAY  [0 .. 15 ] OF //Feed stop axis/spindle 18
+    BOOL ;  
+ 
+   A7000xx : ARRAY  [0 .. 63 ] OF //Alarm 700000-700063 (user area 0)
+   BOOL ;   
+   A7001xx : ARRAY  [0 .. 63 ] OF //Alarm 700100-700163 (user area 1)
+   BOOL ;   
+   A7002xx : ARRAY  [0 .. 63 ] OF //Alarm 700200-700263 (user area 2)
+   BOOL ;   
+   A7003xx : ARRAY  [0 .. 63 ] OF //Alarm 700300-700363 (user area 3)
+   BOOL ;   
+   A7004xx : ARRAY  [0 .. 63 ] OF //Alarm 700400-700463 (user area 4)
+   BOOL ;   
+   A7005xx : ARRAY  [0 .. 63 ] OF //Alarm 700500-700563 (user area 5
+   BOOL ;   
+   A7006xx : ARRAY  [0 .. 63 ] OF //Alarm 700600-700663 (user area 6)
+   BOOL ;   
+   A7007xx : ARRAY  [0 .. 63 ] OF //Alarm 700700-700763 (user area 7)
+   BOOL ;   
+   A7008xx : ARRAY  [0 .. 63 ] OF //Alarm 700800-700863 (user area 8)
+   BOOL ;   
+   A7009xx : ARRAY  [0 .. 63 ] OF //Alarm 700900-700963 (user area 9)
+   BOOL ;   
+  END_STRUCT ;  
+END_TYPE
+
+
+//********** NCK-UDT **********
+
+TYPE UDT 10
+//**************************************************************************
+
+
+  STRUCT    
+   A_Disabl_Inp1 : BOOL ;   //Disable digi. NCK input 1
+   A_Disabl_Inp2 : BOOL ;   //Disable digi. NCK input 2
+   A_Disabl_Inp3 : BOOL ;   //Disable digi. NCK input 3
+   A_Disabl_Inp4 : BOOL ;   //Disable digi. NCK input 4
+   A_Disabl_Inp5 : BOOL ;   //Disable digi. NCK input 5
+   A_Disabl_Inp6 : BOOL ;   //Disable digi. NCK input 6
+   A_Disabl_Inp7 : BOOL ;   //Disable digi. NCK input 7
+   A_Disabl_Inp8 : BOOL ;   //Disable digi. NCK input 8 
+   A_Set_Inp1 : BOOL ;  //Set digi. NCK input 1
+   A_Set_Inp2 : BOOL ;  //Set digi. NCK input 2
+   A_Set_Inp3 : BOOL ;  //Set digi. NCK input 3
+   A_Set_Inp4 : BOOL ;  //Set digi. NCK input 4
+   A_Set_Inp5 : BOOL ;  //Set digi. NCK input 5
+   A_Set_Inp6 : BOOL ;  //Set digi. NCK input 6
+   A_Set_Inp7 : BOOL ;  //Set digi. NCK input 7
+   A_Set_Inp8 : BOOL ;  //Set digi. NCK input 8
+   f0_f15 : ARRAY  [0 .. 15 ] OF BOOL ; //Reserved
+   A_Disabl_Out1 : BOOL ;   //Disable digi. NCK output 1
+   A_Disabl_Out2 : BOOL ;   //Disable digi. NCK output 2
+   A_Disabl_Out3 : BOOL ;   //Disable digi. NCK output 3
+   A_Disabl_Out4 : BOOL ;   //Disable digi. NCK output 4
+   A_Disabl_Out5 : BOOL ;   //Disable digi. NCK output 5
+   A_Disabl_Out6 : BOOL ;   //Disable digi. NCK output 6
+   A_Disabl_Out7 : BOOL ;   //Disable digi. NCK output 7
+   A_Disabl_Out8 : BOOL ;   //Disable digi. NCK output 8 
+   A_OvMask_Out1 : BOOL ;   //Overwrite mask of digi. output 1
+   A_OvMask_Out2 : BOOL ;   //Overwrite mask of digi. output 2
+   A_OvMask_Out3 : BOOL ;   //Overwrite mask of digi. output 3
+   A_OvMask_Out4 : BOOL ;   //Overwrite mask of digi. output 4
+   A_OvMask_Out5 : BOOL ;   //Overwrite mask of digi. output 5
+   A_OvMask_Out6 : BOOL ;   //Overwrite mask of digi. output 6
+   A_OvMask_Out7 : BOOL ;   //Overwrite mask of digi. output 7
+   A_OvMask_Out8 : BOOL ;   //Overwrite mask of digi. output 8
+   A_Set_Out1 : BOOL ;  //Set digi. NCK output 1
+   A_Set_Out2 : BOOL ;  //Set digi. NCK output 2
+   A_Set_Out3 : BOOL ;  //Set digi. NCK output 3
+   A_Set_Out4 : BOOL ;  //Set digi. NCK output 4
+   A_Set_Out5 : BOOL ;  //Set digi. NCK output 5
+   A_Set_Out6 : BOOL ;  //Set digi. NCK output 6
+   A_Set_Out7 : BOOL ;  //Set digi. NCK output 7
+   A_Set_Out8 : BOOL ;  //Set digi. NCK output 8
+   A_InMask_Out1 : BOOL ;   //Input mask of digi. output 1
+   A_InMask_Out2 : BOOL ;   //Input mask of digi. output 2
+   A_InMask_Out3 : BOOL ;   //Input mask of digi. output 3
+   A_InMask_Out4 : BOOL ;   //Input mask of digi. output 4
+   A_InMask_Out5 : BOOL ;   //Input mask of digi. output 5
+   A_InMask_Out6 : BOOL ;   //Input mask of digi. output 6
+   A_InMask_Out7 : BOOL ;   //Input mask of digi. output 7
+   A_InMask_Out8 : BOOL ;   //Input mask of digi. output 8 
+   MCP1AxisTbl : ARRAY  [1 .. 22 ] OF BYTE := B#16#1,B#16#2,B#16#3,B#16#4,B#16#5,B#16#6,B#16#7,
+     B#16#8,B#16#9,B#16#0A,B#16#0B,B#16#0C ;    //Axis No. Table MCP1
+   MCP1MaxAxis : Word ; //max. of Axisno, must be smaller or equal gp_par.MaxAxis
+   MCP2AxisTbl : ARRAY  [1 .. 22 ] OF BYTE := B#16#1,B#16#2,B#16#3,B#16#4,B#16#5,B#16#6,B#16#7,
+     B#16#8,B#16#9,B#16#0A,B#16#0B,B#16#0C ;    //Axis No. Table MCP2
+   MCP2MaxAxis : Word ; //max. of Axisno, must be smaller or equal gp_par.MaxAxis
+   f56_0 : BOOL ;   
+   A_EMERGENCY : BOOL ; //Emergency stop                        
+   A_EMERGENCY_Ackn : BOOL ;    //Acknowledge emergency stop                      
+   f56_3 : BOOL ;   
+   A_Keyswitch0 : BOOL ;    //Keyswitch position 0
+   A_Keyswitch1 : BOOL ;    //Keyswitch position 1
+   A_Keyswitch2 : BOOL ;    //Keyswitch position 2
+   A_Keyswitch3 : BOOL ;    //Keyswitch position 3
+   A_IncInModeGroup: BOOL ; //INC inputs in mode group area active
+   f57_1 : BOOL ;   
+   f57_2 : BOOL ;   
+   A_PCshutdown : BOOL ;    //PC shutdown 840Di
+   f57_4 : BOOL ;   
+   f57_5 : BOOL ;   
+   f57_6 : BOOL ;   
+   f57_7 : BOOL ;   
+   A_CollCheckOff: BOOL ; //Collisions Check Off
+   f58_1 : BOOL ;   
+   f58_2 : BOOL ;   
+   f58_3 : BOOL ;
+   f58_4 : BOOL ;   
+   f58_5 : BOOL ;   
+   f58_6 : BOOL ;   
+   f58_7 : BOOL ;   
+   f59 : BYTE ; 
+   E_ActVal_In1 : BOOL ;    //Actual value of digi. NCK input 1
+   E_ActVal_In2 : BOOL ;    //Actual value of digi. NCK input 2
+   E_ActVal_In3 : BOOL ;    //Actual value of digi. NCK input 3
+   E_ActVal_In4 : BOOL ;    //Actual value of digi. NCK input 4
+   f60_4 : BOOL ;   
+   f60_5 : BOOL ;   
+   f60_6 : BOOL ;   
+   f60_7 : BOOL ;   
+   f61_f62 : ARRAY  [61 .. 61 ] OF BYTE ;   
+   E_Setpoint_Out1 : BOOL ; //Setpoint of digi. NCK output 1
+   E_Setpoint_Out2 : BOOL ; //Setpoint of digi. NCK output 2
+   E_Setpoint_Out3 : BOOL ; //Setpoint of digi. NCK output 3
+   E_Setpoint_Out4 : BOOL ; //Setpoint of digi. NCK output 4
+   E_Setpoint_Out5 : BOOL ; //Setpoint of digi. NCK output 5
+   E_Setpoint_Out6 : BOOL ; //Setpoint of digi. NCK output 6
+   E_Setpoint_Out7 : BOOL ; //Setpoint of digi. NCK output 7
+   E_Setpoint_Out8 : BOOL ; //Setpoint of digi. NCK output 8
+   f65_f67 : ARRAY  [65 .. 66 ] OF BYTE ;   
+   E_HW1_moved : BYTE ; //Handwheel 1 moved
+   E_HW2_moved : BYTE ; //Handwheel 2 moved
+   E_HW3_moved : BYTE ; //Handwheel 3 moved
+   E_CounterInchMetr : BYTE ;   //Modification counter inch/metric system of units
+
+   E_MCP1AxisValid :Bool; //from HT6
+   E_MCP1WCS :Bool; //from HT6
+   f72_2: Bool;
+   f72_3: Bool;
+   f72_4: Bool;
+   f72_5: Bool;
+   f72_6: Bool;
+   E_MCP1AxKeyDisp: Bool; //Mcp1 Axis Key Displayed
+   E_MCP2AxisValid :Bool; //from HT6
+   E_MCP2WCS :Bool; //from HT6
+   f73_2: Bool;
+   f73_3: Bool;
+   f73_4: Bool;
+   f73_5: Bool;
+   f73_6: Bool;
+   E_MCP2AxKeyDisp: Bool; //Mcp2 Axis Key Displayed
+   MCP1AxisFromHMI : ARRAY [1..6] Of BYTE; //Axistable from HT6
+   MCP2AxisFromHMI : ARRAY [1..6] Of BYTE; //Axistable from HT6
+   res86 : Word;
+   res88 : Byte;
+   res89 : Byte;
+   epsToPlc: Byte;
+   epsFromPlc: Byte;
+   MpiDpOk: BOOL; //Slaves on MPI/DP Ok
+   DpOk: BOOL; //Slaves on DP Ok
+   f92_2 : BOOL ;   
+   f92_3 : BOOL ;   
+   f92_4 : BOOL ;   
+   f92_5 : BOOL ;   
+   f92_6 : BOOL ;   
+   f92_7 : BOOL ;   
+   f93: BYTE ;   
+   f94: BYTE ;   
+   f95: BYTE ;   
+   E_LanguageID : BYTE ;   // LanguageID on HMI
+   E_Chan_HW1_A : BOOL ;    //Channel number for handwheel1 A
+   E_Chan_HW1_B : BOOL ;    //Channel number for handwheel1 B
+   E_Chan_HW1_C : BOOL ;    //Channel number for handwheel1 C
+   E_Chan_HW1_D : BOOL ;    //Channel number for handwheel1 D
+   f97_4 : BOOL ;   
+   f97_5 : BOOL ;   
+   f97_6 : BOOL ;   
+   f97_7 : BOOL ;   
+   E_Chan_HW2_A : BOOL ;    //Channel number for handwheel2 A
+   E_Chan_HW2_B : BOOL ;    //Channel number for handwheel2 B
+   E_Chan_HW2_C : BOOL ;    //Channel number for handwheel2 C
+   E_Chan_HW2_D : BOOL ;    //Channel number for handwheel2 D
+   f98_4 : BOOL ;   
+   f98_5 : BOOL ;   
+   f98_6 : BOOL ;   
+   f98_7 : BOOL ;   
+   E_Chan_HW3_A : BOOL ;    //Channel number for handwheel3 A
+   E_Chan_HW3_B : BOOL ;    //Channel number for handwheel3 B
+   E_Chan_HW3_C : BOOL ;    //Channel number for handwheel3 C
+   E_Chan_HW3_D : BOOL ;    //Channel number for handwheel3 D
+   f99_4 : BOOL ;   
+   f99_5 : BOOL ;   
+   f99_6 : BOOL ;   
+   f99_7 : BOOL ;   
+   E_Ax_A_HW1 : BOOL ;  //Axis number for handwheel1 A
+   E_Ax_B_HW1 : BOOL ;  //Axis number for handwheel1 B
+   E_Ax_C_HW1 : BOOL ;  //Axis number for handwheel1 C
+   E_Ax_D_HW1 : BOOL ;  //Axis number for handwheel1 D
+   E_Ax_E_HW1 : BOOL ;  //Axis number for handwheel1 E
+   E_CHW_sel1 : BOOL ;  //Contour handwheel selected
+   E_HW_sel1 : BOOL ;   //Handwheel selected
+   E_Mach_Ax1 : BOOL ;  //Machine axis
+   E_Ax_A_HW2 : BOOL ;  //Axis number for handwheel2 A
+   E_Ax_B_HW2 : BOOL ;  //Axis number for handwheel2 B
+   E_Ax_C_HW2 : BOOL ;  //Axis number for handwheel2 C
+   E_Ax_D_HW2 : BOOL ;  //Axis number for handwheel2 D
+   E_Ax_E_HW2 : BOOL ;  //Axis number for handwheel2 E
+   E_CHW_sel2 : BOOL ;  //Contour handwheel selected
+   E_HW_sel2 : BOOL ;   //Handwheel selected
+   E_Mach_Ax2 : BOOL ;  //Machine axis
+   E_Ax_A_HW3 : BOOL ;  //Axis number for handwheel3 A
+   E_Ax_B_HW3 : BOOL ;  //Axis number for handwheel3 B
+   E_Ax_C_HW3 : BOOL ;  //Axis number for handwheel3 C
+   E_Ax_D_HW3 : BOOL ;  //Axis number for handwheel3 D
+   E_Ax_E_HW3 : BOOL ;  //Axis number for handwheel3 E
+   E_CHW_sel3 : BOOL ;  //Contour handwheel selected
+   E_HW_sel3 : BOOL ;   //Handwheel selected
+   E_Mach_Ax3 : BOOL ;  //Machine axis
+   E_RemDiag : BOOL ;   //Remote Diagnostic
+   f103_1 : BOOL ;  
+   f103_2 : BOOL ;  
+   f103_3 : BOOL ;  
+   f103_4 : BOOL ;  
+   E_ATready : BOOL ;   //AT-box ready
+   E_MMCTemp : BOOL ;   //MMC temperature limit 
+   E_MMCBatt : BOOL ;   //MMC 101/102 battery alarm 
+   E_MCP1ready : BOOL ; //MCP1 ready;
+   E_MCP2ready : BOOL ; //MCP2 ready;
+   E_BHGready : BOOL ;  //BHG ready;
+   f104_3 : BOOL ;  
+   f104_4 : BOOL ;  
+   f104_5 : BOOL ;  
+   E_FirstOB1 : BOOL ;  //This bit is on for the first OB1 cycle
+   E_NCKready : BOOL ;  //NCK CPU ready
+   E_CancelToolCmd : BOOL; //Terminate canceled tool command
+   f105_1   : BOOL;
+   f105_2   : BOOL;
+   f105_3   : BOOL;
+   f105_4   : BOOL;
+   f105_5   : BOOL;
+   f105_6   : BOOL;
+   f105_7   : BOOL;
+   E_CollCheckOff : BOOL ;  //CollisionsCheck Off
+   E_EMSTOP : BOOL ;    //EMERGENCY STOP active
+   f106_2 : BOOL ;  
+   f106_3 : BOOL ;  
+   f106_4 : BOOL ;  
+   f106_5 : BOOL ;  
+   f106_6 : BOOL ;  
+   f106_7 : BOOL ;  
+   E_InspProbe1 : BOOL ;    //Inspection probe 1 actuated
+   E_InspProbe2 : BOOL ;    //Inspection probe 2 actuated
+   f107_2 : BOOL ;  
+   f107_3 : BOOL ;  
+   f107_4 : BOOL ;  
+   f107_5 : BOOL ;  
+   E_NCU_LinkActive : BOOL ;    //NCU link active
+   E_SystemInchDim : BOOL ; //System inch dimension
+   f108_0 : BOOL ;  
+   E_MMC2Ready : BOOL ;     //MMC2-CPU ready
+   E_MMCMPIready : BOOL ;   //MMC1-CPU on MPI ready
+   E_MMCBTSSready : BOOL ;  //MMC1-CPU on BTSS ready
+   f108_4 : BOOL ;  
+   E_DrivesInCylOp : BOOL ; //Drives in cylindric operation
+   E_611Dready : BOOL ; //611D ready
+   E_NCready : BOOL ;   
+   E_NCKalarm : BOOL ;  //NCK alarm present
+   f109_1 : BOOL ;  
+   f109_2 : BOOL ;  
+   f109_3 : BOOL ;  
+   A_PC_OSfault : BOOL ;    //PC operating system fault, 840Di
+   E_HTempAlarm : BOOL ;    //Heat sink temperature alarm NCU 573
+   E_ATempAlarm : BOOL ;    //Air temperature alarm
+   E_BattAlarm : BOOL ; //NCK battery alarm
+   E_SWCamMinus : ARRAY  [0 .. 31 ] OF BOOL ;   //Software cams minus [0..31]
+   E_SWCamPlus : ARRAY  [0 .. 31 ] OF BOOL ;    //Software cams plus [0..31]
+   f118_f121 : ARRAY  [0 .. 3 ] OF BYTE ;   
+   A_Disabl_Inp9 : BOOL ;   //Disable digi. NCK input 9
+   A_Disabl_Inp10 : BOOL ;  //Disable digi. NCK input 10
+   A_Disabl_Inp11 : BOOL ;  //Disable digi. NCK input 11
+   A_Disabl_Inp12 : BOOL ;  //Disable digi. NCK input 12
+   A_Disabl_Inp13 : BOOL ;  //Disable digi. NCK input 13
+   A_Disabl_Inp14 : BOOL ;  //Disable digi. NCK input 14
+   A_Disabl_Inp15 : BOOL ;  //Disable digi. NCK input 15
+   A_Disabl_Inp16 : BOOL ;  //Disable digi. NCK input 16
+   A_Set_Inp9 : BOOL ;  //Set digi. NCK input 9
+   A_Set_Inp10 : BOOL ; //Set digi. NCK input 10
+   A_Set_Inp11 : BOOL ; //Set digi. NCK input 11
+   A_Set_Inp12 : BOOL ; //Set digi. NCK input 12
+   A_Set_Inp13 : BOOL ; //Set digi. NCK input 13
+   A_Set_Inp14 : BOOL ; //Set digi. NCK input 14
+   A_Set_Inp15 : BOOL ; //Set digi. NCK input 15
+   A_Set_Inp16 : BOOL ; //Set digi. NCK input 16
+   A_Disabl_Inp17 : BOOL ;  //Disable digi. NCK input 17
+   A_Disabl_Inp18 : BOOL ;  //Disable digi. NCK input 18
+   A_Disabl_Inp19 : BOOL ;  //Disable digi. NCK input 19
+   A_Disabl_Inp20 : BOOL ;  //Disable digi. NCK input 20
+   A_Disabl_Inp21 : BOOL ;  //Disable digi. NCK input 21
+   A_Disabl_Inp22 : BOOL ;  //Disable digi. NCK input 22
+   A_Disabl_Inp23 : BOOL ;  //Disable digi. NCK input 23
+   A_Disabl_Inp24 : BOOL ;  //Disable digi. NCK input 24
+   A_Set_Inp17 : BOOL ; //Set digi. NCK input 17
+   A_Set_Inp18 : BOOL ; //Set digi. NCK input 18
+   A_Set_Inp19 : BOOL ; //Set digi. NCK input 19
+   A_Set_Inp20 : BOOL ; //Set digi. NCK input 20
+   A_Set_Inp21 : BOOL ; //Set digi. NCK input 21
+   A_Set_Inp22 : BOOL ; //Set digi. NCK input 22
+   A_Set_Inp23 : BOOL ; //Set digi. NCK input 23
+   A_Set_Inp24 : BOOL ; //Set digi. NCK input 24
+   A_Disabl_Inp25 : BOOL ;  //Disable digi. NCK input 25
+   A_Disabl_Inp26 : BOOL ;  //Disable digi. NCK input 26
+   A_Disabl_Inp27 : BOOL ;  //Disable digi. NCK input 27
+   A_Disabl_Inp28 : BOOL ;  //Disable digi. NCK input 28
+   A_Disabl_Inp29 : BOOL ;  //Disable digi. NCK input 29
+   A_Disabl_Inp30 : BOOL ;  //Disable digi. NCK input 30
+   A_Disabl_Inp31 : BOOL ;  //Disable digi. NCK input 31
+   A_Disabl_Inp32 : BOOL ;  //Disable digi. NCK input 32
+   A_Set_Inp25 : BOOL ; //Set digi. NCK input 25
+   A_Set_Inp26 : BOOL ; //Set digi. NCK input 26
+   A_Set_Inp27 : BOOL ; //Set digi. NCK input 27
+   A_Set_Inp28 : BOOL ; //Set digi. NCK input 28
+   A_Set_Inp29 : BOOL ; //Set digi. NCK input 29
+   A_Set_Inp30 : BOOL ; //Set digi. NCK input 30
+   A_Set_Inp31 : BOOL ; //Set digi. NCK input 31
+   A_Set_Inp32 : BOOL ; //Set digi. NCK input 32
+   A_Disabl_Inp33 : BOOL ;  //Disable digi. NCK input 33
+   A_Disabl_Inp34 : BOOL ;  //Disable digi. NCK input 34
+   A_Disabl_Inp35 : BOOL ;  //Disable digi. NCK input 35
+   A_Disabl_Inp36 : BOOL ;  //Disable digi. NCK input 36
+   A_Disabl_Inp37 : BOOL ;  //Disable digi. NCK input 37
+   A_Disabl_Inp38 : BOOL ;  //Disable digi. NCK input 38
+   A_Disabl_Inp39 : BOOL ;  //Disable digi. NCK input 39
+   A_Disabl_Inp40 : BOOL ;  //Disable digi. NCK input 40
+   A_Set_Inp33 : BOOL ; //Set digi. NCK input 33
+   A_Set_Inp34 : BOOL ; //Set digi. NCK input 34
+   A_Set_Inp35 : BOOL ; //Set digi. NCK input 35
+   A_Set_Inp36 : BOOL ; //Set digi. NCK input 36
+   A_Set_Inp37 : BOOL ; //Set digi. NCK input 37
+   A_Set_Inp38 : BOOL ; //Set digi. NCK input 38
+   A_Set_Inp39 : BOOL ; //Set digi. NCK input 39
+   A_Set_Inp40 : BOOL ; //Set digi. NCK input 40
+   A_Disabl_Out9 : BOOL ;   //Disable digi. NCK output 9
+   A_Disabl_Out10 : BOOL ;  //Disable digi. NCK output 10
+   A_Disabl_Out11 : BOOL ;  //Disable digi. NCK output 11 
+   A_Disabl_Out12 : BOOL ;  //Disable digi. NCK output 12
+   A_Disabl_Out13 : BOOL ;  //Disable digi. NCK output 13 
+   A_Disabl_Out14 : BOOL ;  //Disable digi. NCK output 14 
+   A_Disabl_Out15 : BOOL ;  //Disable digi. NCK output 15 
+   A_Disabl_Out16 : BOOL ;  //Disable digi. NCK output 16 
+   A_OvMask_Out9 : BOOL ;   //Overwrite mask of digi. output 9
+   A_OvMask_Out10 : BOOL ;  //Overwrite mask of digi. output 10
+   A_OvMask_Out11 : BOOL ;  //Overwrite mask of digi. output 11
+   A_OvMask_Out12 : BOOL ;  //Overwrite mask of digi. output 12
+   A_OvMask_Out13 : BOOL ;  //Overwrite mask of digi. output 13
+   A_OvMask_Out14 : BOOL ;  //Overwrite mask of digi. output 14
+   A_OvMask_Out15 : BOOL ;  //Overwrite mask of digi. output 15
+   A_OvMask_Out16 : BOOL ;  //Overwrite mask of digi. output 16
+   A_Setval_Out9 : BOOL ;   //Set value digi. NCK output 9
+   A_Setval_Out10 : BOOL ;  //Set value digi. NCK output 10
+   A_Setval_Out11 : BOOL ;  //Set value digi. NCK output 11
+   A_Setval_Out12 : BOOL ;  //Set value digi. NCK output 12
+   A_Setval_Out13 : BOOL ;  //Set value digi. NCK output 13
+   A_Setval_Out14 : BOOL ;  //Set value digi. NCK output 14
+   A_Setval_Out15 : BOOL ;  //Set value digi. NCK output 15
+   A_Setval_Out16 : BOOL ;  //Set value digi. NCK output 16
+   A_InMask_Out9 : BOOL ;   //Input mask of digi. output 9
+   A_InMask_Out10 : BOOL ;  //Input mask of digi. output 10
+   A_InMask_Out11 : BOOL ;  //Input mask of digi. output 11
+   A_InMask_Out12 : BOOL ;  //Input mask of digi. output 12
+   A_InMask_Out13 : BOOL ;  //Input mask of digi. output 13
+   A_InMask_Out14 : BOOL ;  //Input mask of digi. output 14
+   A_InMask_Out15 : BOOL ;  //Input mask of digi. output 15
+   A_InMask_Out16 : BOOL ;  //Input mask of digi. output 16
+   A_Disabl_Out17 : BOOL ;  //Disable digi. NCK output 17
+   A_Disabl_Out18 : BOOL ;  //Disable digi. NCK output 18
+   A_Disabl_Out19 : BOOL ;  //Disable digi. NCK output 19 
+   A_Disabl_Out20 : BOOL ;  //Disable digi. NCK output 20
+   A_Disabl_Out21 : BOOL ;  //Disable digi. NCK output 21 
+   A_Disabl_Out22 : BOOL ;  //Disable digi. NCK output 22 
+   A_Disabl_Out23 : BOOL ;  //Disable digi. NCK output 23 
+   A_Disabl_Out24 : BOOL ;  //Disable digi. NCK output 24 
+   A_OvMask_Out17 : BOOL ;  //Overwrite mask of digi. output 17
+   A_OvMask_Out18 : BOOL ;  //Overwrite mask of digi. output 18
+   A_OvMask_Out19 : BOOL ;  //Overwrite mask of digi. output 19
+   A_OvMask_Out20 : BOOL ;  //Overwrite mask of digi. output 20
+   A_OvMask_Out21 : BOOL ;  //Overwrite mask of digi. output 21
+   A_OvMask_Out22 : BOOL ;  //Overwrite mask of digi. output 22
+   A_OvMask_Out23 : BOOL ;  //Overwrite mask of digi. output 23
+   A_OvMask_Out24 : BOOL ;  //Overwrite mask of digi. output 24
+   A_Setval_Out17 : BOOL ;  //Set value digi. NCK output 17
+   A_Setval_Out18 : BOOL ;  //Set value digi. NCK output 18
+   A_Setval_Out19 : BOOL ;  //Set value digi. NCK output 19
+   A_Setval_Out20 : BOOL ;  //Set value digi. NCK output 20
+   A_Setval_Out21 : BOOL ;  //Set value digi. NCK output 21
+   A_Setval_Out22 : BOOL ;  //Set value digi. NCK output 22
+   A_Setval_Out23 : BOOL ;  //Set value digi. NCK output 23
+   A_Setval_Out24 : BOOL ;  //Set value digi. NCK output 24
+   A_InMask_Out17 : BOOL ;  //Input mask of digi. output 17
+   A_InMask_Out18 : BOOL ;  //Input mask of digi. output 18
+   A_InMask_Out19 : BOOL ;  //Input mask of digi. output 19
+   A_InMask_Out20 : BOOL ;  //Input mask of digi. output 20
+   A_InMask_Out21 : BOOL ;  //Input mask of digi. output 21
+   A_InMask_Out22 : BOOL ;  //Input mask of digi. output 22
+   A_InMask_Out23 : BOOL ;  //Input mask of digi. output 23
+   A_InMask_Out24 : BOOL ;  //Input mask of digi. output 24
+   A_Disabl_Out25 : BOOL ;  //Disable digi. NCK output 25
+   A_Disabl_Out26 : BOOL ;  //Disable digi. NCK output 26
+   A_Disabl_Out27 : BOOL ;  //Disable digi. NCK output 27 
+   A_Disabl_Out28 : BOOL ;  //Disable digi. NCK output 28
+   A_Disabl_Out29 : BOOL ;  //Disable digi. NCK output 29 
+   A_Disabl_Out30 : BOOL ;  //Disable digi. NCK output 30 
+   A_Disabl_Out31 : BOOL ;  //Disable digi. NCK output 31 
+   A_Disabl_Out32 : BOOL ;  //Disable digi. NCK output 32 
+   A_OvMask_Out25 : BOOL ;  //Overwrite mask of digi. output 25
+   A_OvMask_Out26 : BOOL ;  //Overwrite mask of digi. output 26
+   A_OvMask_Out27 : BOOL ;  //Overwrite mask of digi. output 27
+   A_OvMask_Out28 : BOOL ;  //Overwrite mask of digi. output 28
+   A_OvMask_Out29 : BOOL ;  //Overwrite mask of digi. output 29
+   A_OvMask_Out30 : BOOL ;  //Overwrite mask of digi. output 30
+   A_OvMask_Out31 : BOOL ;  //Overwrite mask of digi. output 31
+   A_OvMask_Out32 : BOOL ;  //Overwrite mask of digi. output 32
+   A_Setval_Out25 : BOOL ;  //Set value digi. NCK output 25
+   A_Setval_Out26 : BOOL ;  //Set value digi. NCK output 26
+   A_Setval_Out27 : BOOL ;  //Set value digi. NCK output 27
+   A_Setval_Out28 : BOOL ;  //Set value digi. NCK output 28
+   A_Setval_Out29 : BOOL ;  //Set value digi. NCK output 29
+   A_Setval_Out30 : BOOL ;  //Set value digi. NCK output 30
+   A_Setval_Out31 : BOOL ;  //Set value digi. NCK output 31
+   A_Setval_Out32 : BOOL ;  //Set value digi. NCK output 32
+   A_InMask_Out25 : BOOL ;  //Input mask of digi. output 25
+   A_InMask_Out26 : BOOL ;  //Input mask of digi. output 26
+   A_InMask_Out27 : BOOL ;  //Input mask of digi. output 27
+   A_InMask_Out28 : BOOL ;  //Input mask of digi. output 28
+   A_InMask_Out29 : BOOL ;  //Input mask of digi. output 29
+   A_InMask_Out30 : BOOL ;  //Input mask of digi. output 30
+   A_InMask_Out31 : BOOL ;  //Input mask of digi. output 31
+   A_InMask_Out32 : BOOL ;  //Input mask of digi. output 32
+   A_Disabl_Out33 : BOOL ;  //Disable digi. NCK output 33
+   A_Disabl_Out34 : BOOL ;  //Disable digi. NCK output 34
+   A_Disabl_Out35 : BOOL ;  //Disable digi. NCK output 35 
+   A_Disabl_Out36 : BOOL ;  //Disable digi. NCK output 36
+   A_Disabl_Out37 : BOOL ;  //Disable digi. NCK output 37 
+   A_Disabl_Out38 : BOOL ;  //Disable digi. NCK output 38 
+   A_Disabl_Out39 : BOOL ;  //Disable digi. NCK output 39 
+   A_Disabl_Out40 : BOOL ;  //Disable digi. NCK output 40 
+   A_OvMask_Out33 : BOOL ;  //Overwrite mask of digi. output 33
+   A_OvMask_Out34 : BOOL ;  //Overwrite mask of digi. output 34
+   A_OvMask_Out35 : BOOL ;  //Overwrite mask of digi. output 35
+   A_OvMask_Out36 : BOOL ;  //Overwrite mask of digi. output 36
+   A_OvMask_Out37 : BOOL ;  //Overwrite mask of digi. output 37
+   A_OvMask_Out38 : BOOL ;  //Overwrite mask of digi. output 38
+   A_OvMask_Out39 : BOOL ;  //Overwrite mask of digi. output 39
+   A_OvMask_Out40 : BOOL ;  //Overwrite mask of digi. output 40
+   A_Setval_out33 : BOOL ;  //Set value digi. NCK output 33
+   A_Setval_out34 : BOOL ;  //Set value digi. NCK output 34
+   A_Setval_out35 : BOOL ;  //Set value digi. NCK output 35
+   A_Setval_out36 : BOOL ;  //Set value digi. NCK output 36
+   A_Setval_out37 : BOOL ;  //Set value digi. NCK output 37
+   A_Setval_out38 : BOOL ;  //Set value digi. NCK output 38
+   A_Setval_out39 : BOOL ;  //Set value digi. NCK output 39
+   A_Setval_out40 : BOOL ;  //Set value digi. NCK output 40
+   A_InMask_Out33 : BOOL ;  //Input mask of digi. output 33
+   A_InMask_Out34 : BOOL ;  //Input mask of digi. output 34
+   A_InMask_Out35 : BOOL ;  //Input mask of digi. output 35
+   A_InMask_Out36 : BOOL ;  //Input mask of digi. output 36
+   A_InMask_Out37 : BOOL ;  //Input mask of digi. output 37
+   A_InMask_Out38 : BOOL ;  //Input mask of digi. output 38
+   A_InMask_Out39 : BOOL ;  //Input mask of digi. output 39
+   A_InMask_Out40 : BOOL ;  //Input mask of digi. output 40
+   A_Disabl_anaIn1 : BOOL ; //Disable analog NCK input 1
+   A_Disabl_anaIn2 : BOOL ; //Disable analog NCK input 2 
+   A_Disabl_anaIn3 : BOOL ; //Disable analog NCK input 3 
+   A_Disabl_anaIn4 : BOOL ; //Disable analog NCK input 4 
+   A_Disabl_anaIn5 : BOOL ; //Disable analog NCK input 5 
+   A_Disabl_anaIn6 : BOOL ; //Disable analog NCK input 6 
+   A_Disabl_anaIn7 : BOOL ; //Disable analog NCK input 7 
+   A_Disabl_anaIn8 : BOOL ; //Disable analog NCK input 8
+   A_InMask_anaIn1 : BOOL ; //Input mask of analog NCK input 1
+   A_InMask_anaIn2 : BOOL ; //Input mask of analog NCK input 2 
+   A_InMask_anaIn3 : BOOL ; //Input mask of analog NCK input 3 
+   A_InMask_anaIn4 : BOOL ; //Input mask of analog NCK input 4 
+   A_InMask_anaIn5 : BOOL ; //Input mask of analog NCK input 5 
+   A_InMask_anaIn6 : BOOL ; //Input mask of analog NCK input 6 
+   A_InMask_anaIn7 : BOOL ; //Input mask of analog NCK input 7 
+   A_InMask_anaIn8 : BOOL ; //Input mask of analog NCK input 8
+   A_Setval_anaIn1 : WORD ; //Set value of analog NCK input 1
+   A_Setval_anaIn2 : WORD ; //Set value of analog NCK input 2
+   A_Setval_anaIn3 : WORD ; //Set value of analog NCK input 3
+   A_Setval_anaIn4 : WORD ; //Set value of analog NCK input 4
+   A_Setval_anaIn5 : WORD ; //Set value of analog NCK input 5
+   A_Setval_anaIn6 : WORD ; //Set value of analog NCK input 6
+   A_Setval_anaIn7 : WORD ; //Set value of analog NCK input 7
+   A_Setval_anaIn8 : WORD ; //Set value of analog NCK input 8
+   f164_f165 : INT ;    
+   A_OvMask_anaOut1 : BOOL ;    //Overwrite mask of analog output 1
+   A_OvMask_anaOut2 : BOOL ;    //Overwrite mask of analog output 2
+   A_OvMask_anaOut3 : BOOL ;    //Overwrite mask of analog output 3
+   A_OvMask_anaOut4 : BOOL ;    //Overwrite mask of analog output 4
+   A_OvMask_anaOut5 : BOOL ;    //Overwrite mask of analog output 5
+   A_OvMask_anaOut6 : BOOL ;    //Overwrite mask of analog output 6
+   A_OvMask_anaOut7 : BOOL ;    //Overwrite mask of analog output 7
+   A_OvMask_anaOut8 : BOOL ;    //Overwrite mask of analog output 8
+   A_InMask_anaOut1 : BOOL ;    //Input mask of analog NCK output 1
+   A_InMask_anaOut2 : BOOL ;    //Input mask of analog NCK output 2 
+   A_InMask_anaOut3 : BOOL ;    //Input mask of analog NCK output 3 
+   A_InMask_anaOut4 : BOOL ;    //Input mask of analog NCK output 4 
+   A_InMask_anaOut5 : BOOL ;    //Input mask of analog NCK output 5 
+   A_InMask_anaOut6 : BOOL ;    //Input mask of analog NCK output 6 
+   A_InMask_anaOut7 : BOOL ;    //Input mask of analog NCK output 7 
+   A_InMask_anaOut8 : BOOL ;    //Input mask of analog NCK output 8  
+   A_Disabl_anaOut1 : BOOL ;    //Disable analog NCK output 1
+   A_Disabl_anaOut2 : BOOL ;    //Disable analog NCK output 2 
+   A_Disabl_anaOut3 : BOOL ;    //Disable analog NCK output 3 
+   A_Disabl_anaOut4 : BOOL ;    //Disable analog NCK output 4 
+   A_Disabl_anaOut5 : BOOL ;    //Disable analog NCK output 5 
+   A_Disabl_anaOut6 : BOOL ;    //Disable analog NCK output 6 
+   A_Disabl_anaOut7 : BOOL ;    //Disable analog NCK output 7 
+   A_Disabl_anaOut8 : BOOL ;    //Disable analog NCK output 8
+   f169 : BYTE ;    
+   A_Setval_anaOut1 : WORD ;    //Set value of analog NCK output 1
+   A_Setval_anaOut2 : WORD ;    //Set value of analog NCK output 2
+   A_Setval_anaOut3 : WORD ;    //Set value of analog NCK output 3
+   A_Setval_anaOut4 : WORD ;    //Set value of analog NCK output 4
+   A_Setval_anaOut5 : WORD ;    //Set value of analog NCK output 5
+   A_Setval_anaOut6 : WORD ;    //Set value of analog NCK output 6
+   A_Setval_anaOut7 : WORD ;    //Set value of analog NCK output 7
+   A_Setval_anaOut8 : WORD ;    //Set value of analog NCK output 8
+   E_ActVal_In9 : BOOL ;    //Actual value of digi. NCK input 9
+   E_ActVal_In10 : BOOL ;   //Actual value of digi. NCK input 10
+   E_ActVal_In11 : BOOL ;   //Actual value of digi. NCK input 11
+   E_ActVal_In12 : BOOL ;   //Actual value of digi. NCK input 12
+   E_ActVal_In13 : BOOL ;   //Actual value of digi. NCK input 13
+   E_ActVal_In14 : BOOL ;   //Actual value of digi. NCK input 14
+   E_ActVal_In15 : BOOL ;   //Actual value of digi. NCK input 15
+   E_ActVal_In16 : BOOL ;   //Actual value of digi. NCK input 16             
+   E_ActVal_In17 : BOOL ;   //Actual value of digi. NCK input 17
+   E_ActVal_In18 : BOOL ;   //Actual value of digi. NCK input 18
+   E_ActVal_In19 : BOOL ;   //Actual value of digi. NCK input 19
+   E_ActVal_In20 : BOOL ;   //Actual value of digi. NCK input 20
+   E_ActVal_In21 : BOOL ;   //Actual value of digi. NCK input 21
+   E_ActVal_In22 : BOOL ;   //Actual value of digi. NCK input 22
+   E_ActVal_In23 : BOOL ;   //Actual value of digi. NCK input 23
+   E_ActVal_In24 : BOOL ;   //Actual value of digi. NCK input 24             
+   E_ActVal_In25 : BOOL ;   //Actual value of digi. NCK input 25
+   E_ActVal_In26 : BOOL ;   //Actual value of digi. NCK input 26
+   E_ActVal_In27 : BOOL ;   //Actual value of digi. NCK input 27
+   E_ActVal_In28 : BOOL ;   //Actual value of digi. NCK input 28
+   E_ActVal_In29 : BOOL ;   //Actual value of digi. NCK input 29
+   E_ActVal_In30 : BOOL ;   //Actual value of digi. NCK input 30
+   E_ActVal_In31 : BOOL ;   //Actual value of digi. NCK input 31
+   E_ActVal_In32 : BOOL ;   //Actual value of digi. NCK input 32             
+   E_ActVal_In33 : BOOL ;   //Actual value of digi. NCK input 33
+   E_ActVal_In34 : BOOL ;   //Actual value of digi. NCK input 34
+   E_ActVal_In35 : BOOL ;   //Actual value of digi. NCK input 35
+   E_ActVal_In36 : BOOL ;   //Actual value of digi. NCK input 36
+   E_ActVal_In37 : BOOL ;   //Actual value of digi. NCK input 37
+   E_ActVal_In38 : BOOL ;   //Actual value of digi. NCK input 38
+   E_ActVal_In39 : BOOL ;   //Actual value of digi. NCK input 39
+   E_ActVal_In40 : BOOL ;   //Actual value of digi. NCK input 40             
+   E_Setpoint_Out9 : BOOL ; //Setpoint of digi. NCK output 9
+   E_Setpoint_Out10 : BOOL ;    //Setpoint of digi. NCK output 10
+   E_Setpoint_Out11 : BOOL ;    //Setpoint of digi. NCK output 11
+   E_Setpoint_Out12 : BOOL ;    //Setpoint of digi. NCK output 12
+   E_Setpoint_Out13 : BOOL ;    //Setpoint of digi. NCK output 13
+   E_Setpoint_Out14 : BOOL ;    //Setpoint of digi. NCK output 14
+   E_Setpoint_Out15 : BOOL ;    //Setpoint of digi. NCK output 15
+   E_Setpoint_Out16 : BOOL ;    //Setpoint of digi. NCK output 16
+   E_Setpoint_Out17 : BOOL ;    //Setpoint of digi. NCK output 17
+   E_Setpoint_Out18 : BOOL ;    //Setpoint of digi. NCK output 18
+   E_Setpoint_Out19 : BOOL ;    //Setpoint of digi. NCK output 19
+   E_Setpoint_Out20 : BOOL ;    //Setpoint of digi. NCK output 20
+   E_Setpoint_Out21 : BOOL ;    //Setpoint of digi. NCK output 21
+   E_Setpoint_Out22 : BOOL ;    //Setpoint of digi. NCK output 22
+   E_Setpoint_Out23 : BOOL ;    //Setpoint of digi. NCK output 23
+   E_Setpoint_Out24 : BOOL ;    //Setpoint of digi. NCK output 24             
+   E_Setpoint_Out25 : BOOL ;    //Setpoint of digi. NCK output 25
+   E_Setpoint_Out26 : BOOL ;    //Setpoint of digi. NCK output 26
+   E_Setpoint_Out27 : BOOL ;    //Setpoint of digi. NCK output 27
+   E_Setpoint_Out28 : BOOL ;    //Setpoint of digi. NCK output 28
+   E_Setpoint_Out29 : BOOL ;    //Setpoint of digi. NCK output 29
+   E_Setpoint_Out30 : BOOL ;    //Setpoint of digi. NCK output 30
+   E_Setpoint_Out31 : BOOL ;    //Setpoint of digi. NCK output 31
+   E_Setpoint_Out32 : BOOL ;    //Setpoint of digi. NCK output 32             
+   E_Setpoint_Out33 : BOOL ;    //Setpoint of digi. NCK output 33
+   E_Setpoint_Out34 : BOOL ;    //Setpoint of digi. NCK output 34
+   E_Setpoint_Out35 : BOOL ;    //Setpoint of digi. NCK output 35
+   E_Setpoint_Out36 : BOOL ;    //Setpoint of digi. NCK output 36
+   E_Setpoint_Out37 : BOOL ;    //Setpoint of digi. NCK output 37
+   E_Setpoint_Out38 : BOOL ;    //Setpoint of digi. NCK output 38
+   E_Setpoint_Out39 : BOOL ;    //Setpoint of digi. NCK output 39
+   E_Setpoint_Out40 : BOOL ;    //Setpoint of digi. NCK output 40  
+   E_ActVal_anaIn1 : WORD ; //Actual value of analog NCK input 1
+   E_ActVal_anaIn2 : WORD ; //Actual value of analog NCK input 2
+   E_ActVal_anaIn3 : WORD ; //Actual value of analog NCK input 3
+   E_ActVal_anaIn4 : WORD ; //Actual value of analog NCK input 4
+   E_ActVal_anaIn5 : WORD ; //Actual value of analog NCK input 5
+   E_ActVal_anaIn6 : WORD ; //Actual value of analog NCK input 6
+   E_ActVal_anaIn7 : WORD ; //Actual value of analog NCK input 7
+   E_ActVal_anaIn8 : WORD ; //Actual value of analog NCK input 8
+   E_SetVal_anaOut1 : WORD ;    //Set value of analog NCK output 1
+   E_SetVal_anaOut2 : WORD ;    //Set value of analog NCK output 2
+   E_SetVal_anaOut3 : WORD ;    //Set value of analog NCK output 3
+   E_SetVal_anaOut4 : WORD ;    //Set value of analog NCK output 4
+   E_SetVal_anaOut5 : WORD ;    //Set value of analog NCK output 5
+   E_SetVal_anaOut6 : WORD ;    //Set value of analog NCK output 6
+   E_SetVal_anaOut7 : WORD ;    //Set value of analog NCK output 7
+   E_SetVal_anaOut8 : WORD ;    //Set value of analog NCK output 8
+   E_CollCheck: ARRAY  [0 .. 7 ] OF BYTE ; //CollisionsCheck
+   A_CollCheck: ARRAY  [0 .. 7 ] OF BYTE ; //CollisionsCheck
+   
+   E_HW4_moved    : BYTE ; //Handwheel 4 moved
+   E_HW5_moved    : BYTE ; //Handwheel 5 moved
+   E_HW6_moved    : BYTE ; //Handwheel 6 moved
+   E_EHW1_stands  : BOOL;  //Ethernet handwheel 1 stands
+   E_EHW2_stands  : BOOL;  //Ethernet handwheel 2 stands
+   E_EHW3_stands  : BOOL;  //Ethernet handwheel 3 stands
+   E_EHW4_stands  : BOOL;  //Ethernet handwheel 4 stands
+   E_EHW5_stands  : BOOL;  //Ethernet handwheel 5 stands
+   E_EHW6_stands  : BOOL;  //Ethernet handwheel 6 stands
+   f245_6         : BOOL;  
+   f245_7         : BOOL;  
+   f246           : WORD;
+  END_STRUCT ;  
+END_TYPE
+
+
+//********** BAG-UDT **********
+
+TYPE UDT 11
+//**************************************************************************
+
+
+  STRUCT    
+   A_AUTO : BOOL ;  //AUTOMATIC mode
+   A_MDA : BOOL ;   //MDA mode
+   A_JOG : BOOL ;   //JOG mode
+   f0_3 : BOOL ;    
+   A_MCDisable : BOOL ; //Mode change disable 
+   A_MGStop : BOOL ;    //Mode group stop
+   A_MGStopASp : BOOL ; //Mode group stop axes plus spindle 
+   A_MGReset : BOOL ;   //Mode group reset
+   A_TEACHIN : BOOL ;   //Machine function TEACH IN
+   A_REPOS : BOOL ; //Machine function REPOS
+   A_REF : BOOL ;   //Machine function REF
+   f1_3 : BOOL ;    
+   f1_4 : BOOL ;    
+   f1_5 : BOOL ;    
+   A_SingleBlock_B : BOOL ; // Single block type B
+   A_SingleBlock_A : BOOL ; // Single block type A
+   A_INC1 : BOOL ;  //INC1
+   A_INC10 : BOOL ; //INC10
+   A_INC100 : BOOL ;    //INC100
+   A_INC1000 : BOOL ;   //INC1000
+   A_INC10000 : BOOL ;  //INC10000
+   A_INCVar : BOOL ;    //INC variable
+   f3 : BYTE ;  
+   E_MMC_AUTO : BOOL ;  //MMC Strobe AUTOMATIC mode
+   E_MMC_MDA : BOOL ;   //MMC Strobe MDA mode
+   E_MMC_JOG : BOOL ;   //MMC Strobe JOG mode
+   f4_3 : BOOL ;    
+   f4_4 : BOOL ;    
+   f4_5 : BOOL ;    
+   f4_6 : BOOL ;    
+   f4_7 : BOOL ;    
+   E_MMC_TEACHIN : BOOL ;   //MMC Strobe machine function TEACH IN
+   E_MMC_REPOS : BOOL ; //MMC Strobe machine function REPOS
+   E_MMC_REF : BOOL ;   //MMC Strobe Machine function REF
+   f5_3 : BOOL ;    
+   f5_4 : BOOL ;    
+   f5_5 : BOOL ;    
+   f5_6 : BOOL ;    
+   f5_7 : BOOL ;    
+   E_AUTO : BOOL ;  //Active AUTOMATIC mode
+   E_MDA : BOOL ;   //Active MDA mode
+   E_JOG : BOOL ;   //Active JOG mode
+   E_MGOK : BOOL ;  //Mode group ready
+   E_MGreseted : BOOL ; // Mode Group reseted
+   E_NCKintJOG : BOOL ; // NCK internal JOG active
+   f6_6 : BOOL ;    
+   E_ChanReset : BOOL ; //All channels in reset state
+   E_TEACHIN : BOOL ;   //Active machine function TEACH IN
+   E_REPOS : BOOL ; //Active machine function REPOS
+   E_REF : BOOL ;   //Active Machine function REF
+   f7_3 : BOOL;
+   f7_4 : BOOL;
+   f7_5 : BOOL;
+   f7_6 : BOOL; 
+   f7_7 : BOOL;
+   E_INC1 : BOOL ;      // INC1
+   E_INC10 : BOOL ;     // INC10
+   E_INC100 : BOOL ;    // INC100
+   E_INC1000 : BOOL ;   // INC1000
+   E_INC10000 : BOOL ;  // INC10000
+   E_INCVar : BOOL ;    // INC variable
+   f8_6 : BOOL;
+   f8_7 : BOOL;
+   f9 : BYTE ; 
+   f10 : ARRAY  [10 .. 19 ] OF BYTE ; 
+   MG : ARRAY  [2 .. 10 ] OF STRUCT     
+    A_AUTO : BOOL ; //AUTOMATIC mode
+    A_MDA : BOOL ;  //MDA mode
+    A_JOG : BOOL ;  //JOG mode
+    f0_3 : BOOL ;   
+    A_MCDisable : BOOL ;    //Mode change disable
+    A_MGStop : BOOL ;   //Mode group stop
+    A_MGStopASp : BOOL ;    //Mode group stop axes plus spindle
+    A_MGReset : BOOL ;  //Mode group reset
+    A_TEACHIN : BOOL ;  //Machine function TEACH IN
+    A_REPOS : BOOL ;    //Machine function REPOS
+    A_REF : BOOL ;  //Machine function REF
+    f1_3 : BOOL ;   
+    f1_4 : BOOL ;   
+    f1_5 : BOOL ;   
+    A_SingleBlock_B : BOOL ; // Single block type B
+    A_SingleBlock_A : BOOL ; // Single block type A
+    A_INC1 : BOOL ; //INC1
+    A_INC10 : BOOL ;    //INC10
+    A_INC100 : BOOL ;   //INC100
+    A_INC1000 : BOOL ;  //INC1000
+    A_INC10000 : BOOL ; //INC10000
+    A_INCVar : BOOL ;   //INC variable
+    f3 : BYTE ; 
+    E_MMC_AUTO : BOOL ; //MMC Strobe AUTOMATIC mode
+    E_MMC_MDA : BOOL ;  //MMC Strobe MDA mode
+    E_MMC_JOG : BOOL ;  //MMC Strobe JOG mode
+    f4_3 : BOOL ;   
+    f4_4 : BOOL ;   
+    f4_5 : BOOL ;   
+    f4_6 : BOOL ;   
+    f4_7 : BOOL ;   
+    E_MMC_TEACHIN : BOOL ;  //MMC Strobe machine function TEACH IN
+    E_MMC_REPOS : BOOL ;    //MMC Strobe machine function REPOS
+    E_MMC_REF : BOOL ;  //MMC Strobe Machine function REF
+    f5_3 : BOOL ;   
+    f5_4 : BOOL ;   
+    f5_5 : BOOL ;   
+    f5_6 : BOOL ;   
+    f5_7 : BOOL ;   
+    E_AUTO : BOOL ; //Active AUTOMATIC mode
+    E_MDA : BOOL ;  //Active MDA mode
+    E_JOG : BOOL ;  //Active JOG mode
+    E_MGOK : BOOL ; //Mode group ready
+    E_MGreseted : BOOL ; // Mode Group reseted
+    E_NCKintJOG : BOOL ; // NCK internal JOG active
+    f6_6 : BOOL ;   
+    E_ChanReset : BOOL ;    //All channels in reset state
+    E_TEACHIN : BOOL ;  //Active machine function TEACH IN
+    E_REPOS : BOOL ;    //Active machine function REPOS
+    E_REF : BOOL ;  //Active machine function REF
+    f7_3 : BOOL;
+    f7_4 : BOOL;
+    f7_5 : BOOL;
+    f7_6 : BOOL; 
+    f7_7 : BOOL;
+    E_INC1 : BOOL ;     // INC1
+    E_INC10 : BOOL ;    // INC10
+    E_INC100 : BOOL ;   // INC100
+    E_INC1000 : BOOL ;  // INC1000
+    E_INC10000 : BOOL ; // INC10000
+    E_INCVar : BOOL ;   // INC variable
+    f8_6 : BOOL;
+    f8_7 : BOOL;
+    f9  : BYTE ; 
+    f10 : ARRAY  [10 .. 19 ] OF BYTE ; 
+   END_STRUCT ; 
+  END_STRUCT ;  
+END_TYPE
+
+
+//********** MMC-UDT **********
+
+TYPE UDT 19
+//**************************************************************************
+
+
+  STRUCT    
+   A_SCLight : BOOL ;   //Screen light
+   A_SCDark : BOOL ;    //Screen darkening
+   A_KeyDisable : BOOL ;      //Key disable
+   A_ClearCanAl : BOOL ;      //Clear cancel alarms
+   A_ClearRecAl : BOOL ;      //Clear recall alarms
+   f0_5 : BOOL ;  
+   f0_6 : BOOL ;  
+   A_ActWCS : BOOL ;    //Actual value in WCS 0=MCS
+   A_PLCExtViewerReject : BOOL;  //External viewer reject
+   A_PLCExtViewerMode   : BOOL;  //External viewer mode
+   f1_2                 : BOOL;
+   f1_3                 : BOOL;
+   f1_4                 : BOOL;
+   f1_5                 : BOOL;
+   f1_6                 : BOOL;
+   f1_7                 : BOOL;
+   A_1stError1 : WORD ; //1st error HIGRAPH
+   A_1stError2 : WORD ; //1st error HIGRAPH
+   A_ASpi1percent : BYTE ;    //Analog spindle 1:
+   A_ASpi2percent : BYTE ;
+   A_MCPChan : BYTE ;
+   A_OEM1 : BOOL ;
+   A_OEM2 : BOOL ;
+   A_AToolMeas : BOOL ; //AutoToolMeasure
+   f9_3 : BOOL ;
+   f9_4 : BOOL ;
+   f9_5 : BOOL ;
+   f9_6 : BOOL ;
+   f9_7 : BOOL ;
+   A_Hardkey : BYTE ;   //PLC Hardkeys
+   f11 : BYTE ;               //Reserved for hardkeys
+   f12_0 : BOOL ; 
+   f12_1 : BOOL ; 
+   A_COM2 : BOOL ; 
+   A_COM1 : BOOL ; 
+   A_V24stop : BOOL ; 
+   A_V24ext : BOOL ; 
+   A_V24off : BOOL ; 
+   A_V24on : BOOL ; 
+   A_TeachDisable : BOOL ; 
+   f13_1 : BOOL ; 
+   f13_2 : BOOL ; 
+   f13_3 : BOOL ; 
+   f13_4 : BOOL ; 
+   A_PPdeload : BOOL ; 
+   A_PPload : BOOL ; 
+   A_PPsel : BOOL ; 
+   A_V24Index1 : BYTE ; 
+   A_V24Index2 : BYTE ;
+   A_V24NoFile1 : BYTE ;
+   A_V24NoFile2 : BYTE ;
+   A_res18 : BYTE ;     
+   A_res19 : BYTE ;     //Message counter
+   f20_0 : BOOL ; 
+   E_SCDark : BOOL ;    //Screen darkening
+   E_Cancel : BOOL ;    //Cancel
+   E_CanCleared : BOOL ;      //Cancel alarms cleared
+   E_RecCleared : BOOL ;      //Recall alarms cleared
+   f20_5 : BOOL ; //res. Language
+   E_SimActiv : BOOL ;  //Simulation active
+   E_ActWCS : BOOL ;    //Switchover MCS/WCS 0=MCS
+   E_ActivWA : BYTE ;   
+   E_Chan : BYTE ;      //Channel displayed
+   f23 : BYTE ;   
+   E_V24Err : BOOL ;   
+   E_V24OK : BOOL ;   
+   E_V24COM2 : BOOL ;   
+   E_V24COM1 : BOOL ;   
+   E_V24stop : BOOL ;   
+   E_V24ext : BOOL ;   
+   E_V24off : BOOL ;   
+   E_V24on : BOOL ;   
+   E_V24Error : BYTE ; //V24: Error Byte  
+   E_res26_0 : BOOL ;     //Reserved
+   E_PPOK : BOOL ;     //Part program status OK
+   E_PPErr : BOOL ;     //Part program status Error
+   E_PPAct : BOOL ;     //Part program status active
+   f26_4 : BOOL ;     //Reserved
+   E_PPdeload : BOOL ;     //Part program status deloading
+   E_PPload : BOOL ;     //Part program status loading
+   E_PPsel : BOOL ;     //Part program status selecting
+   E_PPError : BYTE ;     //Part program status Error
+   A_PictNo : INT ;
+   A_PictOn : BOOL ;
+   A_PictOff : BOOL ;
+   f30_2 : BOOL ;
+   f30_3 : BOOL ;
+   f30_4 : BOOL ;
+   f30_5 : BOOL ;
+   f30_6 : BOOL ;
+   f30_7 : BOOL ;
+   E_PictOK : BOOL ;
+   E_PictOn : BOOL ;
+   E_PictAct : BOOL ;
+   E_PictOff : BOOL ;
+   E_PictErr : BOOL ;
+   f31_5 : BOOL ;
+   f31_6 : BOOL ;
+   E_NotAct : BOOL ;
+   A_FuncNo : BYTE ;
+   A_Par1 : BYTE ;
+   A_Par2 : BYTE ;
+   A_Par3 : BYTE ;
+   E_FuncErr : BYTE ;
+   f37 : BYTE;
+   f38 : BYTE;
+   f39 : BYTE;
+   
+   res40 : ARRAY  [0 .. 9 ] OF BYTE  ; 
+  MMC2: STRUCT
+   A_SCLight : BOOL ;   //Screen light
+   A_SCDark : BOOL ;    //Screen darkening
+   A_KeyDisable : BOOL ;      //Key disable
+   A_ClearCanAl : BOOL ;      //Clear cancel alarms
+   A_ClearRecAl : BOOL ;      //Clear recall alarms
+   f0_5 : BOOL ;  
+   f0_6 : BOOL ;  
+   A_ActWCS : BOOL ;    //Actual value in WCS 0=MCS
+   A_1stError1 : WORD ; //1st error HIGRAPH
+   A_1stError2 : WORD ; //1st error HIGRAPH
+   A_ASpi1percent : BYTE ;    //Analog spindle 1:
+   A_ASpi2percent : BYTE ;
+   A_MCPChan : BYTE ;
+   A_OEM1 : BOOL ;
+   A_OEM2 : BOOL ;
+   A_AToolMeas : BOOL ; //AutoToolMeasure
+   f9_3 : BOOL ;
+   f9_4 : BOOL ;
+   f9_5 : BOOL ;
+   f9_6 : BOOL ;
+   f9_7 : BOOL ;
+   A_Hardkey : BYTE ;   //PLC Hardkeys
+   f11 : BYTE ;               //Reserved for hardkeys
+   f12_0 : BOOL ; 
+   f12_1 : BOOL ; 
+   A_COM2 : BOOL ; 
+   A_COM1 : BOOL ; 
+   A_V24stop : BOOL ; 
+   A_V24ext : BOOL ; 
+   A_V24off : BOOL ; 
+   A_V24on : BOOL ; 
+   f13_0 : BOOL ; 
+   f13_1 : BOOL ; 
+   f13_2 : BOOL ; 
+   f13_3 : BOOL ; 
+   f13_4 : BOOL ; 
+   A_PPdeload : BOOL ; 
+   A_PPload : BOOL ; 
+   A_PPsel : BOOL ; 
+   A_V24Index1 : BYTE ; 
+   A_V24Index2 : BYTE ;
+   A_V24NoFile1 : BYTE ;
+   A_V24NoFile2 : BYTE ;
+   A_res18 : BYTE ;     
+   A_res19 : BYTE ;     //Message counter
+   f20_0 : BOOL ; 
+   E_SCDark : BOOL ;    //Screen darkening
+   E_Cancel : BOOL ;    //Cancel
+   E_CanCleared : BOOL ;      //Cancel alarms cleared
+   E_RecCleared : BOOL ;      //Recall alarms cleared
+   f20_5 : BOOL ; //res. Language
+   E_SimActiv : BOOL ;  //Simulation active
+   E_ActWCS : BOOL ;    //Switchover MCS/WCS 0=MCS
+   E_ActivWA : BYTE ;   
+   E_Chan : BYTE ;      //Channel displayed
+   f23 : BYTE ;   
+   E_V24Err : BOOL ;   
+   E_V24OK : BOOL ;   
+   E_V24COM2 : BOOL ;   
+   E_V24COM1 : BOOL ;   
+   E_V24stop : BOOL ;   
+   E_V24ext : BOOL ;   
+   E_V24off : BOOL ;   
+   E_V24on : BOOL ;   
+   E_V24Error : BYTE ; //V24: Error Byte  
+   E_res26_0 : BOOL ;     //Reserved
+   E_PPOK : BOOL ;     //Part program status OK
+   E_PPErr : BOOL ;     //Part program status Error
+   E_PPAct : BOOL ;     //Part program status active
+   f26_4 : BOOL ;     //Reserved
+   E_PPdeload : BOOL ;     //Part program status deloading
+   E_PPload : BOOL ;     //Part program status loading
+   E_PPsel : BOOL ;     //Part program status selecting
+   E_PPError : BYTE ;     //Part program status Error
+   A_PictNo : INT ;
+   A_PictOn : BOOL ;
+   A_PictOff : BOOL ;
+   f30_2 : BOOL ;
+   f30_3 : BOOL ;
+   f30_4 : BOOL ;
+   f30_5 : BOOL ;
+   f30_6 : BOOL ;
+   f30_7 : BOOL ;
+   E_PictOK : BOOL ;
+   E_PictOn : BOOL ;
+   E_PictAct : BOOL ;
+   E_PictOff : BOOL ;
+   E_PictErr : BOOL ;
+   f31_5 : BOOL ;
+   f31_6 : BOOL ;
+   E_NotAct : BOOL ;
+   A_FuncNo : BYTE ;
+   A_Par1 : BYTE ;
+   A_Par2 : BYTE ;
+   A_Par3 : BYTE ;
+   E_FuncErr : BYTE ;
+   f37 : BYTE;
+   f38 : BYTE;
+   f39 : BYTE;
+   res40 : ARRAY  [0 .. 9 ] OF BYTE  ; 
+  END_STRUCT ;
+//M to N
+   ONL_REQUEST : WORD  ;      
+   ONL_CONFIRM : WORD  ;      
+   PAR_CLIENT_IDENT : WORD  ; 
+   PAR_MMC_TYP : BYTE  ;      
+   PAR_MSTT_ADR : BYTE  ;     
+   PAR_STATUS : BYTE  ; 
+   PAR_Z_INFO : BYTE  ; 
+   MtoNAlive: WORD;
+   f112 : Byte;
+   ParOpKeyAdr : Byte;
+   ParTcuIndex : Byte;
+   f115 : Byte  ;     
+   Tcu1KeyAdr : BYTE  ;
+   Tcu2KeyAdr : BYTE  ;
+   Tcu1Index : BYTE  ;
+   Tcu2Index : BYTE  ;
+   MMC1_CLIENT_IDENT : WORD  ;      
+   MMC1_TYP : BYTE  ;   
+   MMC1_MSTT_ADR : BYTE  ;    
+   MMC1_STATUS : BYTE  ;      
+   MMC1_Z_INFO : BYTE  ;      
+   MMC1_SHIFT_LOCK : BOOL ;   
+   MMC1_MSTT_SHIFT_LOCK : BOOL ;    
+   MMC1_ACTIVE_REQ : BOOL ;   
+   MMC1_ACTIVE_PERM : BOOL ;  
+   MMC1_ACTIVE_CHANGED : BOOL ;     
+   MMC1_CHANGED_DENIED : BOOL ;
+   MMC1_TCU_SHIFT_LOCK : BOOL ;
+   f127 : BYTE ;
+   MMC1_TRANS_DB : Word  ;     
+   MMC2_CLIENT_IDENT : WORD  ;      
+   MMC2_TYP : BYTE  ;   
+   MMC2_MSTT_ADR : BYTE  ;    
+   MMC2_STATUS : BYTE  ;      
+   MMC2_Z_INFO : BYTE  ;      
+   MMC2_SHIFT_LOCK : BOOL ;   
+   MMC2_MSTT_SHIFT_LOCK : BOOL ;    
+   MMC2_ACTIVE_REQ : BOOL ;   
+   MMC2_ACTIVE_PERM : BOOL ;  
+   MMC2_ACTIVE_CHANGED : BOOL ;     
+   MMC2_CHANGED_DENIED : BOOL ;
+   MMC2_TCU_SHIFT_LOCK : BOOL ;
+   f137 : BYTE ;
+   MMC2_TRANS_DB : Word ;      
+   A_Subtype : INT;     //for Codecarrier Input from PLC
+   A_Duplo : INT;
+   A_Ident : String[32];
+   A_Tnumber : INT;
+   A_MagazinePlace : INT;
+   A_MagazinePlaceType : INT;
+   A_ToolSize_Upper : Byte;
+   A_ToolSize_Down : Byte;
+   A_ToolSize_Left : Byte;
+   A_ToolSize_Right : Byte;
+   A_Channel : Byte;
+   A_LoadingPlace : Byte;
+   A_Magazine : INT;
+   A_Unit : Byte;
+   A_NCU_Index : Byte;
+   A_FileIndex : INT;
+   A_ActiveEnable : BOOL;
+   A_Override : BOOL;
+   A_LoadTool : BOOL;
+   A_DeleteTool : BOOL;
+   //
+   E_Subtype : INT;     //for Codecarrier Output to PLC
+   E_Duplo : INT;
+   E_Ident : String[32];
+   E_Tnumber : INT;
+   E_ToolState : INT;
+   E_MagazinePlaceType : INT;
+   E_ToolSize_Upper : Byte;
+   E_ToolSize_Down : Byte;
+   E_ToolSize_Left : Byte;
+   E_ToolSize_Right : Byte;
+   E_Magazine : INT;
+   E_MagazinePlace : INT;
+//
+   A_ReqMMC1 : BOOL;  //for Codecarrier Request MMC-Interface1
+   A_ReqMMC2 : BOOL;  //for Codecarrier Request MMC-Interface2
+   A_K_Code : Byte;
+   E_Done : BOOL;
+   E_Error : BOOL;
+   E_Active : BOOL;
+   // CodeCarrierReadEnable : BOOL;
+   // CodeCarrierWriteEnable : BOOL;
+   E_K_CodeError : Byte; //Identify for Error_Code
+   E_Error_Code : INT;
+
+   E_Req : BOOL;  //for Positioning
+   f257 : Byte;
+   A_Done : BOOL;
+   A_Error : BOOL;
+   A_Active : BOOL;
+   f258_3 : BOOL;
+   f258_4 : BOOL;
+   f258_5 : BOOL;
+   f258_6 : BOOL;
+   f258_7 : BOOL;
+   E_TDC_Read : BOOL;
+   E_TDC_Write : BOOL;
+   E_TDC_Cancel : BOOL;
+   A_Error_Code : INT;
+   E_PMagazine : INT;
+   E_PMagazinePlace : INT;
+   E_PTnumber : INT;
+//TPM-Data
+   A_TPMStatus : INT;
+   A_TPMCounter : ARRAY [1..32] OF DINT;
+   
+   A_HWeelSimOvr : Byte;
+   f399 : Byte;
+   A_SimOvr : INT;
+ 
+  END_STRUCT ;    
+END_TYPE
+   
+
+
+
+//********* Channel-UDT *********
+
+TYPE UDT 21
+//**************************************************************************
+
+
+  STRUCT    
+   f0_0 : BOOL ;    
+   f0_1 : BOOL ;    
+   f0_2 : BOOL ;    
+   A_DRF : BOOL ;   //Activate DRF
+   A_SBL : BOOL ;   //Activate single block
+   A_M01 : BOOL ;   //Activate M01
+   A_DRY : BOOL ;   //Activate dry run feedrate
+   f0_7 : BOOL ;
+   A_Ref : BOOL ;   //Activate referencing
+   A_ProtZone : BOOL ;  //Enable protection zones
+   A_SynOff : BOOL ;    //Synchronous action off
+   A_TM_TimOut : BOOL ; //Activate time-out (TM)
+   A_CLC_Stop : BOOL ;  //CLC stop
+   A_CLC_OR : BOOL ;    //CLC override
+   A_PLC_ActCompl : BOOL ;  //PLC action complete
+   A_ProgTest : BOOL ;  //Activate program test
+   A_SKP0 : BOOL ;  //Activate skip block \0
+   A_SKP1 : BOOL ;  //Activate skip block \1
+   A_SKP2 : BOOL ;  //Activate skip block \2
+   A_SKP3 : BOOL ;  //Activate skip block \3
+   A_SKP4 : BOOL ;  //Activate skip block \4
+   A_SKP5 : BOOL ;  //Activate skip block \5
+   A_SKP6 : BOOL ;  //Activate skip block \6
+   A_SKP7 : BOOL ;  //Activate skip block \7
+   A_StrokEnab : BOOL ; //Stroke enable
+   A_ManStrokEnab : BOOL ;  //Manual stroke enable
+   A_StrokSup : BOOL ;  //Stroke suppression
+   A_StrokDelayed : BOOL ;  //Stroke delayed
+   A_StrokStop : BOOL ; //Stroke not operating
+   A_ManRelStroke2 : BOOL;      // Manual release of stroke 2
+   A3_6 : BOOL;
+   A3_7 : BOOL;
+   A_FD_OR : BYTE ; //Feedrate override
+   A_RT_OR : BYTE ; //Rapid traverse override
+   A_FDdisable : BOOL ; //Feed disable
+   A_RIdisable : BOOL ; //Read-in disable
+   A_DeleteDTG : BOOL ; //Delete distance to go
+   A_SP_Clear : BOOL ;  //Clear SP repetitions
+   A_ProgAbort : BOOL ; //Program level abort
+   A_F_Limit : BOOL ;   //Tool path feedrate limitation
+   A_RT_ORA : BOOL ;    //Rapid traverse override active
+   A_FD_ORA : BOOL ;    //Feedrate override active
+   A_NCStartDisabl : BOOL ; //NC start disable
+   A_NCStart : BOOL ;   //NC start
+   A_NCStopBlock : BOOL ;   //NC stop at block limit
+   A_NCStop : BOOL ;    //NC stop
+   A_NCStopASp : BOOL ; //NC stop axes plus spindle
+   A_SuppStartLock : BOOL ;   // Suppress Start Lock
+   f7_6 : BOOL ;    
+   A_Reset : BOOL ; //Reset
+   A_MRP : ARRAY  [1 .. 10 ] OF BOOL ;  //Activate machine-related protection area [1..10]
+   A_CSP : ARRAY  [1 .. 10 ] OF BOOL ;  //Activate channel-specific protection area [1..10]
+   A_Geo : ARRAY  [1 .. 3 ] OF STRUCT   //Control signals for geometry axis [1..3]
+    HW1 : BOOL ;    //Activate handwheel 1
+    HW2 : BOOL ;    //Activate handwheel 2
+    HW3 : BOOL ;    //Activate handwheel 3
+    FDStop : BOOL ; //Feed stop
+    Disabl : BOOL ; //Traversing key disable
+    RapidTrOR : BOOL ;  //Rapid traverse override
+    Minus : BOOL ;  //Traversing key minus
+    Plus : BOOL ;   //Traversing key plus
+    INC1 : BOOL ;   //INC 1
+    INC10 : BOOL ;  //INC 10
+    INC100 : BOOL ; //INC 100
+    INC1000 : BOOL ;    //INC 1000
+    INC10000 : BOOL ;   //INC 10000
+    INCVar : BOOL ; //INC variable
+    OEM : BYTE ;    //OEM signals
+    InvHWDirOfRot : BOOL;    // Inverting handwheel direction of rotation
+    f3_1 : BOOL;
+    f3_2 : BOOL;
+    f3_3 : BOOL;
+    f3_4 : BOOL;
+    f3_5 : BOOL;
+    f3_6 : BOOL;
+    f3_7 : BOOL;
+   END_STRUCT ; 
+   f24_0 : BOOL ;   
+   f24_1 : BOOL ;   
+   f24_2 : BOOL ;   
+   E_MMC_DRF : BOOL ;   //MMC DRF selected
+   f24_4 : BOOL ;   
+   E_MMC_M01 : BOOL ;   //MMC M01 selected
+   E_MMC_DRY : BOOL ;   //MMC Dry run feedrate selected
+   f24_7 : BOOL ;   
+   E_MMC_REPOSPM_0 : BOOL ; //MMC REPOSPATHMODE 0
+   E_MMC_REPOSPM_1 : BOOL ; //MMC REPOSPATHMODE 1
+   E_MMC_REPOSPM_2 : BOOL ; //MMC REPOSPATHMODE 2
+   E_MMC_FD_OR4RT_OR : BOOL ;   //MMC Feedrate override for rapid traverse selected
+   E_MMC_REPOSMode : BOOL ; //MMC REPOS MODE EDGE
+   f25_5 : BOOL ;   
+   f25_6 : BOOL ;   
+   E_MMC_ProgTest : BOOL ;  //Program test selected
+   E_MMC_SKP0 : BOOL ;  //MMC skip block selected \0
+   E_MMC_SKP1 : BOOL ;  //MMC skip block selected \1
+   E_MMC_SKP2 : BOOL ;  //MMC skip block selected \2
+   E_MMC_SKP3 : BOOL ;  //MMC skip block selected \3
+   E_MMC_SKP4 : BOOL ;  //MMC skip block selected \4
+   E_MMC_SKP5 : BOOL ;  //MMC skip block selected \5
+   E_MMC_SKP6 : BOOL ;  //MMC skip block selected \6
+   E_MMC_SKP7 : BOOL ;  //MMC skip block selected \7
+   E_MMC_SKP8 : BOOL ;  //MMC skip block selected \8
+   E_MMC_SKP9 : BOOL ;  //MMC skip block selected \9
+   f27_2 : BOOL ;   
+   f27_3 : BOOL ;   
+   f27_4 : BOOL ;   
+   f27_5 : BOOL ;   
+   f27_6 : BOOL ;   
+   f27_7 : BOOL ;   
+   A_OEM : BYTE ;   
+   A_FixedFD1 : BOOL ;  //Fixed feeds
+   A_FixedFD2 : BOOL ;  
+   A_FixedFD3 : BOOL ;  
+   A_FixedFD4 : BOOL ;  
+   A_PTP_Travel : BOOL ;    //Activate PTP travel
+   A_DisablWP_Counter : BOOL ;      //Disable workpiece counter
+   A_DisablWearMon : BOOL ; //Disable wear monitoring
+   A_DontDisablTool : BOOL ;    //Do not disable tool
+   A_ContHW1 : BOOL ;   //Activate contour handwheels
+   A_ContHW2 : BOOL ;   
+   A_ContHW3 : BOOL ;   
+   A_ContHWsim : BOOL ; //Simulated contour handwheel on
+   A_ContHWneg : BOOL ; //Contour handwheel neg. route
+   A_NCKrelatedM01 : BOOL ;   // Activate NCK-related M01
+   f30_6 : BOOL ;   
+   A_NoToolChangeCmd : BOOL ; // No tool change commands
+   A_REPOSPM_0 : BOOL ; //REPOSPATHMODE 0
+   A_REPOSPM_1 : BOOL ; //REPOSPATHMODE 1
+   A_REPOSPM_2 : BOOL ; //REPOSPATHMODE 2
+   f31_3 : BOOL ;   
+   A_REPOSMode : BOOL ; //REPOS MODE EDGE
+   A_InvCHWDirOfRot : BOOL;      // Inverting contour handwheel direction of rotation
+   A_SKP8 : BOOL ;  //Activate skip block \8
+   A_SKP9 : BOOL ;  //Activate skip block \9
+   E_ExecExtern : BOOL ;//Execution from external source active
+   f32_1 : BOOL ;
+   f32_2 : BOOL ;
+   E_ActBlock : BOOL ;  //Action block active
+   E_BegBlock : BOOL ;  //Approach block active
+   E_M01 : BOOL ;   //M0/M1 active
+   E_LastActBlock : BOOL ;  //Last action block active
+   f32_7 : BOOL ;
+   E_Ref : BOOL ;   //Referencing active
+   E_OrieToolholder : BOOL ;  // Orientable toolholder active
+   E_RevFD : BOOL ; //Revolutional feedrate active
+   E_HWOverlay : BOOL ; //Handwheel overlay active
+   E_BlockSearch : BOOL ;   //Block search active
+   E_M30 : BOOL ;   //M2/M30 active
+   E_Transform : BOOL ; //Transformation active
+   E_ProgTest : BOOL ;  //Program test active
+   E_OEMChan : BYTE ;   //OEM channel signals feedback
+   E_ProgRunn : BOOL ;  //Program running
+   E_ProgWait : BOOL ;  //Program waiting
+   E_ProgStop : BOOL ;  //Program stopped
+   E_ProgInterrupt : BOOL ; //Program interrupted
+   E_ProgrAborted : BOOL ;  //Program aborted
+   E_ChanActive : BOOL ;    //Channel active
+   E_ChanInterrupt : BOOL ; //Channel interrupted
+   E_ChanReset : BOOL ; //Channel reset
+   E_StartReq : BOOL ;  //Start request 
+   E_StopReq : BOOL ;   //Stop request 
+   E_AxesRef : BOOL ;   //All axes referenced
+   E_AxesStop : BOOL ;  //All axes stationary
+   E_IR_Activ : BOOL ;  //Interrupt processing active 
+   E_ChanRO : BOOL ;    //Channel ready for operation
+   E_NCKalarmChan : BOOL ;  //Channel-specific NCK alarm present
+   E_NCKalarmStop : BOOL ;  //NCK alarm with processing stop present
+   E_CHW1 : BOOL ;  //Contour handwheel 1 on
+   E_CHW2 : BOOL ;  //Contour handwheel 2 on
+   E_CHW3 : BOOL ;  //Contour handwheel 3 on
+   E_CLC : BOOL ;   //CLC active 
+   E_CLCStopLL : BOOL ; //CLC stopped lower limit 
+   E_CLCStopUL : BOOL ; //CLC stopped upper limit 
+   E_RIEnabIgnored : BOOL ; //Read-in enable is ignored
+   E_StopBlkEndSBLsuppr : BOOL ;    //Stop at block end with SBL is suppressed
+   E_StrokeEA : BOOL ;  //Stroke enable active
+   E_AcknManStrokEnab : BOOL ;  //Acknowledgement manual stroke enable
+   f38_2 : BOOL ;   
+   f38_3 : BOOL ;   
+   f38_4 : BOOL ;   
+   f38_5 : BOOL ;   
+   f38_6 : BOOL ;   
+   f38_7 : BOOL ;   
+   E_ProtZoneNOK : BOOL ;   //Protection zones not guaranteed
+   f39_1 : BOOL;
+   f39_2 : BOOL;
+   f39_3 : BOOL;
+   f39_4 : BOOL;
+   E_InvCHWDirOfRot : BOOL;      // Contour handwheel direction of rotation invert actively
+   f39_6 : BOOL;
+   f39_7 : BOOL;
+   E_Geo : ARRAY  [1 .. 3 ] OF STRUCT   //Status signals of geometry axis [1..3]
+    HW1 : BOOL ;    //Handwheel 1 active
+    HW2 : BOOL ;    //Handwheel 2 active
+    HW3 : BOOL ;    //Handwheel 3 active
+    f0_3 : BOOL ;   
+    TReqMinus : BOOL ;  // Travel requests minus
+    TReqPlus : BOOL ;   // Travel requests plus
+    TCMinus : BOOL ;    //Traverse command minus
+    TCPlus : BOOL ; //Traverse command plus
+    INC1 : BOOL ;   //INC 1 active
+    INC10 : BOOL ;  //INC 10 active
+    INC100 : BOOL ; //INC 100 active
+    INC1000 : BOOL ;    //INC 1000 active
+    INC10000 : BOOL ;   //INC 10000 active
+    INCVar : BOOL ; //INC variable active
+    OEM : BYTE ;    //OEM signals
+    InvHWDirOfRot : BOOL;     // Handwheel direction of rotation invert actively
+    f3_1 : BOOL;  
+    f3_2 : BOOL;  
+    f3_3 : BOOL;  
+    f3_4 : BOOL;  
+    f3_5 : BOOL;  
+    f3_6 : BOOL;  
+    f3_7 : BOOL;  
+    f4 : BYTE;  
+   END_STRUCT ; 
+   M1Change : BOOL ;    //M function 1 change
+   M2Change : BOOL ;    //M function 2 change
+   M3Change : BOOL ;    //M function 3 change
+   M4Change : BOOL ;    //M function 4 change
+   M5Change : BOOL ;    //M function 5 change
+   f58_5 : BOOL ;   
+   f58_6 : BOOL ;   
+   f58_7 : BOOL ;   
+   M1NDec : BOOL ;  //M function 1 not decoded
+   M2NDec : BOOL ;  //M function 2 not decoded
+   M3NDec : BOOL ;  //M function 3 not decoded
+   M4NDec : BOOL ;  //M function 4 not decoded
+   M5NDec : BOOL ;  //M function 5 not decoded
+   f59_5 : BOOL ;   
+   f59_6 : BOOL ;   
+   f59_7 : BOOL ;   
+   S1Change : BOOL ;    //S function 1 change
+   S2Change : BOOL ;    //S function 2 change
+   S3Change : BOOL ;    //S function 3 change
+   f60_3 : BOOL ;   
+   S1Quick : BOOL ; //S function 1 quick
+   S2Quick : BOOL ; //S function 2 quick
+   S3Quick : BOOL ; //S function 3 quick
+   f60_7 : BOOL ;   
+   T1Change : BOOL ;    //T function 1 change
+   T2Change : BOOL ;    //T function 2 change
+   T3Change : BOOL ;    //T function 3 change
+   f61_3 : BOOL ;   
+   T1Quick : BOOL ; //T function 1 quick
+   T2Quick : BOOL ; //T function 2 quick
+   T3Quick : BOOL ; //T function 3 quick
+   f61_7 : BOOL ;   
+   D1Change : BOOL ;    //D function 1 change
+   D2Change : BOOL ;    //D function 2 change
+   D3Change : BOOL ;    //D function 3 change
+   f62_3 : BOOL ;   
+   D1Quick : BOOL ; //D function 1 quick
+   D2Quick : BOOL ; //D function 2 quick
+   D3Quick : BOOL ; //D function 3 quick
+   f62_7 : BOOL ;   
+   EChange : BOOL ; //E function change
+   f63_1 : BOOL ;   
+   f63_2 : BOOL ;   
+   f63_3 : BOOL ;   
+   EQuick : BOOL ;  //E function quick
+   f63_5 : BOOL ;   
+   f63_6 : BOOL ;   
+   f63_7 : BOOL ;   
+   H1Change : BOOL ;    //H function 1 change
+   H2Change : BOOL ;    //H function 2 change
+   H3Change : BOOL ;    //H function 3 change
+   f64_3 : BOOL ;   
+   H1Quick : BOOL ; //H function 1 quick
+   H2Quick : BOOL ; //H function 2 quick
+   H3Quick : BOOL ; //H function 3 quick
+   f64_7 : BOOL ;   
+   F1Change : BOOL ;    //F function 1 change
+   F2Change : BOOL ;    //F function 2 change
+   F3Change : BOOL ;    //F function 3 change
+   F4Change : BOOL ;    //F function 4 change
+   F5Change : BOOL ;    //F function 5 change
+   F6Change : BOOL ;    //F function 6 change
+   f65_6 : BOOL ;   
+   f65_7 : BOOL ;   
+   M1Quick : BOOL ; //M function 1 quick
+   M2Quick : BOOL ; //M function 2 quick
+   M3Quick : BOOL ; //M function 3 quick
+   M4Quick : BOOL ; //M function 4 quick
+   M5Quick : BOOL ; //M function 5 quick
+   f66_5 : BOOL ;   
+   f66_6 : BOOL ;   
+   f66_7 : BOOL ;   
+   F1Quick : BOOL ; //F function 1 quick
+   F2Quick : BOOL ; //F function 2 quick
+   F3Quick : BOOL ; //F function 3 quick
+   F4Quick : BOOL ; //F function 4 quick
+   F5Quick : BOOL ; //F function 5 quick
+   F6Quick : BOOL ; //F function 6 quick
+   f67_6 : BOOL ;   
+   f67_7 : BOOL ;   
+   ExtM1 : INT ;    //Extended address M function 1 (16 bit INT)
+   M1 : DINT ;  //M function 1 (DInt)
+   ExtM2 : INT ;    //Extended address M function 1 (16 bit INT)
+   M2 : DINT ;  //M function 2 (DInt)
+   ExtM3 : INT ;    //Extended address M function 1 (16 bit INT)
+   M3 : DINT ;  //M function 3 (DInt)
+   ExtM4 : INT ;    //Extended address M function 1 (16 bit INT)
+   M4 : DINT ;  //M function 4 (DInt)
+   ExtM5 : INT ;    //Extended address M function 1 (16 bit INT)
+   M5 : DINT ;  //M function 5 (DInt)
+   ExtS1 : INT ;    //Extended address S function 1 (16 bit INT)
+   S1 : REAL ;  //S function 1 (REAL)
+   ExtS2 : INT ;    //Extended address S function 2 (16 bit INT)
+   S2 : REAL ;  //S function 2 (REAL)
+   ExtS3 : INT ;    //Extended address S function 3 (16 bit INT)
+   S3 : REAL ;  //S function 3 (REAL)
+   ExtT1 : INT ;    //Extended address T function 1 (16 bit INT)
+//T : DINT; //T function (DInt)
+//f122 : INT;
+//f124 : INT;
+//f126 : INT;   //Change in case of 8-digit T function
+
+   T1 : INT ;   //T function 1 (INT)
+   ExtT2 : INT ;    //Extended address T function 2 (16 bit INT)
+   T2 : INT ;   //T function 2 (INT)
+   ExtT3 : INT ;    //Extended address T function 3 (16 bit INT)
+   T3 : INT ;   //T function 3 (INT)
+   ExtD1 : BYTE ;   //Extended address D function 1 (8 bit INT)
+//D : INT;
+//f132 : INT;   //Change in case of 5-digit D function
+
+   D1 : BYTE ;  //D function 1 (8 bit INT)
+   ExtD2 : BYTE ;   //Extended address D function 2 (8 bit INT)
+   D2 : BYTE ;  //D function 2 (8 bit INT)
+   ExtD3 : BYTE ;   //Extended address D function 3 (8 bit INT)
+   D3 : BYTE ;  //D function 3 (8 bit INT)
+   ExtE : INT ; //Extended address E function 3 (16 bit INT)
+   E : REAL ;   //E function (REAL)
+   ExtH1 : INT ;    //Extended address H function 1 (16 bit INT)
+   H1 : REAL ;  //H function 1 (REAL)
+   ExtH2 : INT ;    //Extended address H function 2 (16 bit INT)
+   H2 : REAL ;  //H function 2 (REAL)
+   ExtH3 : INT ;    //Extended address H function 3 (16 bit INT)
+   H3 : REAL ;  //H function 3 (REAL)
+   ExtF1 : INT ;    //Extended address F function 1 (16 bit INT)
+   F1 : REAL ;  //F function 1 (REAL)
+   ExtF2 : INT ;    //Extended address F function 2 (16 bit INT)
+   F2 : REAL ;  //F function 2 (REAL)
+   ExtF3 : INT ;    //Extended address F function 3 (16 bit INT)
+   F3 : REAL ;  //F function 3 (REAL)
+   ExtF4 : INT ;    //Extended address F function 4 (16 bit INT)
+   F4 : REAL ;  //F function 4 (REAL)
+   ExtF5 : INT ;    //Extended address F function 5 (16 bit INT)
+   F5 : REAL ;  //F function 5 (REAL)
+   ExtF6 : INT ;    //Extended address F function 6 (16 bit INT)
+   F6 : REAL ;  //F function 6 (REAL)
+   MDyn : ARRAY  [0 .. 99 ] OF BOOL ;   //Dynamic M functions [0..99]
+   GAct : ARRAY  [1 .. 64 ] OF BYTE ;   //Active G function of group [1..64]
+   E_MRPactivated : ARRAY  [1 .. 10 ] OF BOOL ; //Machine-related protection area [1..10] preactivated
+   E_CSPactivated : ARRAY  [1 .. 10 ] OF BOOL ; //Channel-specific protection area [1..10] preactivated
+   E_MRPViolated : ARRAY  [1 .. 10 ] OF BOOL ;  //Machine-related protection area [1..10] violated
+   E_CSPViolated : ARRAY  [1 .. 10 ] OF BOOL ;  //Channel-specific protection area [1..10] violated
+//from P4 on
+   A_Str_DNo : BOOL ;   //Request of D number to NCK
+   A_Str_Synon : BOOL ; //Request of syn.action to NCK
+   f_280_2 : BOOL ; 
+   f_280_3 : BOOL ; 
+   f_280_4 : BOOL ; 
+   f_280_5 : BOOL ; 
+   f_280_6 : BOOL ; 
+   f_280_7 : BOOL ; 
+   f_281_0 : BOOL ; 
+   A_Str_Synfrom : BOOL ;   //Request syn.action from NCK
+   f_281_2 : BOOL ; 
+   f_281_3 : BOOL ; 
+   f_281_4 : BOOL ; 
+   f_281_5 : BOOL ; 
+   f_281_6 : BOOL ; 
+   f_281_7 : BOOL ; 
+   A_D1 : INT ; //Assignment D1
+   A_D2 : INT ; //Assignment D2
+   A_D3 : INT ; //Assignment D3
+   A_D4 : INT ; //Assignment D4
+   A_D5 : INT ; //Assignment D5
+   A_D6 : INT ; //Assignment D6
+   A_D7 : INT ; //Assignment D7
+   A_D8 : INT ; //Assignment D8
+   A_D9 : INT ; //Assignment D9
+   A_SynDisabl : ARRAY  [1 .. 64 ] OF BOOL ;    //Disable synchronous actions 
+   E_SynDisabled : ARRAY  [1 .. 64 ] OF BOOL ;  //Synchronous actions disabled
+   E_G00 : BOOL ;             //Active G functions
+   f316_1 : BOOL ;
+   f316_2 : BOOL ;
+   f316_3 : BOOL ;
+   f316_4 : BOOL ;
+   f316_5 : BOOL ;
+   f316_6 : BOOL ;
+   f316_7 : BOOL ;
+   E_ExtLang : BOOL ;         // External language mode active
+   E_WS_Setp : BOOL ;         // Workpiece setpoint reached 
+   f317_2 : BOOL ;
+   f317_3 : BOOL ;
+   f317_4 : BOOL ;
+   E_DriveTest : BOOL ;       // Travel request drive test
+   E_PTP_Travel : BOOL ;      //PTP travel active
+   E_ToolMissing : BOOL ;     //Tool missing
+   E_ASUP_Stop : BOOL;        // ASUP stopped
+   E_SearchAct : BOOL;        // Search active
+   E_TOFF : BOOL;             // TOFF active
+   E_TOFFmovem : BOOL;        // TOFF movement active
+   E_StopDelayed : BOOL;      // Stop delayed
+   E_AssM01 : BOOL;           // Associated M01 active
+   E_DRY : BOOL;              // Dry-run feedrate active
+   E_Overstore : BOOL;        // Overstore active
+   E_REPOS_EdgeAckn : BOOL;   // REPOS MODE EDGE ACKN
+   E_REPOS_PMode0 : BOOL;     // Repos Path Mode Ackn 0
+   E_REPOS_PMode1 : BOOL;     // Repos Path Mode Ackn 0
+   E_REPOS_PMode2 : BOOL;     // Repos Path Mode Ackn 2
+   E_DelayFTS : BOOL;         // Delay FTS
+   E_REPOS_DEFERRA : BOOL;    // Repos DEFERRA L Chan
+   E_Stop_NoDelayR : BOOL;    // Stop-delayrange not activated
+   E_NoToolChangeCmd : BOOL;  // No tool change command active
+  A_Ori : ARRAY  [1 .. 3 ] OF STRUCT    //Control signals for orientation axes [1..3]
+    HW_Bit0 : BOOL ;    //Activate handwheel Bit value coding 
+    HW_Bit1 : BOOL ;    //Activate handwheel Bit value coding
+    HW_Bit2 : BOOL ;    //Activate handwheel Bit value coding
+    FDStop : BOOL ; //Feed stop
+    Disabl : BOOL ; //Traversing key disable
+    RapidTrOR : BOOL ;  //Rapid traverse override
+    Minus : BOOL ;  //Traversing key minus
+    Plus : BOOL ;   //Traversing key plus
+    INC1 : BOOL ;   //INC 1 active
+    INC10 : BOOL ;  //INC 10 active
+    INC100 : BOOL ; //INC 100 active
+    INC1000 : BOOL ;    //INC 1000 active
+    INC10000 : BOOL ;   //INC 10000 active
+    INCVar : BOOL ; //INC variable active
+    OEM : BYTE ;    //OEM signals
+    InvHWDirOfRot : BOOL;     // Inverting handwheel direction of rotation
+    f3_1 : BOOL;
+    f3_2 : BOOL;
+    f3_3 : BOOL;
+    f3_4 : BOOL;
+    f3_5 : BOOL;
+    f3_6 : BOOL;
+    f3_7 : BOOL;
+   END_STRUCT ; 
+  E_Ori : ARRAY  [1 .. 3 ] OF STRUCT    //Control signals for orientation axes [1..3]
+    HW_Bit0 : BOOL ;    //Activate handwheel Bit value coding 
+    HW_Bit1 : BOOL ;    //Activate handwheel Bit value coding
+    HW_Bit2 : BOOL ;    //Activate handwheel Bit value coding
+    f0_3 : BOOL ;
+    TReqMinus : BOOL ;  // Travel requests minus
+    TReqPlus : BOOL ;   // Travel requests plus
+    Minus : BOOL ;  //Traversing key minus
+    Plus : BOOL ;   //Traversing key plus
+    INC1 : BOOL ;   //INC 1 active
+    INC10 : BOOL ;  //INC 10 active
+    INC100 : BOOL ; //INC 100 active
+    INC1000 : BOOL ;    //INC 1000 active
+    INC10000 : BOOL ;   //INC 10000 active
+    INCVar : BOOL ; //INC variable active
+    OEM : BYTE ;    //OEM signals
+    InvHWDirOfRot : BOOL;     // Handwheel direction of rotation invert actively
+    f3_1 : BOOL;  
+    f3_2 : BOOL;  
+    f3_3 : BOOL;  
+    f3_4 : BOOL;  
+    f3_5 : BOOL;  
+    f3_6 : BOOL;  
+    f3_7 : BOOL;  
+   END_STRUCT ; 
+   E_T_PrewarnLimit : BOOL ;    //Tool prewarn limit reached
+   E_T_Limit : BOOL ;   //Tool limit reached 
+   E_NewReplT : BOOL ;  //Transition to new replacement tool 
+   E_LastReplT : BOOL ; //last replacement tool of the tool group
+   f344_4 : BOOL;
+   f344_5 : BOOL;   
+   f344_6 : BOOL;
+   f344_7 : BOOL;   
+   f345 : BYTE ;
+   f346 : BYTE ;
+   f347 : BYTE ;
+   E_T_NoPrewarnLimit : DINT ;  //T number for tool prewarn limit
+   E_T_NoLimit : DINT ; //T number for tool limit
+   E_NewReplT_No : DINT ;   //T number of the new replacement tool
+   E_LastReplT_No : DINT ;  //T number of the last replacement tool
+   E_Cycle_Sig : ARRAY  [0 .. 15 ] OF BOOL ;  //Cycles Input Signals 
+   A_Cycle_Sig : ARRAY  [0 .. 15 ] OF BOOL ;  //Cycles Output Signals 
+   E_OEM_TechnoSig : ARRAY  [0 .. 31 ] OF BOOL ;  //OEM Techno Input Signals 
+   A_OEM_TechnoSig : ARRAY  [0 .. 31 ] OF BOOL ;  //OEM Techno Output Signals 
+   ProgEventDispl       : BYTE ;    // ProgEventDisplay
+   E_CollCheckStop      : BOOL;     // Stop of Collision Check
+   E_StopCondition      : BOOL ;    // Stop Condition
+   f377_2 : BOOL ;
+   f377_3 : BOOL ;
+   f377_4 : BOOL ;
+   f377_5 : BOOL ;
+   f377_6 : BOOL ;
+   f377_7 : BOOL ;
+   E_AnyAsup : BOOL ;         // AnyASUP activ
+   E_SilentAsup : BOOL ;      // Silent ASUP activ
+   f378_2 : BOOL ;
+   f378_3 : BOOL ;
+   f378_4 : BOOL ;
+   f378_5 : BOOL ;
+   f378_6 : BOOL ;
+   f378_7 : BOOL ;
+   f379 : BYTE ;
+   f380 : ARRAY  [0 .. 31 ] OF BOOL ;  //Reserved
+   A_ProgJump : BOOL;         // control program jump
+   f384_1 : BOOL;
+   f384_2 : BOOL;
+   f384_3 : BOOL;
+   f384_4 : BOOL;
+   f384_5 : BOOL;
+   f384_6 : BOOL;
+   f384_7 : BOOL;
+   f385 : BYTE ;
+   f386 : WORD ;
+   E_TransfoNo : BYTE;        // active Transformation No.
+   f389        : BYTE;
+   f390        : WORD;
+  END_STRUCT ;  
+END_TYPE
+
+
+//***** Axis-/Spindle-UDT *****
+
+TYPE UDT 31
+//**************************************************************************
+
+
+  STRUCT    
+   A_FD_OR : BYTE ; //Feedrate override
+   A_DriveEnable : BOOL ;   //Drive test movement enable
+   A_AckFixedStop : BOOL ;  //Acknowledge fixed stop reached
+   A_SensorFixedStop : BOOL ;   //Sensor fixed stop
+   A_ASpDisable : BOOL ;    //Axis/spindle disable
+   A_Follow_upMode : BOOL ; //Follow-up mode
+   A_PosMeas1 : BOOL ;  //Position measuring system 1
+   A_PosMeas2 : BOOL ;  //Position measuring system 2
+   A_ORactive : BOOL ;  //Override active
+   A_SWCam : BOOL ; //SW cam activation
+   A_ContrEnable : BOOL ;   //Controller enable
+   A_DelDTGSpReset : BOOL ; //Delete distance to go/Spindle-Reset
+   A_Clamp : BOOL ; //Clamping in progress
+   A_RefVal1 : BOOL ;   //Reference point value 1
+   A_RefVal2 : BOOL ;   //Reference point value 2
+   A_RefVal3 : BOOL ;   //Reference point value 3
+   A_RefVal4 : BOOL ;   //Reference point value 4
+   A_ExtZO : BOOL ; //Import external ZO
+   A_EnabTravFixedStop : BOOL ; //Enable travel to fixed stop
+   A_FixedFD1 : BOOL ;  //Activate fixed feed 1
+   A_FixedFD2 : BOOL ;  //Activate fixed feed 2
+   A_FixedFD3 : BOOL ;  //Activate fixed feed 3
+   A_FixedFD4 : BOOL ;  //Activate fixed feed 4
+   A_VelocSpeedLimit : BOOL ;   //Velocity/spindle speed limitation
+   A_PrgtestAxRel : BOOL ;    // Program test axis/spindle release
+   A_HW1 : BOOL ;   //Activate handwheel 1
+   A_HW2 : BOOL ;   //Activate handwheel 2
+   A_HW3 : BOOL ;   //Activate handwheel 3
+   A_FDSpStop : BOOL ;  //Feed stop/spindle stop
+   A_Disable : BOOL ;   //Traversing key disable
+   A_RapidTrOR : BOOL ; //Rapid traverse override
+   A_Minus : BOOL ; //Traversing key minus
+   A_Plus : BOOL ;  //Traversing key plus
+   A_INC1 : BOOL ;  //INC1
+   A_INC10 : BOOL ; //INC10
+   A_INC100 : BOOL ;    //INC100
+   A_INC1000 : BOOL ;   //INC1000
+   A_INC10000 : BOOL ;  //INC10000
+   A_INCVar : BOOL ;    //INC variable
+   A_OEMAxis : BYTE ;   //OEM axis signals
+   A_InvHWDirOfRot : BOOL;    // Inverting handwheel direction of rotation
+   f7_1  : BOOL;
+   f7_2  : BOOL;
+   f7_3  : BOOL;
+   f7_4  : BOOL;
+   f7_5  : BOOL;
+   f7_6  : BOOL;
+   f7_7  : BOOL;
+   A_NCASpChanA : BOOL ;    //Assign NC axis/spindle channel A
+   A_NCASpChanB : BOOL ;    //Assign NC axis/spindle channel B
+   A_NCASpChanC : BOOL ;    //Assign NC axis/spindle channel C
+   A_NCASpChanD : BOOL ;    //Assign NC axis/spindle channel D
+   A_NCASpStrobe : BOOL ;   //Activation of assignment with pos. edge
+   f8_5 : BOOL ;    
+   f8_6 : BOOL ;    
+   A_PLCASp : BOOL ;    //Request PLC axis/spindle
+   A_Para_A : BOOL ;    //Parameter block servo A
+   A_Para_B : BOOL ;    //Parameter block servo B 
+   A_Para_C : BOOL ;    //Parameter block servo C 
+   A_LockParSetDef : BOOL ; //Lock parameter set definition from NC
+   f9_4 : BOOL ;    
+   f9_5 : BOOL ;    
+   f9_6 : BOOL ;    
+   f9_7 : BOOL ;    
+   A_REPOSDelay : BOOL ;    //REPOS DELAY
+   f10_1 : BOOL ;   
+   f10_2 : BOOL ;   
+   f10_3 : BOOL ;   
+   f10_4 : BOOL ;   
+   f10_5 : BOOL ;   
+   f10_6 : BOOL ;   
+   f10_7 : BOOL ;   
+   A_StartBrakeTest : BOOL;   // Start brake test
+   f11_1 : BOOL;
+   f11_2 : BOOL;
+   f11_3 : BOOL;
+   f11_4 : BOOL;
+   f11_5 : BOOL;
+   f11_6 : BOOL;
+   f11_7 : BOOL;
+   A_HWLimitMinus : BOOL ;  //Hardware limit switch minus
+   A_HWLimitPlus : BOOL ;   //Hardware limit switch plus
+   A_SWLimit2Minus : BOOL ; //2nd software limit switch minus
+   A_SWLimit2Plus : BOOL ;  //2nd software limit switch plus
+   A_ModuloLimitEn : BOOL ;   // Modulo limit enabled
+   f12_5 : BOOL ;   
+   f12_6 : BOOL ;   
+   A_DelayRef : BOOL ;        //Delay reference point approach
+   A_JogFixPPos0  : BOOL;     // JogFixPointPos 0
+   A_JogFixPPos1  : BOOL;     // JogFixPointPos 1
+   A_JogFixPPos2  : BOOL;     // JogFixPointPos 2
+   A_JogToPos : BOOL;         // Jog to position
+   f13_4 : BOOL;
+   f13_5 : BOOL;
+   f13_6 : BOOL;
+   f13_7 : BOOL;
+
+
+   A_ProgtestSuppress   : BOOL;  // Program test to supress
+   A_ProgtestActivate   : BOOL;  // Program test activate
+   f14_2                : BOOL;
+   f14_3                : BOOL;
+   f14_4                : BOOL;
+   f14_5                : BOOL;
+   f14_6                : BOOL;
+   f14_7                : BOOL;
+   f15                  : BYTE;
+
+   A_ActGearA : BOOL ;  //Actual gear stage A
+   A_ActGearB : BOOL ;  //Actual gear stage B
+   A_ActGearC : BOOL ;  //Actual gear stage C
+   A_GearChangeOv : BOOL ;  //Gear has changed over
+   A_Sp1Syn : BOOL ;    //Re-synchronize spindle 1
+   A_Sp2Syn : BOOL ;    //Re-synchronize spindle 2
+   A_NoMonitorGear : BOOL ; //No monitoring when changing gear
+   A_DeleteS : BOOL ;   //Delete S value
+   A_FD_ORSp : BOOL ;   //Feedrate override for spindle valid
+   f17_1 : BOOL ;   
+   f17_2 : BOOL ;   
+   f17_3 : BOOL ;   
+   A_Sp1SynP : BOOL ;   //Re-synchronize spindle 1 f. positioning
+   A_Sp2SynP : BOOL ;   //Re-synchronize spindle 2 f. positioning
+   A_M3M4Inv : BOOL ;   //Invert M3/M4
+   f17_7 : BOOL ;   
+   f18_0 : BOOL ;   
+   f18_1 : BOOL ;   
+   f18_2 : BOOL ;   
+   f18_3 : BOOL ;   
+   A_OscilPLC : BOOL ;  //Oscillation via PLC
+   A_OscilSpeed : BOOL ;    //enable Oscillation
+   A_SetRotDirectRight : BOOL ; //Setpoint osci. direct. right
+   A_SetRotDirectLeft : BOOL ;  //Setpoint osci. direct. left
+   A_SpOR : BYTE ;  //Spindle override
+   f20_0 : BOOL ;   
+   A_RUEncQuStop : BOOL ;   //Run-up encoder quick stop
+   f20_2 : BOOL ;   
+   A_SpeedSetpSmooth : BOOL ;   //Speed setpoint smoothing
+   f20_4 : BOOL ;   
+   A_HoldBrakeToOpen : BOOL ;   // holding brake open   
+   f20_6 : BOOL ;   
+   f20_7 : BOOL ;   
+   A_ParA : BOOL ;  //Parameter set selection A
+   A_ParB : BOOL ;  //Parameter set selection B
+   A_ParC : BOOL ;  //Parameter set selection C
+   A_MotA : BOOL ;  //Motor selection A
+   A_MotB : BOOL ;  //Motor selection B
+   A_MotOK : BOOL ; //Motor selected
+   A_IntegratDisable : BOOL ;   //n controller integrator disable
+   A_PulseEnable : BOOL ;   //Pulse enable
+
+   A_SG_SBH : BOOL ;         //Deselection SG/SBH
+   A_SBH : BOOL ;                //Deselection of safe standstill
+   f22_2 : BOOL ; 
+   A_SGselect0 : BOOL ;          //Selection SG bit 0
+   A_SGselect1 : BOOL ;          //Selection SG bit 1
+   f22_5 : BOOL ; 
+   f22_6 : BOOL ; 
+   f22_7 : BOOL ; 
+   A_Transmiss0 : BOOL ;         //Selection Transmission bit 0
+   A_Transmiss1 : BOOL ;         //Selection Transmission bit 1
+   A_Transmiss2 : BOOL ;         //Selection Transmission bit 2
+   f23_3 : BOOL ; 
+   A_SE : BOOL ;                   //Selection SE
+   A_BrakeToClose : BOOL ;       //Sinamics: Brake to close
+   f23_6 : BOOL ; 
+   A_TestStop : BOOL ;           //Activate test stop
+
+   A_RotationMonit : BOOL ;   // Stepper motor: Rotation monitoring
+   A_ControlAx : BOOL ;       // Control Axis
+   f24_2 : BOOL ;   
+   f24_3 : BOOL ;   
+   A_TorqComp : BOOL;               // Torque compensation
+   A_ChangSetpOutAss0 : BOOL ;      // Bit value for CTRLOUT_changed - Change setpoint output assignment
+   A_ChangSetpOutAss1 : BOOL ;      // Bit value for CTRLOUT_changed - Change setpoint output assignment
+   A_MS : BOOL ;                    //Master / Slave On
+   f25 : BYTE ; 
+   f26_0 : BOOL ;   
+   f26_1 : BOOL ;   
+   f26_2 : BOOL ;   
+   A_CompContr : BOOL ; //Compensation controller On
+   A_FollowAxOv : BOOL ;    //Enable following axis override    
+   f26_5 : BOOL ;   
+   f26_6 : BOOL ;   
+   f26_7 : BOOL ;
+   A_DEPMCS : BOOL;           // Resume: DEPMCS
+   A_DEPBCS : BOOL;           // Resume: DEPBCS
+   A_Corr : BOOL;             // Resume: Corr
+   A_HIAxMove : BOOL;         // Resume: HIAxMove
+   A_StopDEPMCS : BOOL;     // Stop: DEPMCS
+   A_StopDEPBCS : BOOL;     // Stop: DEPBCS
+   A_StopCorr : BOOL;       // Stop: Corr
+   A_StopHIAxMove : BOOL;   // Stop: HIAxMove   
+   A_OscillAxExtRev : BOOL ;  // OscillAxExtReversal
+   A_AxReset : BOOL ;         // AXRESET
+   A_AxResume : BOOL ;        // AXRESUME
+   A_SetRP : BOOL ; //Set reversal point
+   A_ChangeRP : BOOL ;  //Change reversal point
+   A_StopRP : BOOL ;    //Stop at next reversal point
+   A_Stop : BOOL ;  //Stop
+   A_PLCAxis : BOOL ;   //PLC checks axis
+   f29_0 : BOOL ;   
+   f29_1 : BOOL ;   
+   f29_2 : BOOL ;   
+   f29_3 : BOOL ;   
+   A_StartGantSynRun : BOOL ;   //Start gantry synchronization run
+   A_NoAutoSync : BOOL ;    //No auto sync
+   f29_6 : BOOL ;   
+   f29_7 : BOOL ;
+   A_StopSpindle : BOOL ;   //Stop spindle
+   A_StartCW : BOOL ;   //Start spindle Clockwise
+   A_StartCCW : BOOL ;  //Start spindle Counterclockwise
+   A_AutoGearStep : BOOL ;  //Autom. gear step change
+   A_PosSpindle : BOOL ;    //Position spindle
+   f30_5 : BOOL ;   
+   f30_6 : BOOL ;   
+   f30_7 : BOOL ;   
+   f31_0 : BOOL;
+   f31_1 : BOOL;
+   f31_2 : BOOL;
+   f31_3 : BOOL;
+   A_Resynchronize : BOOL;    // Resynchronize
+   A_DisSync : BOOL;          // Disable synchronization
+   A_Tracksync : BOOL;        // Track synchronism
+   A_DelSyncRunCorr : BOOL;      // Deleting synchronous run correction
+   f32_0 : BOOL ; 
+   f32_1 : BOOL ; 
+   A_extStopA : BOOL ;           //Deselection external Stop A
+   A_extStopC : BOOL ;           //Deselection external Stop C
+   A_extStopD : BOOL ;           //Deselection external Stop D
+   A_extStopE : BOOL ;           //Deselection external Stop E
+   f32_6 : BOOL ; 
+   f32_7 : BOOL ; 
+   f33_0 : BOOL ; 
+   f33_1 : BOOL ; 
+   f33_2 : BOOL ; 
+   f33_3 : BOOL ; 
+   A_SGcorr_0 : BOOL ;          //Selection SG-correction Bit 0
+   A_SGcorr_1 : BOOL ;          //Selection SG-correction Bit 1
+   A_SGcorr_2 : BOOL ;          //Selection SG-correction Bit 2
+   A_SGcorr_3 : BOOL ;          //Selection SG-correction Bit 3
+
+   f34 : ARRAY  [34 .. 55 ] OF BYTE ;   
+   A_FeedDriveCAxEng : BOOL;  // Seperate feed drive as C axis engaged
+   A_SpSpeedDisp : BOOL;      // Spindle speed display
+   A_SpInsideClamp : BOOL;    // Spindle inside clamping
+   f56_3 : BOOL;
+   f56_4 : BOOL;
+   f56_5 : BOOL;   
+   f56_6 : BOOL;   
+   f56_7 : BOOL;   
+   f57 : BYTE;
+   f58 : WORD;    // FC18: internal 
+   E_SpNA : BOOL ;  //Spindle/no axis
+   E_NCU_Link : BOOL ;  //NCU_link active axis
+   E_EncodFreq1 : BOOL ;    //Encoder limit frequency 1 exceeded
+   E_EncodFreq2 : BOOL ;    //Encoder limit frequency 2 exceeded
+   E_RefSyn1 : BOOL ;   //Referenced/synchronized 1
+   E_RefSyn2 : BOOL ;   //Referenced/synchronized 2
+   E_ExactCoarse : BOOL ;   //Position reached with exact stop coarse
+   E_ExactFine : BOOL ; //Position reached with exact stop fine
+   E_TravRequ : BOOL ;  //Travel request
+   E_AxialAlarm : BOOL ;   // Axial alarm
+   E_AxisReady : BOOL ; //Axis ready
+   E_Follow_upMode : BOOL ; //Follow-up mode active
+   E_Stat : BOOL ;  //Axis/spindle stationary (n<nmin)
+   E_PositContr : BOOL ;    //Position controller active
+   E_SpeedContr : BOOL ;    //Speed controller active
+   E_CurrentContr : BOOL ;  //Current controller active
+   E_SWCam : BOOL ; //Software cams active
+   E_HWOverlay : BOOL ; //Handwheel overlay active
+   E_RevFD : BOOL ; //Revolutional feedrate active
+   E_MeasAct : BOOL ;   //Measuring active
+   E_ActTravFStop : BOOL ;  //Activate travel to fixed stop
+   E_FixedStop : BOOL ; //Fixed stop reached
+   E_ForceFixedStop : BOOL;      // Force fixed stop limited
+   E_AxContainerRot : BOOL;      // Axis container rotation active
+   E_AxReset : BOOL;          // Axis reset done
+   E_PLCCtrlAx : BOOL;        // PLCcontrolled axis
+   E_AxStop : BOOL;           // Axis stop active
+   E_AxSpDisable : BOOL;      // Axis/spindle disable active
+   E_StopDEPMCS : BOOL;       // stop DEPMCS active
+   E_StopDEPBCS : BOOL;       // stop DEPBCS active
+   E_StopCorr : BOOL;         // stop Corr active
+   E_StopHIAxMove : BOOL;     // Stop HIAxMove active
+   E_HW1 : BOOL ;   //Handwheel 1 active
+   E_HW2 : BOOL ;   //Handwheel 2 active
+   E_HW3 : BOOL ;   //Handwheel 3 active
+   f64_3 : BOOL ;   
+   E_TReqMinus : BOOL ;   // Travel request minus
+   E_TReqPlus : BOOL ;   // Travel request plus
+   E_TCMinus : BOOL ;   //Traverse command minus
+   E_TCPlus : BOOL ;    //Traverse command plus
+   E_INC1 : BOOL ;  //INC1
+   E_INC10 : BOOL ; //INC10
+   E_INC100 : BOOL ;    //INC100
+   E_INC1000 : BOOL ;   //INC1000
+   E_INC10000 : BOOL ;  //INC10000
+   E_INCVar : BOOL ;    //INC variable
+   f65_6 : BOOL;
+   f65_7 : BOOL;
+   E_OEMAxis : BYTE ;   //OEM axis signals
+   E_InvHWDirOfRot : BOOL;    // Handwheel direction of rotation invert actively
+   f67_1 : BOOL;
+   f67_2 : BOOL;
+   f67_3 : BOOL;
+   f67_4 : BOOL;
+   f67_5 : BOOL;
+   f67_6 : BOOL;
+   f67_7 : BOOL;
+   E_NCASpChanA : BOOL ;    //NC axis/spindle in channel A
+   E_NCASpChanB : BOOL ;    //NC axis/spindle in channel B
+   E_NCASpChanC : BOOL ;    //NC axis/spindle in channel C
+   E_NCASpChanD : BOOL ;    //NC axis/spindle in channel D
+   E_PLCType : BOOL ;   //New type requested by PLC
+   E_ChPoss : BOOL ;    //Change axis possible
+   E_NeutrASp : BOOL ;  //Neutral axis/spindle
+   E_PLCASp : BOOL ;    //PLC axis/spindle
+   E_ParS_A : BOOL ;    //Parameter block servo A
+   E_ParS_B : BOOL ;    //Parameter block servo B
+   E_ParS_C : BOOL ;    //Parameter block servo C
+   E_NCUNumLink_3 : BOOL;
+   E_NCUNumLink_4 : BOOL;
+   E_NCUNumLink_5 : BOOL;
+   E_NCUNumLink_6 : BOOL;
+   E_NCUNumLink_7 : BOOL;
+   E_ReposSh : BOOL ;      // Repos shift
+   E_ReposShValid : BOOL;     // Repos shift valid
+   E_ReposDelayQuit : BOOL;   // Repos delay quit
+   f70_3 : BOOL;
+   f70_4 : BOOL;
+   f70_5 : BOOL;
+   f70_6 : BOOL;
+   f70_7 : BOOL;   
+   E_BrakeTest: BOOL;         // Brake test active
+   f71_1 : BOOL;   
+   f71_2 : BOOL;   
+   f71_3 : BOOL;   
+   E_POS_RESTORED1 : BOOL;    // POS_RESTORED 1
+   E_POS_RESTORED2 : BOOL;    // POS_RESTORED 2
+   f71_6 : BOOL;   
+   E_PLCAxDedic : BOOL;       // PLC Axis dedicated
+   E_MMC_REPOSDelay : BOOL ;    //MMC REPOS DELAY
+   f72_1 : BOOL ;   
+   f72_2 : BOOL ;   
+   f72_3 : BOOL ;   
+   f72_4 : BOOL ;   
+   f72_5 : BOOL ;   
+   f72_6 : BOOL ;   
+   f72_7 : BOOL ;   
+   f73 : BYTE ; 
+   f74_0 : BOOL;
+   f74_1 : BOOL;
+   f74_2 : BOOL;
+   f74_3 : BOOL;   
+   E_ModLimEnAct : BOOL;      // Modulo limit enabled active
+   f74_5 : BOOL;
+   f74_6 : BOOL;
+   f74_7 : BOOL;   
+   E_JogFixPPos0Act     : BOOL ;    // JogFixPointPos 0 active
+   E_JogFixPPos1Act     : BOOL ;    // JogFixPointPos 1 active
+   E_JogFixPPos2Act     : BOOL ;    // JogFixPointPos 2 active
+   E_JogFixPPos0        : BOOL ;    // JogFixPointPos 0 reached
+   E_JogFixPPos1        : BOOL ;    // JogFixPointPos 1 reached
+   E_JogFixPPos2        : BOOL ;    // JogFixPointPos 2 reached
+   E_JogToPos           : BOOL ;    // Jog to position active
+   E_JogPos             : BOOL ;    // Jog position reached
+   E_ScratchPulse : BOOL ;  //Scratch pulse
+   f76_1 : BOOL ;   
+   f76_2 : BOOL ;   
+   f76_3 : BOOL ;   
+   E_PathAxis : BOOL ;        // Path axis
+   E_PosAxis : BOOL ;   //Positioning axis
+   E_IndexAxisPos : BOOL ;  //Indexing axis in position
+   E_CurvePos : BOOL ;  //Curve axis in position
+   E_CollCheckRedSpeed : BOOL; //reduced speed of Collisions Check
+   f77_1 : BOOL ;   
+   f77_2 : BOOL ;   
+   f77_3 : BOOL ;   
+   f77_4 : BOOL ;   
+   f77_5 : BOOL ;   
+   f77_6 : BOOL ;   
+   f77_7 : BOOL ;   
+   E_FPosAxis : REAL ;  //F function (REAL format) for positioning axes
+   E_SetpGearA : BOOL ; //Setpoint gear stage A
+   E_SetpGearB : BOOL ; //Setpoint gear stage B
+   E_SetpGearC : BOOL ; //Setpoint gear stage C
+   E_GearChange : BOOL ;    //Gear changeover
+   f82_4 : BOOL ;   
+   f82_5 : BOOL ;   
+   f82_6 : BOOL ;   
+   f82_7 : BOOL ;   
+   E_SpeedLimit : BOOL ;    //Speed limit exceeded
+   E_SetSpeedLimit : BOOL ; //Setpoint speed limited
+   E_SetSpeedIncreased : BOOL ; //Setpoint speed increased
+   E_GeoMonit : BOOL ;  //Geometry monitoring
+   E_SupportAreaViol : BOOL ;   //Support area limits violated
+   E_SetRange : BOOL ;  //Spindle in setpoint range
+   E_SpeedMonit : BOOL ;    //Speed monitoring
+   E_ActRotRight : BOOL ;   //Actual rotation direction right
+   E_ConstCuttSpeed : BOOL ;    //Const. cutting speed active
+   E_SUG : BOOL ;   //SUG active (grinding wheel surface speed)
+   E_CLG : BOOL ;   //CLG active
+   E_Tapping : BOOL ;   //Tapping without compensating chuck
+   E_SyncMode : BOOL ;  //Synchronous mode spindle active
+   E_PosMode : BOOL ;   //Positioning mode spindle active
+   E_OscillMode : BOOL ;    //Oscillation mode spindle active
+   E_ContrMode : BOOL ; //Control mode spindle active
+   E_ToolDynLimit : BOOL;     // Tool with limit of dynamics
+   f85_1 : BOOL;
+   f85_2 : BOOL;
+   f85_3 : BOOL;
+   f85_4 : BOOL;
+   E_SpInPosition : BOOL;     // Spindle in position
+   f85_6 : BOOL;
+   f85_7 : BOOL;
+   E_MFunct : INT ; //M function (INT) for spindle
+   E_SFunct : REAL ;    //S function (REAL) for spindle
+   f92_0    : BOOL;
+   E_RUEncDisabl : BOOL ;           //Run-up encoder disable active
+   f92_2    : BOOL;
+   E_SpeedSetpSmooth : BOOL ;       //Speed setpoint smoothing active
+   E_RLIact : BOOL ;                // RLI active
+   E_HoldBrakeOpened : BOOL ;       // Holding brake opened
+   f92_6 : BOOL ;
+   f92_7 : BOOL ;   
+   E_ParA : BOOL ;  //Active parameter set A
+   E_ParB : BOOL ;  //Active parameter set B
+   E_ParC : BOOL ;  //Active parameter set C
+   E_MotA : BOOL ;  //Active motor A
+   E_MotB : BOOL ;  //Active motor B
+   E_MotOK : BOOL ; //Drive ready
+   E_IntegratDisable : BOOL ;   //n controller integrator disabled
+   E_PulseEnable : BOOL ;   //Pulses enabled
+   E_MTempWarn : BOOL ; //Temperature prewarning motor
+   E_HTempWarn : BOOL ; //Temperature prewarning heat sink
+   E_RUComplete : BOOL ;    //Ramp-up complete
+   E_MdMdx : BOOL ; //Md<Mdx
+   E_NactNmin : BOOL ;  //nact<nmin
+   E_NactNx : BOOL ;    //nact<nx
+   E_NactNset : BOOL ;  //nact<nset
+   E_Message : BOOL ;   //Variable message function
+   E_UDClessAlThreshold : BOOL ;    //UDC-link < alarm threshold
+   f95_1 : BOOL;
+   f95_2 : BOOL;
+   f95_3 : BOOL;
+   f95_4 : BOOL;
+   f95_5 : BOOL;
+   f95_6 : BOOL;
+   f95_7 : BOOL;    // Power Section I2T limit
+   E_SpindleMonit : BOOL ;  //Error spindle monitoring
+   E_AxisCtrl : BOOL ;              // Axis control active
+   E_MSFine : BOOL ;                // Master/Slave fine
+   E_MSCoarse : BOOL ;              // Master/Slave coarse
+   E_MSCompContr : BOOL ;           // Master/Slave Compensation controller activ
+   E_BitValCtrlOutChang0 : BOOL ;   // Bit value for CTRLOUT_changed 0:  Change setpoint output assignment
+   E_BitValCtrlOutChang1 : BOOL ;   // Bit value for CTRLOUT_changed 1:  Change setpoint output assignment   
+   E_MS : BOOL ;    //Master/ slave active
+   f97 : BYTE ; 
+   E_SyncronFine : BOOL ;   //Synchronism fine
+   E_SyncronCoarse : BOOL ; //Synchronism coarse
+   E_ActValCoupling : BOOL ;    //Actual value coupling
+   f98_3 : BOOL ;
+   E_OverlayMotion : BOOL ; //Overlaid motion
+   E_SWL : BOOL ;   //Speed warning limit reached
+   E_AWL : BOOL ;   //Acceleration warning limit reached
+   E_EmRetr : BOOL ;    //Emergency retraction active
+   E_MasterSp : BOOL ;  //Master spindle
+   E_SlaveSp : BOOL ;   //Slave spindle
+   E_SyncRunCorrDOut : BOOL ;    // Synchronous run correction driven out
+   E_AxisAccel : BOOL ; //Axis accelerated
+   E_Sync : BOOL ;  //Synchronization active
+   E_MSR : BOOL ;   //Max speed reached
+   E_MAR : BOOL ;   //Max acceleration reached
+   f99_7 : BOOL ;   
+   f100_0 : BOOL ;  
+   f100_1 : BOOL ;  
+   E_OscillAxExtRev : BOOL ;  // OscillAxExt Reversal active
+   E_StopOscill : BOOL ;    //Oscillation cannot start
+   E_ErrorOscill : BOOL ;   //Error during oscillation
+   E_SparkOut : BOOL ;  //Spark-out active
+   E_OscillMotion : BOOL ;  //Oscillation motion active
+   E_Oscill : BOOL ;    //Oscillation active
+   f101_0 : BOOL ;  
+   f101_1 : BOOL ;  
+   E_GantCOLimit : BOOL ;   //Gantry cut-off limit exceeded
+   E_GantWarn : BOOL ;  //Gantry warning limit exceeded
+   E_SynRunStart : BOOL ;   //Synchronization run ready to start
+   E_GantGroupSyn : BOOL ;  //Gantry grouping is synchronous
+   E_GantLeadAxis : BOOL ;  //Gantry leading axis
+   E_GantAxis : BOOL ;  //Gantry axis
+   f102 : BYTE ; 
+   E_SyncRunCorrIncl : BOOL;  // Synchronous run correction is included
+   f103_1            : BOOL;
+   f103_2            : BOOL;
+   f103_3            : BOOL;
+   f103_4            : BOOL;
+   f103_5            : BOOL;
+   f103_6            : BOOL;
+   f103_7            : BOOL;
+   E_AIAxis : ARRAY  [1 .. 31 ] OF BOOL ;   //Active infeed axis[1..31]
+   E_SG_SBH : BOOL ;    //Active SG/SBH
+   E_ErrLifeS_CRC : BOOL ;    // Error lifesign or CRC-error
+   E_ImpdelNCK : BOOL ; //Delete pulses NCK
+   r108_3 : BOOL ;  
+   r108_4 : BOOL ;  
+   r108_5 : BOOL ;  
+   r108_6 : BOOL ;  
+   E_SRef : BOOL ;  //Axis safely referenced
+   E_SN1Plus : BOOL ;   //Actual position > cam position SN1+
+   E_SN1Minus : BOOL ;  //Actual position > cam position SN1-
+   E_SN2Plus : BOOL ;   //Actual position > cam position SN2+
+   E_SN2Minus : BOOL ;  //Actual position > cam position SN2-
+   E_SN3Plus : BOOL ;   //Actual position > cam position SN3+
+   E_SN3Minus : BOOL ;  //Actual position > cam position SN3-
+   E_SN4Plus : BOOL ;   //Actual position > cam position SN4+
+   E_SN4Minus : BOOL ;  //Actual position > cam position SN4-
+   f110_0 : BOOL ;  
+   E_SBH : BOOL ;   //Active SBH
+   f110_2 : BOOL ;  
+   E_SG_0 : BOOL ;  //Active SG 0
+   E_SG_1 : BOOL ;  //Active SG 1
+   E_n_nx : BOOL ;  //n < nx
+   f110_6 : BOOL ;  
+   f110_7 : BOOL ;  
+   f111_0 : BOOL ;  
+   f111_1 : BOOL ;  
+   f111_2 : BOOL ;  
+   f111_3 : BOOL ;  
+   E_StopAB : BOOL ;    //Stop A/B active
+   E_StopC : BOOL ; //Stop C active
+   E_StopD : BOOL ; //Stop D active
+   E_StopE : BOOL ; //Stop E active
+
+   E_CamRangeTr1 : BYTE;      //Cam Range for Cam Track 1
+   E_CamRangeTr2 : BYTE;      //Cam Range for Cam Track 2
+   E_CamRangeTr3 : BYTE;      //Cam Range for Cam Track 3
+   E_CamRangeTr4 : BYTE;      //Cam Range for Cam Track 4
+   f116 : BYTE;
+   E_CamTrack1 : BOOL;        //Cam Track 1
+   E_CamTrack2 : BOOL;        //Cam Track 2
+   E_CamTrack3 : BOOL;        //Cam Track 3
+   E_CamTrack4 : BOOL;        //Cam Track 4
+   f117_4 : BOOL;
+   f117_5 : BOOL;
+   f117_6 : BOOL;
+   f117_7 : BOOL;
+   E_CamRangeBitTr1 : ARRAY  [0 .. 14 ] OF //Cam Range Bits for Cam Track 1
+    BOOL ;
+   E_CamRangeBitTr2 : ARRAY  [0 .. 14 ] OF //Cam Range Bits for Cam Track 2
+    BOOL ;
+   E_CamRangeBitTr3 : ARRAY  [0 .. 14 ] OF //Cam Range Bits for Cam Track 3
+    BOOL ;
+   E_CamRangeBitTr4 : ARRAY  [0 .. 14 ] OF //Cam Range Bits for Cam Track 4
+    BOOL ;
+   f126           : WORD;        // internal 
+   E_MMC_ProgtestSuppress  : BOOL;  // HMI->PLC: Program test to supress
+   E_MMC_ProgtestActivate  : BOOL;  // HMI->PLC: Program test activate
+   f128_2            : BOOL;
+   f128_3            : BOOL;
+   f128_4            : BOOL;
+   f128_5            : BOOL;
+   f128_6            : BOOL;
+   f128_7            : BOOL;
+   f129              : BYTE;
+   f130              : WORD;
+   E_SensorAv        : BOOL;     // Sensors available
+   E_S1aMeasARod     : BOOL;     // Sensor S1: analogous measurement position of actuating rod
+   f132_2            : BOOL;
+   f132_3            : BOOL;
+   E_S4dPistonStopP  : BOOL;     // Sensor S4: digital value piston stop position
+   E_S5dAngleShaft   : BOOL;     // Sensor S5: digital value angle situation shaft
+   f132_6            : BOOL;
+   f132_7            : BOOL;
+   f133              : BYTE;
+   E_ClampingState   : INT;      // state of the clamping system
+   E_AnalogSensor    : INT;      // analog sensor on the motor
+   f138_0            : BOOL;
+   f138_1            : BOOL;
+   f138_2            : BOOL;
+   f138_3            : BOOL;
+   E_S4PistonStopP   : BOOL;     // Sensor S4: piston stop position
+   E_S5AngleShaft    : BOOL;     // Sensor S5: angle situation shaft
+   f138_6            : BOOL;
+   f138_7            : BOOL;
+   f139              : BYTE;
+
+  END_STRUCT ;
+END_TYPE
+
+
+
+
+//***** UDT 77 *****
+
+TYPE UDT 77
+//**************************************************************************
+
+//if MCPs via Standard-SDB210 (only 840Di) 
+   STRUCT   
+   MCP1In: ARRAY  [0 .. 7 ] OF BYTE;
+   MCP1Out: ARRAY  [0 .. 7 ] OF BYTE;
+   MCP1StatSend: DWORD;
+   MCP1StatRec: DWORD;
+   MCP2In: ARRAY  [0 .. 7 ] OF BYTE;
+   MCP2Out: ARRAY  [0 .. 7 ] OF BYTE;
+   MCP2StatSend: DWORD;
+   MCP2StatRec: DWORD;
+   
+   BHGIn: ARRAY  [0 .. 5 ] OF BYTE;
+   Filler: ARRAY  [0 .. 5 ] OF BYTE;
+   BHGOut: ARRAY  [0 .. 19 ] OF BYTE;
+   BHGStatSend: DWORD;
+   BHGStatRec: DWORD;
+   END_STRUCT ; 
+END_TYPE
+  
+
+// =========================================================================
+// 
+// =========================================================================
+TYPE UDT 1002
+//**************************************************************************
+
+  STRUCT    
+//Offset 0
+   Chan : ARRAY [1 .. 10] OF STRUCT     //From Channel 1 to Channel 10
+    FDD : ARRAY  [0 .. 15 ] OF //Feed disable
+    BOOL ;  
+    RID : ARRAY  [0 .. 15 ] OF //Read-in disable
+    BOOL ;  
+    NCSD : ARRAY  [0 .. 15 ] OF //NC start disable
+    BOOL ;  
+    FdStop_1 : ARRAY  [0 .. 15 ] OF //Feed stop GEOaxis 1
+    BOOL ;  
+    FdStop_2 : ARRAY  [0 .. 15 ] OF //Feed stop GEOaxis 2
+    BOOL ;  
+    FdStop_3 : ARRAY  [0 .. 15 ] OF //Feed stop GEOaxis 3
+    BOOL ;  
+   END_STRUCT ; 
+//without Alarmno for Chan (120 Byte)
+//Offset 120
+    Axis : ARRAY [1 .. 31] OF STRUCT  //From Axis 1 to Axis 31
+    FdStop : ARRAY  [0 .. 15 ] OF //Feed stop axis/spindle 1
+    BOOL ;  
+   END_STRUCT ; 
+//without Alarmno for Axis (62 Byte)
+//Offset 182
+   ZInfo0 : ARRAY [0 .. 63] OF WORD; //Additional Value for UserAlarms 700000 to 700063
+//Offset 310
+
+   ChanA : ARRAY [1 .. 10] OF STRUCT    //From Channel 1 to Channel 10
+    FDD_5C00xx : ARRAY  [0 .. 15 ] OF //Feed disable A.no.51000-510015
+    BOOL ;  
+    FDD_RID_5C01xx : ARRAY  [0 .. 31 ] OF //Feed and read-in disable A.no.510100-510131
+    BOOL ;  
+    RID_5C02xx : ARRAY  [0 .. 31 ] OF //Read-in disable A.no.510200-510231
+    BOOL ;  
+    NCSD_5C03xx : ARRAY  [0 .. 15 ] OF //NC start disable A.no.510300-510315
+    BOOL ;  
+    FdStop_1_5C11xx : ARRAY  [0 .. 15 ] OF //Feed stop GEOaxis 1 A.no.511100-511115
+    BOOL ;  
+    FdStop_2_5C12xx : ARRAY  [0 .. 15 ] OF //Feed stop GEOaxis 2 A.no.511200-511215
+    BOOL ;  
+    FdStop_3_5C13xx : ARRAY  [0 .. 15 ] OF //Feed stop GEOaxis 3 A.no.511300-511315
+    BOOL ;  
+   END_STRUCT ; 
+//Alarmno for Chan are 5Cxxxx; C is the ChannelNo, except Channel 10. Channel 10 has a value C = 0
+//(180Byte)
+//Offset 490
+    AxisA : ARRAY [1 .. 32] OF STRUCT  //From Axis 1 to Axis 31
+    AAFdStop60AAxx : ARRAY  [0 .. 15 ] OF //Feed stop axis/spindle
+    BOOL ;  
+   END_STRUCT ; 
+//Alarmno for Axis are 60AAxx; A is the Axisno.
+//Offset 554
+   UserA : ARRAY [0 .. 31] OF STRUCT
+   A70UUxx : ARRAY  [0 .. 63 ] OF //Alarm 700000-700063 (user area 0)
+   BOOL ;   
+   END_STRUCT ; 
+//Alarmno for UserAlarms are 7yUUxx; U is the Userarea, y = Db1004.UserDek2No[U]
+  END_STRUCT ;  
+END_TYPE
+
+//SIN_SL
+
