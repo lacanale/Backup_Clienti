@@ -1,0 +1,240 @@
+/*
+	Overwrite style of distrelec-screen.css as to be able to strech
+	search result container over hole screen with vertical bar if necessary.
+*/
+body {
+	overflow: visible;
+}
+
+div#contentarea {
+	width: auto;
+	border-right-width: 0px;
+	right: 0px;
+	overflow: scroll;
+
+    padding-left: 16px;
+	
+	/* add scrollbar style for IE */
+  scrollbar-3dlight-color: #b2b2b2;
+	scrollbar-arrow-color: #b2b2b2;
+	scrollbar-base-color: #FFFFFF;
+	scrollbar-darkshadow-color: #ffffff;
+	scrollbar-face-color: #ffffff;
+	scrollbar-shadow-color: #b2b2b2;
+}
+
+div.contentComplex {
+	overflow: visible;
+}
+
+table.resultFunction
+{
+  width: auto;
+}
+
+td.resultFunctionLabel {
+    font-weight: bold;
+}
+
+select.luceneAttribute {
+    font-size: 11px;
+}
+
+div.attributeClose {
+    padding: 0;
+    display: inline;
+}
+
+div.attributeClose img, div.attributeClose a {
+    border:0;
+    text-decoration:none;
+}
+
+a.attributeFunction {
+    display: block;
+    padding-top: 3px;
+    font-weight: bold;
+}
+
+a.attributeFunctionSet {
+    color: #55AA55;
+}
+
+a.attributeFunctionClear {
+    color: #AA4444;
+}
+
+div#attributeSpacer, div#attributeSpacer img {
+    margin: 0;
+    padding: 0;
+    height: 10px;
+    width:1px;
+    /* ie zoom */
+    _zoom: expression(1.0);
+}
+
+td.luceneResultTitle {
+    font-weight: bold;
+}
+
+/*
+  Styles for the new searchresult view which displays a table of articles (KNM)
+*/
+table.searchresultsArticles {
+	border-collapse: collapse;
+  margin: 0px;
+  padding: 0px;
+}
+
+td.searchresultHeader {
+	color: #1d2877;
+	background-color: #e1e3f6;
+	height: 40px;
+	text-align: left;
+    vertical-align: middle;
+	word-wrap: break-word;
+	font-weight: normal;
+	font-size: 11px;
+    border: 1px solid #b2b2b2;
+    padding: 6px;
+}
+
+td.compare {
+	width: 60px;
+}
+	
+td.infoicons {
+	width: 75px;
+}
+
+td.price {
+  width: 65px;
+}
+
+img.luceneResultSearchThumbs {
+    border: 0 none;
+}
+
+td.searchresultSortRow {
+	background-color: #ebebeb;
+	border-collapse: collapse;
+	border: 1px solid #b2b2b2;
+	font-size: 10px;
+	text-align: center;
+	height: 15px;
+}
+
+table.searchresultsArticles {
+    border-bottom: 1px solid #b2b2b2;
+}
+
+table.searchresultsArticles {
+    border-collapse: collapse;
+}
+
+table.searchresultsArticles td.center {
+	text-align: center;
+}
+
+table.searchresultsArticles td.center a img {
+	border: 0px;
+	text-align: center;
+}
+
+table.searchresultsArticles td.document1 {
+	height: 15px;
+}
+
+table.searchresultsArticles td.document0 {
+	background-color: white;
+	height: 15px;
+}
+
+table.searchresultsArticles td.searchResultCell {
+    border-left: 1px solid #b2b2b2;
+    border-right: 1px solid #b2b2b2;
+}
+
+table.searchresultsArticlesNavigation {
+	font-size: 11px;
+    font-weight: bold;
+    white-space: nowrap;
+}
+
+table.searchresultsArticlesNavigation td {
+	padding-right: 30px;
+    height: 26px;
+    vertical-align: middle;
+}
+
+table.searchresultsArticles td.searchresultProductImage {
+    white-space: nowrap;
+}
+
+/** fix offset */
+table.resultPage {
+    border-collapse: separate;
+}
+
+table.compareNavigation {
+    font-weight:normal;
+}
+
+table.configuratorCompare {
+    border-collapse: collapse;
+}
+
+div.productCutlist {
+    bottom: 20px;
+    _bottom: 5px;
+    width: 1088px;
+}
+
+div#configuratorResultContainer {
+    _height: expression((document.body.clientHeight - 150) + 'px');
+    bottom: 46px;
+}
+/*
+    Result table styles
+ */
+div.spacedIconText {
+    padding-top: 5px;
+}
+
+img.borderLess {
+    border:none;
+}
+
+div.searchAttributeList {
+    font-size: 9px;
+    line-height: 11px;
+}
+
+a.searchBiggerAmount {
+    text-decoration: underline;
+    white-space: nowrap;
+}
+/*
+input.searchFilterCheckBox {
+    margin:0;
+    padding:0;
+} */
+
+table#componentBorder {
+    border-collapse: collapse;
+    padding: 0;
+    margin: 0 0 3px;
+}
+
+table#componentBorder td.componentBorder {
+    border: 1px solid #b2b2b2;
+    border-right: 0;
+    padding:0;
+    margin:0;
+}
+
+table#componentBorder td#productListCell table.searchresultsArticles {
+    margin-left: -1px;
+    margin-top: -1px;
+    margin-bottom: -1px;
+}

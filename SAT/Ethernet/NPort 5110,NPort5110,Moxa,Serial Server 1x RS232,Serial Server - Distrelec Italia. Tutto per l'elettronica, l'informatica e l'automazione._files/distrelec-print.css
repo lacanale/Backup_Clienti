@@ -1,0 +1,192 @@
+/* 
+	DISTRELEC SCREEN CSS 
+
+	CSS for print layout style.
+	
+	ID: $Id $
+	
+	Revision: $Revision $
+	
+	Copyright 2004, IMIS group AG, Switzerland.
+*/
+
+/* BODY STYLE */
+body
+{
+	color: #3d3d3d;
+	font-size: 11px;
+	font-family: Arial, Helvetica, Geneva, Swiss, sans-serif;
+	margin: 0px;
+	padding: 0px;
+	background-color: #ffffff;
+	background-image: none;
+}
+
+/* GLOBAL PAGE LAYOUT STYLES ************************************************ */
+
+/* HEADER containing the whole vertical header bar (incl. Logo); id-selector */
+div#header 
+{
+	display: none;
+}
+
+/* SIDEBAR containing Search, Newletter and Login/Settings-Box; id-selector */
+div#sidebar
+{
+	display: none;
+}
+
+/* SIDEBAR containing Search, Newletter and Login/Settings-Box; id-selector
+
+   In print.css this DIV Should be Displayed as position: static with 
+   overflow: visible.
+
+*/
+div#contentarea
+{
+	
+}
+
+
+/** CUTLINE styles to be displayed at the page bottom */
+/** TAM: Aboslute Positioned bookmark link */
+
+div.bookmarkCutlist
+{
+	display: none;
+}
+
+/* CONTENT LAYOUT STYLES **************************************************** */
+
+/* TAM: Common Area for Content 
+	(scrollbars, padding, height relativ to outer box element) 
+*/
+div.commonContentArea
+{
+	/* no positioning */
+}
+
+/* PRODUCT VIEW STYLES ****************************************************** */
+
+/* TAM: Navigation List (position and height) for product view */
+div.productNavlist
+{
+	display: none;
+}
+
+/* TAM: Product View Cutlist (=legend) */
+div.productCutlist
+{
+	/* no positioning */
+}
+
+/* TAM: container for product view area and producttable area */
+div#productContainer
+{
+	/* no positioning */
+}
+
+/* TAM: Product View Area (Scrollable) */
+div.productViewArea
+{
+	/* no positioning */
+}
+
+/* Product Table Area (contains series and table) */
+div.productTableArea
+{
+	/* no positioning */
+}
+
+/* Product Series selection bar */
+div.productSeries
+{
+	/* no positioning */
+}
+
+/* Product table area (scrollable) */
+div.productTable
+{
+	/* no positioning */
+}
+
+
+
+
+/* LINKBAR STYLES *********************************************************** */
+
+/* The linkbar positioning div */
+div#linkbar
+{
+	display: none;
+}
+
+/* The linkbar on HOME positioning div */
+div#linkbarHome
+{
+	display: none;
+}
+
+/* SEARCH RELATED STYLES **************************************************** */
+
+/* TAM: Search Result scrollable Area */
+div#searchResultContainer
+{
+	/* no positioning */
+}
+
+/* TAM: Product View Cutlist (=legend) */
+div.searchCutlist
+{
+	/* no positioning */
+}
+
+/* ORDERLIST CONTENT STYLES ************************************************* */
+
+/** TAM: Positioned Container for orderlist content */
+div#orderlistContentContainer
+{
+	/* no positioning */
+}
+
+/** TAM: Total sum of orderlist */
+div.orderlistFooter
+{
+	/* no positioning */
+}
+table.document
+{
+	width: 17cm;
+}
+table.documentFooter
+{
+	width: 17cm;
+}
+table.documentFunction
+{
+	width: 17cm;
+}
+
+/* CONFIGURATOR PRINT STYLES ************************************************* */
+
+#configuratorComparePrintButton {
+	display: none;
+}
+
+table.configuratorcompare td, table.configuratorcompare th {
+	/* needed? 	width: 150px;*/
+	border: 1px solid #B2B2B2;
+}
+
+td.comparatorThumb img.comparatorThumb {
+	width: 140px;
+}
+
+table.configuratorcompare td input[type="image"] {
+	/*margin-left: 35px;*/
+	display: none;
+}
+
+div#compareBackButtonContainer {
+    display:none;
+}

@@ -1,0 +1,596 @@
+/* 
+	DISTRELEC SCREEN CSS 
+
+	CSS for screen layout style.
+	
+	ID: $Id: distrelec-screen.css,v 1.21 2006/04/05 18:14:24 tam Exp $
+	
+	Revision: $Revision: 1.21 $
+	
+	Copyright 2004, IMIS group AG, Switzerland.
+*/
+
+/* GLOBAL PAGE LAYOUT STYLES ************************************************ */
+
+/* HEADER containing the whole vertical header bar (incl. Logo); id-selector 
+
+   In print.css set this DIV to display: none;
+
+*/
+div#header 
+{
+	position: absolute;
+	left: 0px;
+	width: 1276px;
+	top: 0px;
+	padding: 0px;
+	padding-top: 0px;
+	height: 58px;
+	background-image: url('bg_header.gif');
+	background-repeat: repeat-x;
+	border: 0px solid #b2b2b2;
+	border-right-width: 1px;
+}
+
+/* SIDEBAR containing Search, Newletter and Login/Settings-Box; id-selector
+
+   In print.css set this DIV to display: none;
+
+*/
+div#sidebar
+{
+	position: absolute;
+	left: 0px;
+	width: 150px;
+	top: 58px;
+	bottom: 0px;
+	background-image: url('bg_sidebar.gif');
+	background-repeat: repeat;
+}
+
+/* SIDEBAR containing Search, Newletter and Login/Settings-Box; id-selector
+
+   In print.css this DIV Should be Displayed as position: static with 
+   overflow: visible.
+
+*/
+div#contentarea
+{
+	position: absolute;
+	left: 151px;
+	width: 1125px;
+	top: 58px;
+	bottom: 0px;
+	background-color: #ffffff;
+	padding: 0px;
+	margin: 0px;
+	border: 0px solid #b2b2b2;
+	border-right-width: 1px;
+}
+
+
+/** CUTLINE styles to be displayed at the page bottom */
+/** TAM: Aboslute Positioned bookmark link */
+
+div.bookmarkCutlist
+{
+	width: 661px;
+	height: 22px;
+	overflow: hidden;
+	text-align: center;
+}
+
+/** GUG: deDE footer */
+div.footer-deDE
+{
+/*	position: absolute;
+	bottom: 0px;
+*/
+	width: 755px;
+	height: 30px;
+	overflow: hidden;
+	text-align: center;
+}
+
+div.documentLegend-deDE
+{
+	margin-top: 15px;
+	width: 661px;
+}
+div.documentLegend-deDE > table
+{
+	border: 0;
+	margin: 0;
+}
+div.documentLegend-deDE td
+{
+	vertical-align:top;
+	font-size: 12px;
+}
+
+table.documentLegend-deDE
+{
+	border: 0;
+	margin: 0;
+	padding:0;
+	position:relative;
+	left: -3px;
+}
+table.documentLegend-deDE td
+{
+	vertical-align:top;
+	font-size: 12px;
+}
+
+table.documentLegend-deDE div.productCutlistText
+{
+	padding-left:0;
+}
+
+/*
+	Sidebar: callback & tech. cons. styles for deDE
+*/
+div.callback-deDE
+{
+	position: absolute;
+	/*bottom: 0px;*/
+	top: 461px;
+	left: 9px;
+}
+div.callback-deDE > a 
+{
+	border:0;
+	text-decoration:none;
+}
+div.callback-deDE img
+{
+	border:0;
+}
+
+/* CONTENT LAYOUT STYLES **************************************************** */
+
+/* TAM: Common Area for Content 
+	(scrollbars, padding, height relativ to outer box element) 
+*/
+div.commonContentArea
+{
+	height: 100%;
+	overflow: auto;
+	padding-left: 16px;
+	-moz-user-focus: normal;
+}
+
+/* PRODUCT VIEW STYLES ****************************************************** */
+
+/* TAM: Navigation List (position and height) for product view */
+div.productNavlist
+{
+	position: absolute;
+	top: 0px;
+	height: 32px;
+	width: 1108px;
+	overflow: hidden;
+}
+
+/* TAM: Product View Cutlist (=legend) */
+div.productCutlist
+{
+	position: absolute;
+	bottom: 0px;
+    left: 16px;
+	width: 1108px;
+	height: 22px;
+	overflow: hidden;
+}
+
+/* TAM: container for product view area and producttable area */
+div#productContainer
+{
+	position: absolute;
+	top: 32px;
+	bottom: 26px;
+	width: 1108px;
+}
+
+/* TAM: Product View Area (Scrollable) */
+div.productViewArea
+{
+	position: absolute;
+	top: 0px;
+	bottom: 50%;
+	overflow: auto;
+	width: 1108px;
+	border: 1px solid #b2b2b2;
+	border-right-width: 0px;
+	scrollbar-3dlight-color: #b2b2b2;
+	scrollbar-arrow-color: #b2b2b2;
+	scrollbar-base-color: #FFFFFF;
+	scrollbar-darkshadow-color: #ffffff;
+	scrollbar-face-color: #ffffff;
+	scrollbar-shadow-color: #b2b2b2;
+	-moz-user-focus: normal; /* TAM: added moz specific to scroll with wheel */
+	overflow-y: scroll; /* TAM: make IE show always vertical scrollbars */
+}
+
+/* Product Table Area (contains series and table) */
+div.productTableArea
+{
+	position: absolute;
+	top: 50%;
+	bottom: 0px;
+	width: 1108px;
+	overflow: hidden;
+	border-width: 0px;
+}
+
+/* Product Series selection bar */
+div.productSeries
+{
+	position: absolute;
+	top: 0px;
+	height: 30px;
+	padding-top: 10px;
+}
+
+/* Product table area (scrollable) */
+div.productTable
+{
+	position: absolute;
+	top: 30px;
+	bottom: 0px;
+	width: 1108px;
+	overflow: auto;
+	border: 1px solid #b2b2b2;
+	border-right-width: 0px;
+	scrollbar-3dlight-color: #b2b2b2;
+	scrollbar-arrow-color: #b2b2b2;
+	scrollbar-base-color: #FFFFFF;
+	scrollbar-darkshadow-color: #ffffff;
+	scrollbar-face-color: #ffffff;
+	scrollbar-shadow-color: #b2b2b2;
+	-moz-user-focus: normal; /* TAM: moz specific to scroll with wheel */
+	overflow-y: scroll; /* TAM: make IE show always vertical scrollbars */
+}
+
+
+
+
+/* LINKBAR STYLES *********************************************************** */
+
+/* The linkbar positioning div */
+div#linkbar
+{
+	position: absolute;
+	left: 790px;
+	top: 32px;
+}
+
+/* The linkbar on HOME positioning div */
+div#linkbarHome
+{
+	position: absolute;
+	left: 790px;
+	top: 52px;
+}
+
+/* SEARCH RELATED STYLES **************************************************** */
+
+/* TAM: Search Result scrollable Area */
+div#searchResultContainer
+{
+	position: absolute;
+	top: 60px;
+	bottom: 40px; /* TAM: set bottom higher */
+	width: 827px;
+	overflow: auto;
+	border: 1px solid #b2b2b2;
+	border-right-width: 0px;
+	scrollbar-3dlight-color: #b2b2b2; /* TAM: added scrollbar style for I.E. */
+	scrollbar-arrow-color: #b2b2b2;
+	scrollbar-base-color: #FFFFFF;
+	scrollbar-darkshadow-color: #ffffff;
+	scrollbar-face-color: #ffffff;
+	scrollbar-shadow-color: #b2b2b2;
+	-moz-user-focus: normal; /* TAM: added moz specific to scroll with wheel */
+	overflow-y: scroll; /* TAM: make IE show always vertical scrollbars */
+}
+
+div#luceneSearchResultContainer
+{
+	position: absolute;
+	bottom: 0px; /* TAM: set bottom higher */
+	_height: expression((document.body.clientHeight - 208) + 'px');
+	top: 150px;
+	width: 827px;
+	overflow: auto;
+	border: 1px solid #b2b2b2;
+	border-right-width: 0px;
+	scrollbar-3dlight-color: #b2b2b2; /* TAM: added scrollbar style for I.E. */
+	scrollbar-arrow-color: #b2b2b2;
+	scrollbar-base-color: #FFFFFF;
+	scrollbar-darkshadow-color: #ffffff;
+	scrollbar-face-color: #ffffff;
+	scrollbar-shadow-color: #b2b2b2;
+	-moz-user-focus: normal; /* TAM: added moz specific to scroll with wheel */
+	overflow-y: scroll; /* TAM: make IE show always vertical scrollbars */
+}
+
+.luceneSearchBoxTitle
+{
+	font-size: 11px;
+	padding-left:0;
+}
+
+
+/* TAM: Product View Cutlist (=legend) */
+div.searchCutlist
+{
+	position: absolute;
+	bottom: 0px;
+	width: 1108px;
+	height: 35px; /* TAM: set higher because */
+	overflow: hidden;
+}
+
+/* ORDERLIST CONTENT STYLES ************************************************* */
+
+/** TAM: Positioned Container for orderlist content */
+div#orderlistContentContainer
+{
+	position: absolute;
+	top: 110px;
+	bottom: 80px;
+	width: 827px;
+	overflow: auto;
+	border: 1px solid #b2b2b2;
+	border-right-width: 0px;
+	scrollbar-3dlight-color: #b2b2b2;
+	scrollbar-arrow-color: #b2b2b2;
+	scrollbar-base-color: #FFFFFF;
+	scrollbar-darkshadow-color: #ffffff;
+	scrollbar-face-color: #ffffff;
+	scrollbar-shadow-color: #b2b2b2;
+	-moz-user-focus: normal; /* TAM: moz specific to scroll with wheel */
+	overflow-y: scroll; /* TAM: make IE show always vertical scrollbars */
+}
+
+/** TAM: Total sum of orderlist */
+div.orderlistFooter
+{
+	position: absolute;
+	bottom: 50px;
+	width: 827px;
+}
+
+/* ISTRUTS styles ************************************************************* */
+/* style for updateable messages */
+span.istrutsUpdMes
+{
+	border: solid 1px;
+	border-color: blue;
+}
+
+div.istrutsEditor
+{
+	z-index: 2;
+	position: absolute;
+	top: 50px;
+	left: 50px;
+	background-color: white;
+	border: solid 2px;
+	border-color: blue;
+	filter: Alpha(Opacity=95); -moz-opacity:0.95;
+}
+
+div.istrutsEditorHeader
+{
+	background-color: #b2b2a0;
+	border: solid 1px;
+	border-color: blue;
+	font-size: 14px;
+	padding: 5px;
+	filter: Alpha(Opacity=95); -moz-opacity:0.95;
+}
+
+
+/***
+ * Styles for the technical request in schuricht shops
+ ***/
+div.techReqTitle
+{
+	font-weight: bold;
+	color: #333333;
+}
+
+div.techReqBlueLine
+{
+	width:99%;
+	background-image: url(/ishopWebFront/image/common/blaue-leiste.gif);
+	background-repeat:no-repeat;
+}
+
+div.techReqBorder
+{
+	padding-left: 5px;
+	padding-top: 5px;
+}
+
+/********
+ * styles for tabs
+ ********/
+
+div.tabSelector, div.tabSelectorHighlighted
+{
+	float: left;
+	width:131px;
+	height:17px;
+	border:0;
+	text-align:center;
+	vertical-align:middle;
+	margin:0;
+	margin-right:3px;
+	color: rgb(29, 40, 119);
+  position: relative;
+  top: 1px;
+  z-index: 4;
+}
+
+div.tabSelector
+{
+	background-image: url(tabbutton_normal.gif);
+	cursor:pointer;
+}
+
+div.tabSelectorHighlighted
+{
+	background-image: url(tabbutton_over.gif);
+	cursor:default;
+}
+
+div.tabContainer
+{
+	width: 970px;
+	height: 377px;
+	overflow:auto;
+	border: 1px solid #b2b2b2;
+	clear:left;
+	margin:0;
+	padding:0;
+  z-index: 3;
+}
+
+div.tabContent
+{
+	display:none;
+	width:940px;
+	overflow:visible;
+}
+div.tabContent > table
+{
+	width:930px;
+}
+
+/***************
+ * styles for cfg dropdown
+ ***************/
+
+.ishopFormWrapped {
+	display: none;
+}
+
+.configuratorTitle {
+	font-size: 12pt;
+	font-weight:bolder;
+}
+
+.configuratorOptions img {
+	border:0;
+}
+
+.configuratorOptions a {
+	text-decoration:none;
+}
+
+.configuratorOptions a:hover .linkText {
+	text-decoration:underline;
+}
+
+.document0 a:hover, .document1 a:hover {
+	text-decoration: underline;
+}
+
+.TrennlinieRechts table.configurator td {
+	vertical-align: top;
+}
+
+
+table.configuratorCompare {
+	table-layout:fixed;
+	width: auto;
+}
+
+table.configuratorCompare td img.compImgSpacer {
+	width: 160px;
+	height: 1px;
+}
+
+
+#filterContent td.TrennlinieRechts, td.configuratorInfo, td.configuratorButton {
+	width:auto;
+	padding: 10;
+}
+
+td.configuratorInfo {
+	width:190px;
+	vertical-align: top;
+}
+
+td.configuratorButton {
+	vertical-align: bottom;
+}
+
+table.configurator {
+	width: 570;
+	text-align: left;
+}
+
+p.configuratorInfo {
+	font-size: 13;
+}
+
+span.disabledFilter, table.disabledFilter {
+	color: #CCCCCC;
+}
+
+div#configuratorButtonContainer
+{
+	float: right;
+	margin-right: 20px;
+}
+
+div#configuratorButtonContainer input {
+	margin-top: 3px;
+}
+
+#filterContent td.KatalogContainer {
+	padding: 0;
+}
+
+div#configuratorResultContainer
+{
+	position: absolute;
+	bottom: 26px;
+	_height: expression((document.body.clientHeight - 134) + 'px');
+	top: 50px;
+	left: 16px;
+    right: 20px;
+    _width: expression((this.offsetParent.offsetWidth - 36) + 'px');
+	overflow: auto;
+	border: 1px solid #b2b2b2;
+	border-right-width: 0px;
+	scrollbar-3dlight-color: #b2b2b2; /* TAM: added scrollbar style for I.E. */
+	scrollbar-arrow-color: #b2b2b2;
+	scrollbar-base-color: #FFFFFF;
+	scrollbar-darkshadow-color: #ffffff;
+	scrollbar-face-color: #ffffff;
+	scrollbar-shadow-color: #b2b2b2;
+	-moz-user-focus: normal; /* TAM: added moz specific to scroll with wheel */
+	overflow-y: scroll; /* TAM: make IE show always vertical scrollbars */
+}
+
+div#configuratorTaxInfo {
+	position: absolute ! important;
+	top: 30px;
+	left: 705px;
+	white-space: nowrap;
+	overflow: visible;
+}
+
+div.commonBoxContent ul {
+    margin: 0;
+    padding-left: 20px;
+}
+
+table#welcomeCatalogTable {
+    width: 350px;
+}

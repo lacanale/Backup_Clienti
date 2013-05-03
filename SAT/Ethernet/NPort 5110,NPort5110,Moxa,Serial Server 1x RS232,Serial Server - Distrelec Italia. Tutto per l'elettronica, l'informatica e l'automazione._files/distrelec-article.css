@@ -1,0 +1,81 @@
+td.ProductTableLinePrice, td.ProductTableLineGrossPrice,
+    td.ProductTableLineNetPrice, td.ProductTableLineNetPrice0,
+    td.ProductTableLineNetPrice1, td.ProductTableLineNetPriceHighlighted
+{
+    height: auto;
+}
+
+td.accessorycolstock
+{
+    width: 65px;
+}
+td.accessorycolunit
+{
+    width: 30px;
+}
+td.accessorycolprice
+{
+    width: 97px;
+}
+td.accessorycolbasket
+{
+    width: 90px;
+}
+td.accessorycolorderlist
+{
+    width: 60px;
+}
+
+td.accessorycolinfo
+{
+    width: 70px;
+}
+
+td.accessorycolstock, td.accessorycolunit, td.accessorycolprice,
+    td.accessorycolbasket, td.accessorycolorderlist
+{
+    border-left: 1px solid #b2b2b2;
+    padding-left: 6px;
+    padding-right: 6px;
+}
+
+table.ProductTable
+{
+    width: 500px;
+}
+
+hr.accessoryline
+{
+    width: 940px;
+    height: 1px;
+    border:0;
+    border-top: 1px solid #b2b2b2;
+}
+
+div#contentarea {
+    overflow: hidden;
+}
+
+td.rohsimage img {
+    margin-top: -3px;
+}
+
+table#article-misc-info td.ProductView
+{
+	height: 20px;
+}
+
+td#article-img
+{
+	height: 160px;
+}
+
+table.ProductViewIntern td.techDatTitle
+{
+	padding-right: 4px;
+}
+
+table#article-misc-info td.ProductTableLineSmallPics
+{
+	text-align: left;
+}

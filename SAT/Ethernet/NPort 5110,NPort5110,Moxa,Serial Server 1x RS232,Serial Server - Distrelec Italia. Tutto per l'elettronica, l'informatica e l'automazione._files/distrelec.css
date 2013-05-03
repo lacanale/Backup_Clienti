@@ -1,0 +1,4043 @@
+/* 
+	DISTRELEC CSS 
+
+	CSS for common content style.
+	For Layout styles see media-specific files
+	"distrelec-screen.css" and "distrelec-print.css"
+	
+	ID: $Id: distrelec.css,v 1.52 2006/12/06 14:38:21 gug Exp $
+
+	Revision: $Revision: 1.52 $
+
+	Copyright 2004-2006, IMIS group AG, Switzerland.
+*/
+
+/* BODY STYLE */
+body
+{
+	color: #3d3d3d;
+	font-size: 11px;
+	font-family: Arial, Helvetica, Geneva, Swiss, sans-serif;
+	margin: 0px;
+	padding: 0px;
+	background-color: #FFFFFF;
+	background-image: url('bg_body.gif');
+	background-position: 0px 0px;
+	background-repeat: repeat-y;
+	overflow-y: auto; /* set overflow-y for MSIE to hide the vertical scrollbar */
+}
+
+img#header-logo
+{
+  width: 150px;
+  height: 58px;
+}
+
+/* TAM: Space on top of any non-catalog-page */
+div.contentTopSpace
+{
+	height: 27px;
+}
+
+/* LOGO: box around the Logo */
+
+div.headerLogo
+{
+	width: 150px;
+	height: 58px;
+	border: 0px solid #b2b2b2;
+	border-right-width: 1px;
+	float: left;
+}
+
+/* HEADER center div. Contains functions and navigation */
+
+div.headerCenter
+{
+	width: 926px;
+	height: 58px;
+	border: 0px solid #FFFFFF;
+	float: left;
+}
+
+div.headerFunction
+{
+	height: 25px;
+  line-height: 13px;
+	border: 0px solid #FFFFFF;
+	border-left-width: 1px;
+	width: 850px;
+}
+
+/* Functions on left side of function bar (country selection, language) */
+div.headerFunctionLeft
+{
+	height: 22px;
+	float: left;
+	text-align: left;
+}
+
+/* Functions on right side of function bar (directOrder) */
+
+div.headerFunctionRight
+{
+	height: 22px;
+	float: right;
+	text-align: right;
+}
+
+/* One Item in the function bar */
+div.functionItem
+{
+	float: left;
+	padding-top: 4px;
+	padding-right: 4px;
+	padding-left: 4px;
+}
+
+/* Function Separator Image. Noch verwendet? */
+img.functionSeparator
+{
+	width: 2px;
+	height: 11px;
+}
+
+/* Function Separator Div. Noch verwendet? */
+div.functionSeparator
+{
+	float: left;
+	padding-top: 5px;
+	padding-left: 4px;
+	padding-right: 4px;
+}
+
+/* Navigation Box in Header */
+div.headerNavigation
+{
+	height: 23px;
+	position: absolute;
+	top: 35px;
+}
+
+/* One Navigation Item (Tab) */
+div.navigationItem
+{
+	width: 167px;
+	height: 23px;
+	border-width: 0px;
+	background-image: url('topnavbutton_normal.gif');
+	color: #1d2877;
+	text-align: center;
+	float: left;
+	margin-right: 3px;
+}
+
+/* Mouse over style for Navigation Item (Tab) */
+div.navigationItem:hover
+{
+	width: 167px;
+	height: 23px;
+	border-width: 0px;
+	background-image: url('topnavbutton_over.gif');
+	text-align: center;
+	color: #1d2877;
+	float: left;
+	margin-right: 3px;
+}
+
+/* Internet Explorer does not apply :hover selector on div
+   (set via javascript) */
+div.navigationItemHover
+{
+	width: 167px;
+	height: 23px;
+	border-width: 0px;
+	background-image: url('topnavbutton_over.gif');
+	text-align: center;
+	color: #1d2877;
+	float: left;
+	margin-right: 3px;
+}
+
+/* Link Style of Tab */
+a.navigationLink
+{
+	color: #1d2877;
+	text-decoration: none;
+}
+
+/* Link Mouse over style of Tab */
+a.navigationLink:hover
+{
+	color: #1d2877;
+	text-decoration: none;
+}
+
+/* Tab title */
+span.navigationTitle
+{
+	font-weight: bold;
+	font-size: 11px;
+	display: block;
+  white-space:nowrap;
+  margin-top: 4px;
+}
+
+/* Tab subtitle */
+span.navigationSubTitle
+{
+	font-size: 9px;
+	display: none;
+}
+
+/* Basket Box in Header */
+div.headerBasket
+{
+	float: left;
+}
+
+/* Basket content (text) */
+p.headerBasketContent
+{
+	margin: 0px;
+	padding: 0px;
+	padding-top: 4px;
+	padding-left: 4px;
+	text-align: left;
+}
+
+/* Basket image on the right top of the screen*/
+img.basket
+{
+  border: 0px;
+  width: 22px;
+  height: 52px;
+  position: absolute;
+  right: 0px;
+  top: 0px;
+}
+
+/* Iframe content */
+iframe.content
+{
+	border-width: 0px;
+	height: 100%;
+	width: 100%;
+	scrollbar-3dlight-color: #b2b2b2;
+	scrollbar-arrow-color: #b2b2b2;
+	scrollbar-base-color: #FFFFFF;
+	scrollbar-darkshadow-color: #ffffff;
+	scrollbar-face-color: #ffffff;
+	scrollbar-shadow-color: #b2b2b2;
+}
+
+/***** COMMON BOX STYLES **************************************************/
+
+
+
+/* TAM: Common Container Table for boxes (e.g. Info and Highlight
+		boxes on catalog home). */
+table.commonBoxContainer
+{
+	margin: 0px;
+	padding: 0px;
+	border-collapse: collapse;
+	width: 661px;
+	border-width: 0px;
+}
+
+/* TAM: Container drawing line aroung an info box - Wide Version (2 boxes on
+		one line */
+td.commonBoxContainerWide
+{
+	margin: 0px;
+	padding: 0px;
+	border: 1px solid #b2b2b2;
+	width: 328px;
+	vertical-align: top;
+}
+
+/* TAM: Container drawing line aroung an info box - Standard Version (3 boxes on
+		one line */
+td.commonBoxContainer
+{
+	margin: 0px;
+	padding: 0px;
+	border: 1px solid #b2b2b2;
+	width: 217px;
+	vertical-align: top;
+}
+
+/* TAM: Container drawing line aroung an info box - Wide Version (2 boxes on
+		one line */
+td.commonBoxContainerFull
+{
+	margin: 0px;
+	padding: 0px;
+	border: 1px solid #b2b2b2;
+	width: 661px;
+	vertical-align: top;
+}
+
+table.commonBoxContent
+{
+	margin: 0px;
+	padding: 0px;
+}
+
+td.commonBoxContent
+{
+	margin: 0px;
+	padding: 0px;
+	padding-right: 10px;
+	height: 30px;
+	vertical-align: middle;
+}
+
+/* TAM: Box Horizontal Separator */
+td.commonBoxSeparator
+{
+	border-width: 0px;
+	width: 5px;
+}
+
+/* TAM: Box Vertical Separator */
+tr.commonBoxSeparator
+{
+	border-width: 0px;
+	height: 5px;
+}
+
+/* TAM: Box Title */
+div.commonBoxTitle
+{
+	background-color: #ececec;
+	color: #1d2877;
+	font-weight: bold;
+	font-size: 13px;
+	text-align: left;
+	vertical-align: middle;
+	padding-top: 1px;
+	padding-left: 8px;
+	height: 20px;
+	border: 0px solid #b2b2b2;
+	border-bottom-width: 1px;
+}
+
+/* TAM: Box Content  */
+div.commonBoxContent
+{
+	font-size: 11px;
+	border-width: 0px;
+	padding: 5px 8px; /* top and bottom 5; left and right 8px */
+}
+
+
+/* SIDEBAR STYLES *********************************************************** */
+
+table.sidebarBox
+{
+	border: 1px solid #ffffff;
+	width: 150px;
+	border-collapse: collapse;
+}
+
+/* Sidebar Box Title */
+
+th.sidebarBox
+{
+	color: #1d2877;
+	font-weight: bold;
+	font-size: 13px;
+	background-color: #bfc4f6;
+	text-align: left;
+	vertical-align: middle;
+	padding: 0px 0px 0px 6px;
+	border: 1px solid #ffffff;
+	height: 20px;
+}
+
+/* Sidebar Box Content */
+
+td.sidebarBox
+{
+	font-size: 11px;
+	background-color: #e1e3f6;
+	text-align: left;
+	vertical-align: middle;
+	padding: 5px 0px 10px 7px;
+	border: 1px solid #ffffff;
+}
+
+/* former: div.1Pixel */
+div.sidebarBoxLineGray
+{
+	background-color: #b2b2b2;
+	height: 1px;
+	width: 150px;
+	border-width: 0px;
+	/* insert 1x1 blank.gif into this div (IE) */
+}
+
+/* former: div.1Pixel */
+div.sidebarBoxLineWhite
+{
+	background-color: #ffffff;
+	height: 1px;
+	width: 150px;
+	border-width: 0px;
+	/* insert 1x1 blank.gif into this div (IE) */
+}
+
+/* Email address padding from top and left */
+div.sidebarEmail
+{
+	padding-top: 4px;
+	padding-left: 9px;
+	height: 30px;
+}
+
+/* TEN Anzeige saemtlicher Errormeldungen */
+p.error
+{ 	color: #b54a9c;
+	font-weight: bold;
+}
+
+/**
+* SEB p tag for error
+* messages
+**/
+p.errorMsg {
+   font-weight: bold;
+   color: #b24d93;
+}
+
+.contentFixedWidth
+{
+	width: 600px;
+}
+
+/* TAM: contentFixedWidth for paragraphs with margins and padding */
+p.contentFixedWidth
+{
+	width: 661px;
+	padding: 0px;
+	margin: 0px;
+	margin-bottom: 5px;
+	margin-left: 1px;
+}
+
+
+/* TEN Titel der Contentseite */
+.contentTitle
+{
+	color: #1d2877;
+	font-weight: bold;
+	font-size: 13px;
+	margin: 0px;
+	padding: 0px;
+	margin-bottom: 5px;
+}
+
+/* TEN Titel Produktansicht */
+p.contentTitleProdukt
+{
+	color: #1d2877;
+	font-weight: bold;
+	font-size: 11px;
+	margin-bottom: 5px;
+	display: inline;
+}
+
+/* TEN Titel zum Produktbild in der Produktansicht */
+p.TitleProduktbild
+{
+	color: #3d3d3d;
+	font-weight: bold;
+	font-size: 12px;
+	margin-bottom: 5px;
+}
+
+/* TEN Haupttitel Welcomeseite */
+p.contentWelcome
+{
+	color: #1d2877;
+	font-weight: bold;
+	font-size: 17px;
+	margin: 0px;
+	padding: 0px;
+	margin-bottom: 16px;
+  margin-top: 16px;
+  width: 755;
+  text-align: left;
+}
+
+/* TEN Navigation Link (sidebar boxes) */
+p.LinksNav
+{
+	margin-top: 1px;
+	margin-bottom: 0px;
+}
+
+/* TEN Kleintext in Klammern bei Formulare */
+div.zusatzinfo
+{
+	color: #3d3d3d;
+	font-size: 9px;
+}
+
+/* TEN margin for blocks (e.g. in sidebar) */
+div.TxtNav
+{
+	font-weight: normal;
+	font-size: 11px;
+	margin-bottom: 2px;
+}
+
+/* TEN Mussfelderbezeichnung bei Formulare */
+div.mussfeld
+{
+	color: #3d3d3d;
+	font-weight: bold;
+	font-size: 11px;
+}
+
+/* TEN Normale Felderbezeichnung bei Formulare */
+div.normalfeld
+{
+	color: #3d3d3d;
+	font-weight: normal;
+	font-size: 11px;
+}
+
+
+
+/* TEN INTRO SEITE begin **************************************************** */
+
+
+/* TEN Tabelle in Tabelle for INTRO Seite */
+table.contentINTRO
+{
+	width: 755px;
+	border-collapse: collapse;
+}
+
+/* TEN Kleintext Zusatzinfo in Klammern beim Titel */
+span.zusatzinfoIntro
+{
+	color: #1d2877;
+	font-size: 9px;
+	padding-left: 20px;
+	margin-top: 0px;
+	height: 0px;
+}
+
+div.TitelIntro
+ {
+	color: #1d2877;
+	font-weight: bold;
+	font-size: 24px;
+	text-align: center;
+	padding: 0px 0px -7px;
+}
+
+table.INTRO
+{
+	margin: 0px;
+	background-color: #ffffff;
+	text-align: center;
+	vertical-align: top;
+
+	margin: 0px;
+	padding: 0pt;
+	border: solid 1px #1D2877;
+	width: 790px;
+	height: 470px;
+	border-collapse: collapse;
+}
+
+th.contentIntro
+{
+	height: 65px;
+	background-color: #ffffff;
+	margin: 0px;
+	vertical-align: middle;
+	border: solid 1px #1D2877;
+}
+
+
+table.INTROFlash
+{
+	width: 510px
+	margin: 0px;
+	padding: 0pt;
+	border: 0pt;
+}
+table.INTRODivision
+{
+	color: #3d3d3d;
+	font-size: 11px;
+	width: 195px;
+}
+
+td.contentINTRODivision
+{
+	vertical-align: middle;
+	padding-top: 5px;
+	padding-left: 10px;
+	padding-bottom: 5px;
+}
+
+
+/* TEN Tabelleninhalt FLASH der Intro Seite */
+table.contentBoxIntro
+{
+	margin: 0px;
+	padding: 0px;
+	border: solid 1px #b2b2b2;
+	width: 530px;
+	height: 402px;
+	border-collapse: collapse;
+}
+
+/* TEN Tabelleninhalt Division der Intro Seite */
+table.contentBoxIntro2
+{
+	margin: 0px;
+	background-color: #ffffff;
+	padding: 6px;
+	border: solid 1px #b2b2b2;
+	width: 195px;
+	height: 405px;
+	border-collapse: collapse;
+}
+
+/* TEN th zu Tabelleninhalt der Intro Seite */
+th.contentBoxIntro
+{
+	font-size: 12px;
+	height: 22px;
+	text-align: left;
+	color: #1d2877;
+	background-color: #ececec;
+	vertical-align: middle;
+	padding-left: 6px;
+	border: solid 1px #b2b2b2;
+
+}
+
+/* TEN td zu Tabelleninhalt der Intro Seite */
+td.contentBoxIntro
+{
+	vertical-align: middle;
+	background-color: #ececec;
+	padding-top: 0px;
+	padding-bottom: 0px;
+	padding-left: 0px;
+	border: solid 1px #b2b2b2;
+}
+
+/* TEN Links auf INTRO Seite */
+li.LaenderLinksINTRO
+  {
+	color: #3d3d3d;
+	font-size: 11px;
+	line-height: 16px;
+	list-style-image: url(li_katalog.gif);
+	padding-top: 0px;
+	padding-bottom: 0px;
+	padding-left: 0px;
+}
+
+/* TEN Links auf INTRO Seite */
+ul.INTROSeiteLaender
+{
+	margin-left: 10px;
+	margin-bottom: 0px;
+	padding-left: 15px;
+}
+
+/* TEN Auflistung bei Division auf INTRO Seite */
+ul.INTROSeiteDivision
+{
+	margin-left: 0px;
+	margin-bottom: 0px;
+	padding-left: 10px;
+}
+
+
+
+/* TEN INTRO SEITE end ***************************************************  */
+
+
+
+/* TEN Einfache Tabelle mit Rahmen s. Passwort vergessen */
+table.contentBox
+{
+	margin: 0px;
+	padding: 0px;
+	border: solid 1px #b2b2b2;
+	width: 100%;
+	border-collapse: collapse;
+}
+
+/* TEN Newsletterbox bei Anmeldeformulare */
+table.Newsletter
+{
+	margin: 0px;
+	margin-top: 10px;
+	padding: 0px;
+	border: solid 1px #b2b2b2;
+	width: 700px;
+	//height: 100%;
+	border-collapse: collapse;
+}
+
+/* TEN Table in Table for Checkboxen in der Newsletterbox */
+table.NewsletterCheckbox
+{
+	color: #3d3d3d;
+	font-size: 11px;
+	margin: 8px 0px 0px -5px;
+	padding: 0px;
+	border: 0px;
+}
+
+/* PRODUCTVIEW ************************************************************** */
+
+/* SIS Productview begin */
+
+div.PrintButton
+{
+	/*width: 50px;*/
+	float: right;
+	white-space:nowrap;
+	/*vertical-align: center;
+	text-align: center;
+	padding-top: 4px;*/
+	padding-top: 1px;
+	padding-right: 5px;
+	padding-left: 5px;
+	font-size: 11px;
+
+}
+
+img.PrintButton
+{
+	padding-right: 4px;
+}
+
+/* Enthaelt alle anderen Tables */
+table.ProductViewContainer
+{
+	margin: 0px;
+	padding: 0px;
+	width: 1057px;
+	border-collapse: collapse;
+}
+/* For den Inhalt links der Productview */
+table.ProductView
+{
+	margin: 0px;
+	padding: 0px;
+	/*width: 640px;*/
+	width: 590px;
+	border-collapse: collapse;
+}
+td.ProductView
+{
+	font-size: 11px;
+	vertical-align: top;
+	color: #1d2877;
+	padding-left: 6px;
+}
+
+/* Bilder rechts */
+table.ProductViewBilder
+{
+	margin: 0px;
+	padding: 0px;
+	/*width: 160px;*/
+	width: 210px;
+	border-collapse: collapse;
+}
+
+/* Tabellen, welche aus den Daten kommen */
+table.ProductViewIntern
+{
+	font-size: 11px;
+	border-collapse: collapse;
+}
+
+/* Allgemeiner Text */
+span.ProductViewText, div.ProductViewText
+{
+	color: #3d3d3d;
+	font-size: 11px;
+	margin: 5px;
+	padding: 0px;
+	border: 0px;
+}
+
+span.ProductViewText
+{
+    margin: 0;
+}
+
+span.ProductViewTextBold, div.ProductViewTextBold
+{
+	color: #3d3d3d;
+	font-size: 11px;
+	font-weight: bold;
+}
+img.ProductViewBilder
+{
+	/*margin: 0px;*/
+	margin-bottom: 10px;
+	margin-top: 10px;
+	padding: 0px;
+	border: 0px;
+}
+td.ProductViewBilder
+{
+	padding-left: 6px;
+	font-size: 11px;
+	vertical-align: top;
+	color: #1d2877;
+}
+
+/* SIS */
+td.TrennlinieRechts
+{
+	border-right: 1px #b2b2b2;
+	width: 100%;
+	height: 100%;
+	vertical-align: top;
+	border-right-style: solid;
+}
+/* SIS */
+td.TrennlinieUnten
+{
+	border-bottom: 1px #b2b2b2;
+	width: 100%;
+	height: 100%;
+	border-bottom-style: solid;
+}
+
+span.SerieText
+{
+	color: #1d2877;
+	font-weight: bold;
+	font-size: 11px;
+}
+select.Serie
+{
+	color: #1d2877;
+	font-weight: bold;
+	font-size: 11px;
+	size: 0;
+	width: 300px;
+	background-color: #EFE0EC;
+}
+
+/* SIS: Blaettern in Produkt familie */
+table.KatalogPaging
+{
+	border: none;
+	float: right;
+	width: 150px;
+	border-collapse: collapse;
+	margin-left: 200px;
+}
+
+/* SIS */
+td.KatalogPaging
+{
+	font-size: 12px;
+	font-weight: bold;
+	width: 68px;
+	text-align: center;
+	vertical-align: middle;
+	color: #1d2877;
+}
+a.KatalogPagingPfeil
+{
+	font-family: Verdana, sans-serif;
+	font-size: 12px;
+	font-weight: bold;
+	color: #1d2877;
+	text-decoration: none;
+}
+
+a.KatalogPagingPfeil:active
+{
+	font-family: Verdana, sans-serif;
+	font-size: 12px;
+	font-weight: bold;
+	color: #1d2877;
+	text-decoration: none;
+}
+
+a.KatalogPagingPfeil:hover
+{
+	font-family: Verdana, sans-serif;
+	font-size: 12px;
+	font-weight: bold;
+	color: #b54a9c;
+	text-decoration: none;
+}
+
+/* SIS Productview end */
+
+/* ProductTable **************************************************** */
+
+/* SIS ProductTable begin */
+table.ProductTable
+{
+	margin: 0px;
+	padding: 0px;
+	border: none;
+	width: 100%;
+	border-collapse: collapse;
+}
+td.ProductTableHeader
+{
+	color: #1d2877;
+	font-weight: normal;
+	font-size: 11px;
+	background-color: #e1e3f6;
+	text-align: left;
+	vertical-align: middle;
+	/*border: none;*/
+	height: 15px;
+	margin: 0px;
+	padding-left: 6px;
+}
+td.ProductTableHeaderArtNr
+{
+	color: #1d2877;
+	font-weight: normal;
+	font-size: 11px;
+	background-color: #e1e3f6;
+	text-align: left;
+	vertical-align: middle;
+	/*border: none;*/
+	height: 15px;
+	width: 40px;
+	margin: 0px;
+	padding-left: 6px;
+}
+td.ProductTableHeaderPrice, td.ProductTableHeaderNetPrice, td.ProductTableHeaderGrossPrice
+{
+	color: #1d2877;
+	font-weight: normal;
+	font-size: 11px;
+	background-color: #e1e3f6;
+	text-align: left;
+	vertical-align: middle;
+	/*border: none;*/
+	height: 15px;
+	margin: 0px;
+	padding-left: 6px;
+}
+td.ProductTableHeaderNetPrice
+{
+	width: 140px;
+}
+td.ProductTableHeaderGrossPrice
+{
+	width: 140px;
+}
+td.ProductTableHeaderLager
+{
+	color: #1d2877;
+	font-weight: normal;
+	font-size: 11px;
+	background-color: #e1e3f6;
+	text-align: center;
+	vertical-align: middle;
+	/*border: none;*/
+	height: 15px;
+	width: 30px;
+	margin: 0px;
+	padding-left: 6px;
+}
+td.ProductTableHeaderMenge
+{
+	color: #1d2877;
+	font-weight: normal;
+	font-size: 11px;
+	background-color: #e1e3f6;
+	text-align: center;
+	vertical-align: middle;
+	/*border: none;*/
+	height: 15px;
+	width: 40px;
+	margin: 0px;
+	padding-left: 6px;
+}
+/* Icon Bilder wie: PDF, Warenkorb etc.*/
+td.ProductTableHeaderSmallPics
+{
+	color: #1d2877;
+	font-size: 11px;
+	background-color: #e1e3f6;
+	text-align: center;
+	vertical-align: top;
+	/*border: none;*/
+	/*height: 25px; */
+	width: 18px;
+	margin: 0px;
+	padding-left: 6px;
+}
+/* Header mit Verpackugseineiten */
+td.ProductTableHeaderVE
+{
+	color: #1d2877;
+	font-weight: bold;
+	font-size: 11px;
+	background-color: #e1e3f6;
+	text-align: left;
+	vertical-align: middle;
+	border: none;
+	height: 15px;
+	margin: 0px;
+	padding-left: 6px;
+}
+td.ProductTableLine
+{
+	font-size: 11px;
+	text-align: left;
+	vertical-align: middle;
+	border: none;
+	height: 25px;
+	margin: 0px;
+	padding-left: 6px;
+}
+td.ProductTableLineArtNr
+{
+	font-size: 11px;
+	text-align: left;
+	vertical-align: middle;
+	border: none;
+	height: 25px;
+	width: 40px;
+	margin: 0px;
+	padding-left: 6px;
+}
+
+td.ProductTableLinePrice, td.ProductTableLineGrossPrice, td.ProductTableLineNetPrice, td.ProductTableLineNetPrice0, td.ProductTableLineNetPrice1, td.ProductTableLineNetPriceHighlighted
+{
+	font-size: 11px;
+	text-align: left;
+	vertical-align: middle;
+	border: none;
+	height: 25px;
+	margin: 0px;
+	padding-left: 6px;
+}
+td.ProductTableLinePrice, td.ProductTableLineNetPrice, td.ProductTableLineNetPrice0, td.ProductTableLineNetPrice1, td.ProductTableLineNetPriceHighlighted
+{
+	width: 140px;
+}
+td.ProductTableLineNetPrice0, td.ProductTableLineNetPriceHighlighted
+{
+	background-color: #E7A4D7;
+}
+td.ProductTableLineNetPrice1
+{
+	background-color: #DC9CCE;
+}
+td.ProductTableLineSmallPics
+{
+	font-size: 11px;
+	text-align: center;
+	vertical-align: middle;
+	border: none;
+	/*height: 25px;
+	width: 20px;*/
+	height: 19px;
+	width: 16px;
+	margin: 0px;
+	padding-left: 6px;
+}
+img.ProductTableLineSmallPics
+{
+	border: none;
+	vertical-align: middle;
+}
+a.ProductTableLinePics
+{
+	text-decoration: none;
+}
+
+a.ProductTableLinePics:active
+{
+	text-decoration: none;
+}
+
+a.ProductTableLinePics:hover
+{
+	text-decoration: none;
+}
+/* SIS ProductTable Zwischenheader */
+td.ProductTableZwHeaderLine
+{
+	font-size: 11px;
+	font-weight: bold;
+	text-align: left;
+	vertical-align: middle;
+	border: none;
+	height: 25px;
+	margin: 0px;
+	padding-left: 6px;
+}
+
+/* SIS ProductTable end */
+
+/* CATALOG ********************************************************* */
+
+/* SIS Katalog begin */
+
+table.KatalogContainer
+{
+	margin: 0px;
+	padding: 0px;
+	/*width: 215px;*/
+	border-collapse: collapse;
+}
+
+/* Rahmen Tabelle Katalog Kapitel ubersicht */
+td.KatalogContainer
+{
+	margin: 0px;
+	padding: 0px 0px 10px 0px;
+	text-align: left;
+	vertical-align: top;
+	border: solid 1px #b2b2b2;
+	width: 240px;
+}
+
+
+/* SIS: Katalog Box Anstand seitlich (zwischen den Boxen) */
+img.KatalogContAbstandW
+{
+	margin: 0px;
+	padding: 0px;
+	width: 14px;
+	height: 1px;
+	border: 0px;
+}
+
+/* SIS: Katalog Box Anstand vertikal (zwischen den Boxen) */
+img.KatalogContAbstandH
+{
+	margin: 0px;
+	padding: 0px;
+	width: 1px;
+	height: 4px;
+	border: 0px;
+}
+
+/* TEN Katalogboxen 1 und 2 Ebene */
+table.Katalog
+{
+	width: 240px;
+	border-collapse: collapse;
+}
+
+/* SIS: Katalog Hersteller Table */
+table.KatalogHersteller
+{
+	border: solid 1px #b2b2b2;
+	width: 500px;
+	border-collapse: collapse;
+}
+
+/* SIS: Katalog Hersteller Table Unten */
+table.KatalogHerstellerUnten
+{
+	border: solid 1px #b2b2b2;
+	border-top-style: none;
+	width: 500px;
+	border-collapse: collapse;
+}
+
+/* TEN Kleines Bild oben links in Katalogboxen */
+
+th.BildBoxKatalog
+{
+	color: #1d2877;
+	font-weight: bold;
+	font-size: 12px;
+	background-color: #ececec;
+	text-align: left;
+	margin: 0px;
+	padding: 0px;
+	border-right-style: solid;
+	border-right-width: 1px;
+	border-right-color: #b2b2b2;
+	border-bottom-style: solid;
+	border-bottom-width: 1px;
+	border-bottom-color: #b2b2b2;
+	width: 48px;
+    height: 25px;
+}
+
+/* TEN Titel in Katalogboxen neben kleines Bild */
+th.BoxKatalog
+{
+	color: #1d2877;
+	font-weight: bold;
+	font-size: 11px;
+	line-height: 11px;
+	background-color: #ececec;
+	text-align: left;
+	text-indent: 0px;
+	vertical-align: middle;
+	padding-top: 2px;
+	padding-left: 8px;
+	border-bottom-style: solid;
+	border-bottom-width: 1px;
+	border-bottom-color: #b2b2b2;
+	width: 192px;
+	height: 25px;
+}
+
+/* TEN Produktauflistung in Katalogboxen */
+
+td.BoxKatalog
+{
+	text-align: left;
+	vertical-align: top;
+	padding: 0px 0px 0px 0px;
+}
+td.BoxKatalogMark
+{
+	font-weight: bold;
+	text-align: left;
+	vertical-align: top;
+	padding: 0px 0px 0px 0px
+}
+
+/* SCC Katalogboxen 1 und 2 Ebene */
+table.Uebersicht
+{
+	margin-top: 0px;
+	margin-bottom: 5px;
+	width: 755px;
+	border-collapse: collapse;
+}
+
+table.BoxWelcome
+{
+  width:100%;
+  height:194px;
+  border-collapse: collapse;
+  margin:0;
+}
+
+/* SCC Kleines Bild oben links in Katalogboxen */
+th.BildBoxUebersicht
+{
+	background-color: #ececec;
+	text-align: left;
+	margin: 0px;
+	padding: 0px 0px 0px 0px;
+	border: 1px solid #b2b2b2;
+	width: 48px;
+	height: 25px;
+}
+
+/* SCC Titel in Katalogboxen neben kleines Bild */
+th.BoxUebersicht
+{
+	color: #1d2877;
+	font-weight: bold;
+	font-size: 11px;
+	line-height: 11px;
+	background-color: #ececec;
+	text-align: left;
+	vertical-align: middle;
+	padding-top: 2px;
+	padding-left: 8px;
+	border: 1px solid #b2b2b2; /* TAM: changed to one line */
+	width: 321px;
+	height: 25px;
+}
+
+/* SCC Rahmen in Boxen hauptseite */
+td.BoxWelcome
+{
+	border: 1px solid #b2b2b2;
+	border-bottom-width: 0px;
+}
+
+td.BoxWelcomeTitle
+{
+  border: 1px solid #b2b2b2;
+  background-color: #BFC4F6;
+	color: #1d2877;
+	font-weight: bold;
+	font-size: 12px;
+  height: 21px;
+  padding-left: 8px;
+}
+
+td.BoxWelcomeContent
+{
+  border: 1px solid #b2b2b2;
+  text-align: center;
+  vertical-align: top;
+  padding: 13px 0;
+}
+
+td.BoxWelcomeContainer
+{
+  border:0;
+  padding:0;
+  width:370px;
+}
+
+td.BoxWelcomeContainerSpacer
+{
+  border:0;
+  padding:0;
+  width:15px;
+}
+
+/* SCC Titel in Boxen hauptseite */
+td.BoxWelcomeText
+{
+	color: #000000;
+	font-weight: normal;
+	font-size: 11px;
+	line-height: 11px;
+}
+ul.InfoCenter
+{
+	margin-left: 0px;
+	margin-bottom: 0px;
+	padding-left: 15px;
+}
+li.InfoCenter
+{
+	list-style-image: url('li_katalog.gif');
+	/*margin-bottom: 5px;*/
+}
+
+/* TEN */
+th.BoxKatalogOhneBild
+{
+	color: #1d2877;
+	font-weight: bold;
+	font-size: 11px;
+	line-height: 11px;
+	background-color: #ececec;
+	text-align: left;
+	text-indent: 0px;
+	vertical-align: middle;
+	padding-top: 2px;
+	padding-left: 8px;
+	border-bottom-style: solid;
+	border-bottom-width: 1px;
+	border-bottom-color: #b2b2b2;
+	width: 215px;
+	height: 25px;
+}
+
+ul.BoxKatalog
+{
+	margin-left: 10px;
+	margin-bottom: 0px;
+	padding-left: 15px;
+}
+/* TEN kleiner Punkt in Auflistung mit Bild */
+li.LinksKatalog
+{
+	padding-top: 5px;
+	font-size: 11px;
+	list-style-image: url('li_katalog.gif');
+}
+
+td.LinksKatalog
+{
+	font-size: 11px;
+	color: #3d3d3d;
+}
+
+a.LinksKatalog
+{
+	font-size: 11px;
+	color: #3d3d3d;
+}
+
+a.LinksKatalog:active
+{
+	font-size: 11px;
+	color: #3d3d3d;
+}
+
+a.LinksKatalog:hover
+{
+	font-size: 11px;
+	color: #b54a9c;
+}
+
+a.LinksKatalogNav, a.LinksKatalogNav:active, a.LinksKatalogNav:hover
+{
+	font-size: 12px;
+	color: #1d2877;
+  font-weight: bold;
+}
+
+a.LinksKatalogNav:hover
+{
+	color: #b54a9c;
+}
+
+table.LinksKatalogNav
+{
+	height: 32px;
+	border: 0px solid #ffffff;
+}
+
+td.LinksKatalogNav
+{
+	font-size: 12px;
+	color: #1d2877;
+  font-weight: bold;
+}
+
+td.LinksKatalogNavPfeil
+{
+	color: #1d2877;
+	font-size: 12px;
+	font-family: Verdana, sans-serif;
+	width: 30px;
+	text-align: center;
+  font-weight: bold;
+}
+
+/* SIS: Mehrere Hierarchien nebeneinander */
+table.KatalogDuble
+{
+	border: solid 1px #b2b2b2;
+	width: 240px;
+	border-collapse: collapse;
+}
+table.KatalogDubleUnten
+{
+	border: solid 1px #b2b2b2;
+	border-top-style: none;
+	width: 240px;
+	border-collapse: collapse;
+}
+td.KatalogContainerDuble
+{
+	margin: 0px;
+	padding: 0px 0px 10px 0px;
+	text-align: left;
+	vertical-align: top;
+	/*border: solid 1px #b2b2b2; */
+	width: 240px;
+}
+
+/* SIS: Katalogseiten mit Hersteller */
+th.BoxKatalogHersteller
+{
+	color: #1d2877;
+	font-weight: bold;
+	font-size: 11px;
+	line-height: 11px;
+	background-color: #ececec;
+	text-align: left;
+	text-indent: 0px;
+	vertical-align: middle;
+	padding-top: 2px;
+	padding-left: 8px;
+	border-bottom-style: solid;
+	border-bottom-width: 1px;
+	border-bottom-color: #b2b2b2;
+	width: 452px;
+	height: 25px;
+}
+
+/* SIS */
+td.BoxKatalogHersteller
+{
+	text-align: left;
+	vertical-align: top;
+	margin: 0px;
+	padding: 0px 0px 0px 0px;
+	width: 435px;
+	font-size: 11px;
+}
+td.KatalogContainerHersteller
+{
+	margin: 0px;
+	padding: 0px;
+	text-align: left;
+	vertical-align: top;
+	/*border: none 1px #b2b2b2; */
+	width: 500px;
+}
+
+td.TitleHersteller
+{
+	font-size: 11px;
+	color: #3d3d3d;
+	font-weight: bold;
+	padding-left: 25px;
+	padding-top: 5px;
+	padding-bottom: 0px;
+	width: 215px;
+}
+td.HerstellerNormal
+{
+	font-size: 11px;
+	color: #3d3d3d;
+	font-weight: normal;
+}
+td.HerstellerBold
+{
+	font-size: 11px;
+	color: #3d3d3d;
+	font-weight: bold;
+}
+
+ul.BoxKatalogHerstellerLinks
+{
+	margin-left: 10px;
+	margin-bottom: 0px;
+	padding-top: 0px;
+	padding-left: 15px;
+}
+
+/* SIS */
+ul.BoxKatalogHerstellerRechts
+{
+	list-style-type: none;
+	margin-left: 0px;
+	margin-top: 0px;
+	margin-bottom: 0px;
+	padding-left: 0px;
+	padding-top: 0px;
+	padding-bottom: 0px;
+}
+
+li.LinksKatalogHersteller
+{
+	padding-left: 25px;
+	/*list-style-image: url('blank.gif') */
+	padding-top: 5px;
+	padding-bottom: 0px;
+}
+
+/* SIS: Katalog Hierarchien Disdata und Distop */
+td.KatContDisdataDistop
+{
+	margin: 0px;
+	padding: 0px;
+	text-align: left;
+	vertical-align: top;
+	/*border: solid 1px #b2b2b2; */
+	width: 324px;
+}
+table.KatalogDubleDisdataDistop
+{
+	border: solid 1px #b2b2b2;
+	width: 324px;
+	border-collapse: collapse;
+}
+table.KatalogDubleDisdataDistopUnten
+{
+	border: solid 1px #b2b2b2;
+	border-top-style: none;
+	width: 324px;
+	border-collapse: collapse;
+}
+td.BoxKatalogDisdataDistop
+{
+	width: 324px;
+	text-align: left;
+	vertical-align: top;
+	padding: 0px 0px 0px 0px;
+}
+td.BoxKatalogDisdataDistopMark
+{
+	font-weight: bold;
+	width: 324px;
+	text-align: left;
+	vertical-align: top;
+	padding: 0px 0px 0px 0px
+}
+
+th.BoxKatalogDisdataDistop
+{
+	color: #1d2877;
+	font-weight: bold;
+	font-size: 11px;
+	line-height: 11px;
+	background-color: #ececec;
+	text-align: left;
+	text-indent: 0px;
+	vertical-align: middle;
+	padding-top: 2px;
+	padding-left: 8px;
+	border-bottom-style: solid;
+	border-bottom-width: 1px;
+	border-bottom-color: #b2b2b2;
+	width: 276px;
+	height: 25px;
+}
+
+/* SIS Katalog end */
+
+
+/* TAM: Product View Layout Styles ------------------------ */
+
+/* TAM: positioning styles extracted */
+
+/* TAM: Icon positioning on cutlist */
+div.productCutlistIcon
+{
+	float: left;
+	vertical-align: middle;
+	text-align: middle;
+}
+
+/* TAM: Text positioning on cutlist */
+div.productCutlistText
+{
+	float: left;
+	vertical-align: bottom;
+	text-align: left;
+	padding-top: 4px;
+	padding-right: 10px;
+	padding-left: 4px;
+	font-size: 11px;
+}
+
+/* TAM: Text positioning on cutlist (Price) */
+div.productCutlistPrice
+{
+	vertical-align: bottom;
+	text-align: right;
+	padding-top: 4px;
+	padding-right: 10px;
+	padding-left: 4px;
+}
+
+/* Conent DIV style for complex layouts (product view and search result view) */
+div.contentComplex
+{
+	height: 100%;
+	overflow: hidden;
+	padding-left: 16px;
+}
+
+ul.luceneResultHierarchy
+{
+	list-style: none;
+	font-size: 11px;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+ul.luceneResultHierarchy:last-child {
+    margin-bottom: 5px;
+}
+
+ul.luceneResultHierarchy:first-child {
+    margin-top: 5px;
+}
+
+table.luceneResult
+{
+	border: 1px;
+	margin: 0px;
+	padding: 0px;
+}
+
+td.luceneResult
+{
+	vertical-align: top;
+	font-size: 11px;
+}
+
+a.compareCloseColumnButton
+{
+  float:right;
+}
+
+a.compareCloseColumnButton img
+{
+  border:0;
+  margin:0 0 3px 3px;
+}
+
+div.comparatorThumb
+{
+  clear:right;
+  margin:0;
+  padding:0;
+}
+
+
+/* END Product View Styles */
+
+/* Herstelleruebersicht **************************************************** */
+
+/* SIS HerstellerView begin */
+
+/* Tabelle Uebersicht */
+table.HerstellerView
+{
+	margin: 0px;
+	padding: 0px;
+	border-collapse: collapse;
+	width: 755px;
+	border-width: 0px;
+}
+/* Titel Uebersichtstabelle */
+td.HerstellerViewHeader
+{
+	color: #1d2877;
+	font-weight: bold;
+	font-size: 11px;
+	line-height: 11px;
+	background-color: #ececec;
+	text-align: left;
+	text-indent: 0px;
+	vertical-align: middle;
+	padding-top: 2px;
+	padding-left: 8px;
+	border: solid 1px #b2b2b2;
+	width: 241px;
+	height: 25px;
+}
+/* Inhalt Uebersichtstabelle */
+td.HerstellerViewContent
+{
+	margin: 0px;
+	padding: 0px 0px 10px 0px;
+	text-align: left;
+	vertical-align: top;
+	border: solid 1px #b2b2b2;
+	width: 241px;
+}
+/* leere Kolonne */
+td.HerstellerViewEmpty
+{
+	margin: 0px;
+	padding: 0px 0px 0px 0px;
+	text-align: left;
+	vertical-align: top;
+	border: none;
+	width: 241px;
+}
+/* Bilder Uebersichtstabelle */
+td.HerstellerViewContentPic
+{
+	margin: 0px;
+	padding: 0px 0px 0px 0px;
+	text-align: center;
+	vertical-align: middle;
+	border: solid 1px #b2b2b2;
+	width: 241px;
+}
+/* Abstand Horizontal */
+td.HerstellerViewAbstandW
+{
+	margin: 0px;
+	padding: 0px 0px 0px 0px;
+	text-align: left;
+	vertical-align: top;
+	border: none;
+	width: 15px;
+}
+img.HerstellerViewAbstandW
+{
+	margin: 0px;
+	padding: 0px;
+	width: 15px;
+	height: 1px;
+	border: 0px;
+}
+/* Abstand Vertikal */
+img.HerstellerViewAbstandH
+{
+	margin: 0px;
+	padding: 0px;
+	width: 1px;
+	height: 14px;
+	border: 0px;
+}
+a.HerstellerViewLinks
+{
+	font-size: 11px;
+	color: #3d3d3d;
+}
+
+a.HerstellerViewLinks:active
+{
+	font-size: 11px;
+	color: #3d3d3d;
+}
+
+a.HerstellerViewLinks:hover
+{
+	font-size: 11px;
+	color: #b54a9c;
+}
+img.HerstellerViewPic
+{
+	max-width: 200px;
+	border: none;
+}
+img.HerstellerViewLogo
+{
+	border: none;
+}
+
+td.KatalogHP
+{
+	margin: 0px;
+	padding: 0px 0px 10px 0px;
+	text-align: left;
+	vertical-align: top;
+	border: none;
+	width: 50%
+	height: 16px;
+	font-size: 11px;
+}
+table.HPGoldenOffers
+{
+	margin: 0px;
+	padding: 0px;
+	border-collapse: collapse;
+	width: 652px;
+	border: none;
+}
+td.HPGoldenOffers
+{
+	font-size: 11px;
+	margin: 0px;
+	padding: 0px 0px 0px 0px;
+	text-align: left;
+	vertical-align: top;
+	border: none;
+	width: 30%
+}
+td.HPGoldenOffersAbstHor
+{
+	margin: 0px;
+	padding: 0px 0px 0px 0px;
+	text-align: center;
+	vertical-align: top;
+	border: none;
+	width: 5%
+}
+td.HPGoldenOffersAbstVert
+{
+	margin: 0px;
+	padding: 0px 0px 0px 0px;
+	border: none;
+	height: 15px;
+}
+
+/* SIS HerstellerView end */
+
+
+
+/* LINKBAR *****************************************************************
+    Linkbar: Small boxes right of catalog / home content
+*/
+
+/* TAM: positioning styles extracted */
+
+/* Table for linkbar */
+table.linkbarBox
+{
+	border: 1px solid #b2b2b2;
+	width: 215px;
+	border-collapse: collapse;
+	margin-bottom: 5px;
+}
+
+/* TAM: Linkbar Box Title */
+
+th.linkbarBox
+{
+	color: #1d2877;
+	font-weight: bold;
+	font-size: 13px;
+	background-color: #bfc4f6;
+	text-align: left;
+	vertical-align: middle;
+	padding: 0px 0px 0px 6px;
+	border: 1px solid #b2b2b2;
+	height: 20px;
+}
+
+/* TAM: Content table cell of link bar box */
+td.linkbarBox, td.linkbarBoxImg, td.linkbarBoxImgText
+{
+	font-size: 11px;
+	background-color: #e1e3f6;
+	text-align: left;
+	vertical-align: middle;
+	padding: 5px 0px 5px 7px;
+	border: 1px solid #b2b2b2;
+}
+
+td.linkbarBoxImg
+{
+	border-right: none;
+	padding: 0px;
+}
+
+td.linkbarBoxImg img
+{
+	border: none;
+}
+
+td.linkbarBoxImgText
+{
+	border-left: none;
+}
+
+/* TAM: Separator of multiple linkbar boxes */
+div.linkbarSeparatorV
+{
+	height: 3px;
+}
+
+/* TAM: select form field for linkbar */
+select.linkbar
+{
+	font-size: 10px;
+	font-family: Arial, Helvetica, sans-serif;
+	width: 120px;
+}
+
+/* END Linkbar Styles */
+
+/* ************ SEARCH RELATED STYLES ************************************/
+
+/* TAM: positioning styles extracted */
+
+/************ extended search table definition ******************/
+
+/**
+* SEB search table
+* differs from document table
+* in width
+***/
+table.extSearch
+{
+	margin: 0px;
+	padding: 0px;
+	border: solid 1px #b2b2b2;
+	width: 600px;
+	border-collapse: collapse;
+}
+
+/**
+* SEB search table header
+* differs from document th in height
+* does _not_ differ from document (WK) table header
+* MERGE
+**/
+th.extSearch
+{
+	height: 25px;
+	margin: 0px;
+	padding: 2px;
+
+	/*border-top-style: solid;
+	border-top-width: 1px;
+	border-top-color: #b2b2b2; */
+	border-bottom-style: solid;
+	border-bottom-width: 1px;
+	border-bottom-color: #b2b2b2;
+
+	text-align: left;
+	vertical-align: top;
+	background-color: #e1e4f7;
+	color: #1d2877;
+	font-size: 11px;
+	font-weight: normal;
+}
+
+/**
+* SEB search table cell
+* differs from document cell in height
+* and vertical alignement
+* and margin
+**/
+td.extSearch
+{
+	padding: 10px 2px;
+
+	margin-top: 2px;
+	margin-bottom: 15px;
+
+	font-size: 11px;
+	text-align: left;
+	vertical-align: top;
+}
+
+/**
+* SEB search result table
+* used to show page title
+* and some infos
+***/
+table.resultFunction
+{
+	margin: 0px;
+	padding: 0px;
+	width: 828px;
+}
+
+img.resultPageThumbs {
+	max-height:60px;
+    max-width: 200px;
+    border:0;
+}
+
+img.luceneResultPageThumbs {
+
+	/* css 2.1 */
+    max-width: 140px;
+	max-height:42px;
+    border:0;
+
+   /* IE with JavaScript */
+   _zoom: expression((this.clientWidth <= 140 && this.clientHeight <= 42) ? 1.0 : ((140 / this.clientWidth) < (42 / this.clientHeight) ? (140 / this.clientWidth) : (42 / this.clientHeight)));
+}
+
+img.configuratorResultPageThumbs {
+
+	/* css 2.1 */
+    max-width: 210px;
+	max-height:63px;
+    border:0;
+
+   /* IE with JavaScript */
+   _zoom: expression((this.clientWidth <= 210 && this.clientHeight <= 63) ? 1.0 : ((210 / this.clientWidth) < (63 / this.clientHeight) ? (210 / this.clientWidth) : (63 / this.clientHeight)));
+}
+
+td.configuratorManufacturers {
+    width: 190px;
+    padding: 10px;
+    border-left: 1px solid #B2B2B2;
+    vertical-align: top;
+}
+
+img.configurator-manufacturer-image {
+    max-width: 200px;
+    max-height: 63px;
+    _zoom: expression((this.clientWidth <= 200 && this.clientHeight <= 63) ? 1.0 : ((200 / this.clientWidth) < (63 / this.clientHeight) ? (200 / this.clientWidth) : (63 / this.clientHeight)));
+
+    display: block;
+    margin: 5px;
+    margin-bottom: 15px;
+}
+
+div#filterContent {
+    margin-bottom: 20px;
+}
+
+/* Lucene Filter History ******************************************************/
+
+div#historyBox
+{
+	background-color:#FFFFFF;
+	display:none;
+	width:240px;
+	height:240px;
+	border: 1px solid #E1E1E1;
+	overflow: auto;
+	z-index: 5;
+	position: absolute;
+	left: 600px;
+	text-align:left;
+	-moz-user-focus: normal;
+}
+
+
+/**
+* SEB old script to render
+* images in IE, obsolet
+*	width:expression(
+    	document.body.clientWidth > (500/12) *
+    		parseInt(document.body.currentStyle.fontSize)?
+        	"60px":
+        	"auto" );
+**/
+
+/**
+* SEB thumbnail images
+* table cell where they
+* are rendered in
+**/
+
+td.resultPageThumbs {
+        border-style: solid;
+        border-width: 1px;
+        border-color: #b2b2b2;
+
+        vertical-align: middle;
+        text-align: left;
+
+        height: 64px;
+        width: 204px;
+}
+
+td.luceneResultPageThumbs {
+        border-style: solid;
+        border-width: 1px;
+        border-color: #b2b2b2;
+
+        vertical-align: middle;
+        text-align: left;
+
+        height: 46px;
+        width: 144px;
+}
+
+td.configuratorResultPageThumbs {
+        border-style: solid;
+        border-width: 1px;
+        border-color: #b2b2b2;
+
+        vertical-align: middle;
+        text-align: left;
+
+        height: 69px;
+        width: 216px;}
+
+td.resultFunction
+{
+	vertical-align: bottom;
+	font-size: 11px;
+	white-space: nowrap;
+}
+
+/**
+* SEB search result table
+* differs from document table
+* in width
+* used to display paged results
+***/
+table.resultPage
+{
+	margin: 0px;
+	padding: 0px;
+	width: 100%;
+	border-collapse: collapse;
+}
+
+/**
+* SEB: select box
+* for document
+* on order page
+* you may have to set
+* width as style attribute
+*
+* MERGE! does not differ from select.document
+**/
+select.extSearch {
+	font-size: 10px;
+	font-family: Arial, Helvetica, Geneva, Swiss, sans-serif;
+	background-color: #ffffff;
+	margin-bottom: 2px;
+	padding-top: 1px;
+	padding-bottom: 2px;
+	padding-left: 2px;
+	border-style: solid;
+	border-width: 2px 1px 1px 2px;
+	border-color: #696969 #c0c0c0 #c0c0c0 #696969;
+
+	width: 120px;
+	height: 18px;
+}
+
+/**
+* SEB: document input field
+* you may have to set
+* width as style attribute
+*
+* * MERGE! does not differ from input.document
+**/
+input.extSearch
+{
+	font-size: 10px;
+	font-family: Arial, Helvetica, Geneva, Swiss, sans-serif;
+	background-color: #ffffff;
+	margin-bottom: 2px;
+	padding-top: 1px;
+	padding-bottom: 2px;
+	padding-left: 2px;
+	border-style: solid;
+	border-width: 2px 1px 1px 2px;
+	border-color: #696969 #c0c0c0 #c0c0c0 #696969;
+
+	width: 120px;
+	height: 18px;
+}
+
+/****************** END OF SEARCH STYLES **********************************/
+
+
+/****************** DOCUMENT RELATED STYLES *******************************/
+
+/***** document table + cell definitions
+
+/** SEB document (WK) table **/
+table.document
+{
+	margin: 0px;
+	padding: 0px;
+	border: solid 1px #b2b2b2;
+	border-bottom-width: 0px;
+	width: 800px;
+	border-collapse: collapse;
+}
+
+/** SEB document (WK) table header **/
+th.document
+{
+
+	height: 25px;
+	margin: 0px;
+	padding: 2px;
+
+	border-top-style: solid;
+	border-top-width: 1px;
+	border-top-color: #b2b2b2;
+	border-bottom-style: solid;
+	border-bottom-width: 1px;
+	border-bottom-color: #b2b2b2;
+
+	text-align: left;
+	vertical-align: top;
+	background-color: #e1e4f7;
+	color: #1d2877;
+	font-size: 11px;
+	font-weight: normal;
+}
+
+/** SEB document (WK) table cell white **/
+td.document0
+{
+	padding: 2px;
+
+	font-size: 11px;
+	text-align: left;
+	vertical-align: middle;
+	height: 23px;
+}
+
+/** SEB document (WK) table cell gray **/
+td.document1
+{
+	padding: 2px;
+
+	font-size: 11px;
+	text-align: left;
+	vertical-align: middle;
+	height: 23px;
+
+	background-color: #ececec;
+}
+
+
+
+/**
+* SEB document (WK) table footer
+* contains comments (spanned), totalprices, tax, charge
+**/
+
+tr.documentFooter
+{
+
+	border-top-style: solid;
+	border-top-width: 1px;
+	border-top-color: #b2b2b2;
+}
+
+/**
+* SEB documentfooter td
+* with border
+*/
+td.documentFooter
+{
+        border: 1px solid #b2b2b2;
+
+        font-size: 11px;
+        text-align: left;
+        vertical-align: middle;
+}
+
+
+/**
+* document header
+*/
+table.documentHeader
+{
+     margin: 0px;
+     padding: 0px;
+     width: 800px;
+     border-collapse: collapse;
+}
+
+/**
+* SEB documentfooter td
+* with border
+*/
+table.documentFooter
+{
+     border: 1px solid #b2b2b2;
+     margin: 0px;
+     padding: 0px;
+     width: 800px;
+     border-collapse: collapse;
+
+}
+
+
+/**
+ * GUG: oldOrder style classes
+ */
+table.oldOrderDocument
+{
+	margin: 0px;
+	padding: 0px;
+	border: 0;
+	width: 100%;
+	border-collapse: collapse;
+}
+
+table.oldOrderDocument a img, img.link {
+	border: 0;
+}
+
+th.oldOrderDocument
+{
+
+	height: 25px;
+	margin: 0px;
+	padding: 2px;
+
+	border-top-width: 0;
+	border-bottom-style: solid;
+	border-bottom-width: 1px;
+	border-bottom-color: #b2b2b2;
+
+	text-align: left;
+	vertical-align: middle;
+	background-color: #e1e4f7;
+	color: #1d2877;
+	font-size: 11px;
+	font-weight: normal;
+}
+
+
+td.oldOrderDocument0
+{
+	padding: 2px;
+
+	font-size: 11px;
+	text-align: left;
+	vertical-align: middle;
+	height: 23px;
+}
+
+
+td.oldOrderDocument1
+{
+	padding: 2px;
+
+	font-size: 11px;
+	text-align: left;
+	vertical-align: middle;
+	height: 23px;
+
+	background-color: #ececec;
+}
+
+td.oldOrderDocumentFooter
+{
+        border: 1px solid #b2b2b2;
+		border-bottom-width: 0;
+		border-left-width:0;
+		border-right-width:0;
+
+        font-size: 11px;
+        text-align: left;
+        vertical-align: middle;
+}
+
+
+/**
+* SEB table to display
+* direct order in
+*/
+table.documentDirect
+{
+        margin: 0px;
+        padding: 0px;
+        border: solid 1px #b2b2b2;
+        width: 800px;
+        border-collapse: collapse;
+}
+
+
+/** SEB document (WK) table footer header
+* contains description for totalprices, tax, charge
+* border differs from th.document
+* vertical align differs from th.document
+* text align differs from th.document
+**/
+th.documentFooter
+{
+	height: 25px;
+	margin: 0px;
+	padding: 2px;
+
+	border: 1px solid #b2b2b2;
+
+	text-align: right;
+	vertical-align: middle;
+	background-color: #e1e4f7;
+	color: #1d2877;
+	font-size: 11px;
+	font-weight: normal;
+}
+
+
+/**
+* SEB table holding the function elements
+* on document (WK) pages
+* is also used for availability legend
+**/
+table.documentFunction {
+	margin: 0px;
+	padding: 0px;
+	width: 800px;
+}
+
+/**
+* SEB cells of documentfunction
+* table holding legens and buttons
+**/
+/*td.documentFunction {
+	font-size: 11px;
+	text-align: left;
+	vertical-align: bottom;
+	height: 12px;
+}*/
+
+td.documentFunction
+{
+	font-size: 11px;
+	/*padding-top: 10px;*/
+}
+
+/** TAM container for document function buttons. */
+div.documentFunctionButton
+{
+	float: right;
+	padding-left: 15px;
+}
+
+div.documentStockCutlist
+{
+	float: none;
+	height: 22px;
+}
+
+img.documentCutlistIcon
+{
+	padding-right: 15px;
+	vertical-align: middle;
+}
+
+/********* document form fields definition **********************/
+
+
+
+/**
+* SEB: select box
+* for document
+* on order page
+* you may have to set
+* width as style attribute
+**/
+select.document {
+	font-size: 10px;
+	font-family: Arial, Helvetica, Geneva, Swiss, sans-serif;
+	background-color: #ffffff;
+	margin-bottom: 2px;
+	padding-top: 1px;
+	padding-bottom: 2px;
+	padding-left: 2px;
+	border-style: solid;
+	border-width: 2px 1px 1px 2px;
+	border-color: #696969 #c0c0c0 #c0c0c0 #696969;
+
+	width: 120px;
+	height: 18px;
+}
+
+
+/**
+* SEB: document input field
+* you may have to set
+* width as style attribute
+**/
+input.document
+{
+	font-size: 10px;
+	font-family: Arial, Helvetica, Geneva, Swiss, sans-serif;
+	background-color: #ffffff;
+	margin-bottom: 2px;
+	padding-top: 1px;
+	padding-bottom: 2px;
+	padding-left: 2px;
+	border-style: solid;
+	border-width: 2px 1px 1px 2px;
+	border-color: #696969 #c0c0c0 #c0c0c0 #696969;
+	width: 120px;
+	height: 18px;
+}
+
+
+/** SEB document (WK) textarea
+* holds customer comments
+**/
+textarea.document {
+	font-size: 10px;
+	font-family: Arial, Helvetica, Geneva, Swiss, sans-serif;
+	background-color: #ffffff;
+	margin-bottom: 2px;
+	padding-top: 1px;
+	padding-bottom: 2px;
+	padding-left: 2px;
+	border-style: solid;
+	border-width: 2px 1px 1px 2px;
+	border-color: #696969 #c0c0c0 #c0c0c0 #696969;
+
+	width: 310px;
+	height: 86px;
+
+	scrollbar-3dlight-color: #b2b2b2;
+	scrollbar-arrow-color: #b2b2b2;
+	scrollbar-base-color: #FFFFFF;
+	scrollbar-darkshadow-color: #ffffff;
+	scrollbar-face-color: #ffffff;
+	scrollbar-shadow-color: #b2b2b2;
+}
+
+/****************** END OF DOCUMENT RELATED STYLES *************************/
+
+
+
+
+
+/** Table Register Customer */
+table.Anmeldung
+{
+	margin-top: 10px;
+	margin-left: 0px;
+	border: solid 1px #b2b2b2;
+	border-collapse: collapse;
+	width: 700px;
+}
+
+th.contentBox
+{
+	color: #1d2877;
+	font-weight: bold;
+	font-size: 12px;
+	background-color: #ececec;
+	text-align: left;
+	vertical-align: middle;
+	padding-left: 6px;
+	border: solid 1px #b2b2b2;
+	height: 21px;
+}
+
+td.contentBox
+{
+	font-size: 11px;
+	text-align: left;
+	vertical-align: middle;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	padding-left: 6px;
+	border: solid 1px #b2b2b2;
+}
+
+p.contentBox
+{
+	margin: 0px;
+	padding: 0px;
+	margin-bottom: 20px;
+}
+
+td.contentProduktWeiss
+{
+	font-size: 11px;
+	text-align: left;
+	vertical-align: middle;
+	padding-left: 6px;
+	border-style: solid;
+	border-width: 0px 1px 0px 1px;
+	border-color: #b2b2b2;
+	height: 23px;
+}
+
+td.contentProduktGrau
+{
+	font-size: 11px;
+	background-color: #ececec;
+	text-align: left;
+	vertical-align: middle;
+	padding-left: 6px;
+	border-style: solid;
+	border-width: 0px 1px 0px 1px;
+	border-color: #b2b2b2;
+	height: 23px;
+}
+
+td.AnmeldungTxt1
+{
+	text-align: left;
+	vertical-align: top;
+	padding: 0px;
+	padding-left: 8px;
+	padding-right: 10px;
+	height: 30px;
+	vertical-align: middle;
+}
+
+td.AnmeldungTxt2
+{
+        text-align: left;
+        vertical-align: top;
+        padding: 0px;
+	padding-right: 10px;
+	padding-left: 40px;
+        height: 30px;
+	vertical-align: middle;
+}
+
+td.AnmeldungInput
+{
+	text-align: left;
+	vertical-align: top;
+	width: 170px;
+	padding: 0px;
+	height: 30px;
+	vertical-align: middle;
+}
+
+hr.TableTrennlinien
+{
+	size: 1px;
+	color: #C8C8C8;
+}
+
+td.Navigation
+{
+	font-size: 11px;
+	background-color: #b2b2b2;
+}
+
+p.navigation
+{
+	color: #1d2877;
+}
+
+input.Txt
+{
+	font-size: 10px;
+	font-family: Arial, Helvetica, Geneva, Swiss, sans-serif;
+	background-color: #ffffff;
+	margin-bottom: 2px;
+	padding-top: 1px;
+	padding-bottom: 2px;
+	padding-left: 2px;
+	border-style: solid;
+	border-width: 2px 1px 1px 2px;
+	border-color: #696969 #c0c0c0 #c0c0c0 #696969;
+	width: 135px;
+	height: 18px;
+}
+
+select.Txt
+{
+	font-size: 10px;
+	font-family: Arial, Helvetica, Geneva, Swiss, sans-serif;
+	background-color: #ffffff;
+	margin-bottom: 2px;
+	padding-top: 1px;
+	padding-bottom: 2px;
+	padding-left: 2px;
+	border-style: solid;
+	border-width: 2px 1px 1px 2px;
+	border-color: #696969 #c0c0c0 #c0c0c0 #696969;
+	width: 135px;
+	height: 18px;
+}
+
+input.Radio
+{
+	font-family: Arial, Helvetica, Geneva, Swiss, sans-serif;
+	background-color: #ffffff;
+	margin-right: 10px;
+	margin-left: 0px;
+	vertical-align: middle;
+}
+
+input.Checkbox
+{
+	font-family: Arial, Helvetica, Geneva, Swiss, sans-serif;
+	background-color: #ffffff;
+	margin-right: 10px;
+	margin-left: 0px;
+	vertical-align: middle;
+}
+
+textarea.txt
+{
+	font-size: 10px;
+	font-family: Arial, Helvetica, Geneva, Swiss, sans-serif;
+	background-color: #ffffff;
+	border: solid 0px;
+}
+
+input.TxtStrasse
+{
+	font-size: 10px;
+	font-family: Arial, Helvetica, Geneva, Swiss, sans-serif;
+	background-color: #ffffff;
+	margin-bottom: 2px;
+	padding-top: 1px;
+	padding-bottom: 2px;
+	padding-left: 2px;
+	border-style: solid;
+	border-width: 2px 1px 1px 2px;
+	border-color: #696969 #c0c0c0 #c0c0c0 #696969;
+	width: 100px;
+	height: 18px;
+}
+
+input.TxtNr
+{
+	font-size: 10px;
+	font-family: Arial, Helvetica, Geneva, Swiss, sans-serif;
+	background-color: #ffffff;
+	margin-bottom: 2px;
+	padding-top: 1px;
+	padding-bottom: 2px;
+	padding-left: 2px;
+	border-style: solid;
+	border-width: 2px 1px 1px 2px;
+	border-color: #696969 #c0c0c0 #c0c0c0 #696969;
+	width: 31px;
+	height: 18px;
+}
+
+input.buttonNav
+{
+	color: #ffffff;
+	font-size: 9px;
+	font-family: Arial, Helvetica, Geneva, Swiss, sans-serif;
+	font-weight: bold;
+	text-decoration: none;
+	background: #838dd3 url('button_arrow.gif') no-repeat right center;
+	text-align: left;
+	vertical-align: middle;
+	margin: 5px 0px;
+	padding-left: 2px;
+	padding-right: 6px;
+	padding-bottom: 1px;
+	border: solid 1px #000000;
+	height: 16px;
+	width: 70px;
+}
+
+/*CSS 2.1 version (does not work with IE)
+/*input.buttonNav[disabled]*/
+input.buttonNavDisabled
+{
+	color: #000000;
+ 	font-size: 9px;
+ 	font-family: Arial, Helvetica, Geneva, Swiss, sans-serif;
+ 	text-decoration: none;
+	background: #ffffff url('button_arrow.gif') no-repeat right center;
+ 	text-align: left;
+ 	vertical-align: middle;
+ 	margin: 5px 0px;
+ 	padding-left: 2px;
+ 	padding-right: 6px;
+	border: solid 1px #909090;
+ 	height: 16px;
+ 	width: 70px;
+}
+
+input.importFile
+{
+	color: #000000;
+	font-size: 9px;
+	font-family: Arial, Helvetica, Geneva, Swiss, sans-serif;
+	/*background: #ffffff url('button_arrow.gif') no-repeat right center;*/
+	text-decoration: none;
+	text-align: left;
+	vertical-align: middle;
+	padding-left: 2px;
+	padding-right: 6px;
+	border: solid 1px #909090;
+	height: 16px;
+	width: 205px;
+	margin: 0px;
+}
+
+button.buttonNav
+{
+		color: #FFFFFF;
+    font-size: 9px;
+    font-family: Arial, Helvetica, Geneva, Swiss, sans-serif;
+	font-weight: bold;
+    text-decoration: none;
+    background: #838dd3 url('button_arrow.gif') no-repeat right center;
+    text-align: left;
+    vertical-align: middle;
+    margin: 5px 0px;
+    padding-left: 2px;
+    padding-right: 6px;
+    padding-bottom: 1px;
+    border: solid 1px #000000;
+    height: 16px;
+    width: 70px;
+}
+
+
+a.buttonNav
+{
+	color: #FFFFFF;
+	font-size: 9px;
+	font-family: Arial, Helvetica, Geneva, Swiss, sans-serif;
+	font-weight: bold;
+	text-decoration: none;
+	background: #838dd3 url('button_arrow.gif') no-repeat right center;
+	text-align: left;
+	vertical-align: middle;
+	padding-top: 2px;
+	padding-left: 2px;
+	padding-right: 6px;
+	border: solid 1px #000000;
+	height: 12px;
+	width: 70px;
+	float: left;
+}
+
+a.buttonNav:hover
+{
+	color: #000000;
+	text-decoration: none;
+}
+
+
+.buttonNavKatalog
+{
+	color: #1d2877;
+	font-weight: bold;
+	font-size: 12px;
+	font-family: Arial, Helvetica, Geneva, Swiss, sans-serif;
+	text-decoration: none;
+	background: #bfc4f6 url('button_ecke_normal.gif') no-repeat right top;
+	text-align: center;
+	padding-top: 4px;
+	border: solid 1px #fff;
+	width: 131px;
+	height: 26px;
+	min-width: 70px;
+}
+
+.mussfeldStern
+{
+	color: #1d2877;
+	font-weight: bold;
+	font-size: 14px;
+}
+
+/** TAM: common ul */
+ul.common
+{
+	margin-left: 10px;
+	margin-bottom: 0px;
+	margin-top: 0px;
+	padding-left: 15px;
+}
+
+/** TAM: common li; */
+li.common
+{
+	list-style-image: url('li_katalog.gif');
+}
+
+/************************* PRODUCT TABLE STYLE ****************************/
+
+tr.productHeaderLastLine
+{
+	border: 0px solid #b2b2b2;
+	border-bottom-width: 1px;
+}
+
+div.productTablePriceScale
+{
+	float: left;
+	width: 40px;
+	padding-right: 5px;
+	text-align: right;
+}
+
+tr.productTableLine0
+{
+	background-color: #FFFFFF;
+}
+
+tr.productTableLine1
+{
+	background-color: #ECECEC;
+}
+
+tr.productTableLineHighlighted
+{
+	background-color: #E7A4D7;
+}
+
+/** TAM: Border td for producttable,
+a separate table-row is used since IE does not support borders on tr */
+td.productTableBorderLine
+{
+        padding: 0px;
+        border-width: 0px;
+        height: 1px;
+        background-color: #b2b2b2;
+}
+
+/** TAM: Separator line in Producttable (appears before subsequent
+headers) */
+td.productTableSeparatorLine
+{
+        padding: 0px;
+        border: 0px solid #b2b2b2;
+        border-top-width: 1px;
+        border-bottom-width: 1px;
+        height: 5px;
+        background-color: #ffffff;
+}
+
+input.productTableQuantity
+{
+	font-size: 10px;
+	font-family: Arial, Helvetica, Geneva, Swiss, sans-serif;
+	background-color: #ffffff;
+	margin-bottom: 2px;
+	padding-top: 1px;
+	padding-bottom: 2px;
+	padding-right: 2px;
+	border-style: solid;
+	border-width: 2px 1px 1px 2px;
+	border-color: #696969 #c0c0c0 #c0c0c0 #696969;
+	width: 32px;
+	height: 18px;
+	text-align: right;
+}
+
+
+/** TAM: Blue sub titles in bold */
+.contentSubTitle
+{
+	color: #1d2877;
+	font-weight: bold;
+	font-size: 11px;
+	margin: 0px;
+	margin-bottom: 3px;
+}
+
+/** TAM: Icons right to the title (like orderlist icon) */
+img.contentTitleIcon
+{
+	vertical-align: text-bottom;
+	padding-left: 8px;
+}
+
+/** TAM: Inline layout container creating some padding.
+		 Usage: Orderlist Selection in catalog /product page */
+div.inlineContentContainer
+{
+	padding: 10px;
+}
+
+/** TAM: Space between layout objects */
+.contentSpace
+{
+	height: 15px;
+	margin: 0px;
+	padding: 0px;
+	overflow: hidden;
+}
+
+/** TAM: Text input field for document name (orderlists) */
+input.orderlistName
+{
+	font-size: 10px;
+	font-family: Arial, Helvetica, sans-serif;
+	background-color: #ffffff;
+	margin-bottom: 2px;
+	margin-right: 10px;
+	padding-top: 1px;
+	padding-bottom: 2px;
+	padding-left: 2px;
+	border-style: solid;
+	vertical-align: middle;
+	border-width: 2px 1px 1px 2px;
+	border-color: #696969 #c0c0c0 #c0c0c0 #696969;
+	width: 160px;
+	height: 18px;
+}
+
+/** TAM: Text input field for article number (orderlists) */
+input.articleNo
+{
+	font-size: 10px;
+	font-family: Arial, Helvetica, sans-serif;
+	background-color: #ffffff;
+	margin-bottom: 2px;
+	margin-right: 10px;
+	padding-top: 1px;
+	padding-bottom: 2px;
+	padding-left: 2px;
+	border-style: solid;
+	vertical-align: middle;
+	border-width: 2px 1px 1px 2px;
+	border-color: #696969 #c0c0c0 #c0c0c0 #696969;
+	width: 60px;
+	height: 18px;
+}
+
+/** TAM: Style for prices on application */
+div.productTablePriceOnApplication
+{
+	float: left;
+	width: 80px;
+	font-style: italic;
+}
+
+/** TAM: Style for "on sale" articles (right of first price) */
+div.productTablePriceOnSale
+{
+	float: left;
+	width: 80px;
+	font-style: italic;
+	color: #b54a9c;
+	font-weight: bold;
+}
+
+/** TAM: Document content displayed within a scrollable container */
+table.inlineDocument
+{
+	margin: 0px;
+	padding: 0px;
+	border: 0px solid #ffffff;
+	width: 100%;
+	border-collapse: collapse;
+}
+
+th.inlineDocument
+{
+	height: 25px;
+	margin: 0px;
+	padding: 2px;
+
+	border: 0px solid #b2b2b2;
+	border-bottom-width: 1px;
+
+	text-align: left;
+	vertical-align: top;
+	background-color: #e1e4f7;
+	color: #1d2877;
+	font-size: 11px;
+	font-weight: normal;
+}
+
+table.orderlistFooter
+{
+	padding: 0px;
+	margin: 0px;
+	width: 827px;
+}
+
+/* TAM: Product View Cutlist (=legend) */
+div.orderlistCutlist
+{
+	margin-top: 5px;
+	width: 800px;
+	height: 22px;
+	overflow: hidden;
+}
+
+img.managedElementProduct
+{
+	text-align: left;
+	max-height: 60px;
+	max-width: 80px;
+	border: none;
+	vertical-align: text-top;
+}
+
+img.managedElementBanner
+{
+	border: none;
+	text-align: center;
+}
+
+div.managedElementImage
+{
+	width: 60px;
+	overflow: hidden;
+	float: left;
+	margin-right: 4px;
+}
+
+div.managedElementText
+{
+}
+
+div.managedElementPrice
+{
+	font-weight: bold;
+	text-align: right;
+}
+
+
+/* TAM: Global FORM style */
+/* IE has default padding / margin of 20px if not defined! */
+form
+{
+	padding: 0px;
+	margin: 0px;
+}
+
+a:active
+{
+	color: #3d3d3d;
+}
+
+a:hover
+{
+	color: #b54a9c;
+}
+
+a
+{
+	color: #3d3d3d;
+}
+
+/* AGB */
+span.agb
+{
+	font-family: Arial, Helvetica, Geneva, Swiss, sans-serif;
+	font-size: 11px;
+}
+
+table.Sitemap
+{
+	margin: 20px;
+	padding: 0px;
+	border: none;
+	width: 700px;
+	border-collapse: collapse;
+}
+
+td.Sitemap
+{
+	font-size: 11px;
+	color: #3d3d3d;
+}
+
+a.Sitemap
+{
+	font-size: 11px;
+	color: #3d3d3d;
+}
+
+a.Sitemap:active
+{
+	font-size: 11px;
+	color: #3d3d3d;
+}
+
+a.Sitemap:hover
+{
+	font-size: 11px;
+	color: #b54a9c;
+}
+
+/************************* ADMIN CONTENT STYLES ****************************
+ *
+ * Normalized style classes for managed content (product boxes, highlights, ...)
+ * Project: Marketing Extensions (2006)
+ */
+
+/**
+ * tam: Clean table and td styles; no padding, margin, etc.
+ */
+table.clean
+{
+	padding: 0px;
+	margin: 0px;
+	border-spacing: 0px;
+	border: none;
+	border-collapse: collapse;
+}
+
+td.clean
+{
+	font-family: Arial, Helvetica, Geneva, Swiss, sans-serif;
+	font-size: 11px;
+	padding: 0px;
+	margin: 0px;
+	text-align: left;
+	vertical-align: top;
+}
+
+
+/**
+ * tam: Advertising Box Head.
+ */
+div.managedBoxHead
+{
+	border: 1px solid #b2b2b2;
+	border-bottom-width: 0px;
+	background-color: #ececec;
+	color: #1d2877;
+	font-size: 12px;
+	font-weight: bold;
+}
+
+/**
+ * tam: Advertising Box Body.
+ */
+div.managedBoxBody
+{
+	border: 1px solid #b2b2b2;
+	height: 94px;
+	_height: 104px;
+	background-color: #ffffff;
+	padding: 5px;
+	padding-left: 8px;
+	padding-right: 8px;
+}
+
+/**
+ * tam: Advertising Box Head table.
+ */
+table.managedBoxHead
+{
+	height: 21px;
+	width: 100%;
+}
+
+/**
+ * tam: Advertising Box Title
+ */
+td.managedBoxTitleCell
+{
+	padding-left: 8px;
+	vertical-align: middle;
+}
+
+/**
+ * tam: Advertising Box Key Visual
+ */
+td.managedBoxKeyVisualCell
+{
+	width: 40px;
+}
+
+img.managedBoxKeyVisual
+{
+	width: 40px;
+	height: 21px;
+}
+
+/**
+ * tam: Advertising Box Title Text (applied to span and input element, thus no
+ * tagname selector used)
+ */
+.managedBoxTitleText
+{
+	margin: 0px;
+	font-family: Arial, Helvetica, Geneva, Swiss, sans-serif;
+	color: #1d2877;
+	font-size: 12px;
+	font-weight: bold;
+	height: 16px;
+	overflow: hidden;
+}
+
+/**
+ * tam: Advertising Box Product Image div container to crop image
+ * (IE, no JavaScript)
+ */
+div.managedBoxProductImage
+{
+	width: 91px;
+	height: 91px;
+	overflow: hidden;
+}
+
+/**
+ * tam: Advertising Box Image; max size is 65 x 65 pixels.
+ */
+img.managedBoxProductImage
+{
+	border: 0px solid #ffffff;
+	max-width: 91px;
+	max-height: 91px;
+	_zoom: expression((this.clientWidth <= 91 && this.clientHeight <= 91) ? 1.0 : (this.clientWidth > this.clientHeight ? (91 / this.clientWidth) : (91 / this.clientHeight)));
+}
+
+/**
+ * tam: Advertising Box Product Image div container to crop image
+ * (IE, no JavaScript)
+ */
+div.managedBoxBannerImage
+{
+	_position: absolute;
+	vertical-align: middle;
+	width: 100%;
+	overflow: hidden;
+	text-align: center;
+}
+
+/**
+ * tam: Advertising Box Image; max size is 65 x 65 pixels.
+ */
+img.managedBoxBannerImage
+{
+	vertical-align: middle;
+	border: none;
+	max-height: 94px;
+}
+
+/**
+ * tam: Advertising Banner Image; 3 Boxes on row.
+ */
+img.managedBoxBannerImage3
+{
+	border: none;
+	max-width: 224px;
+
+	_zoom: expression((this.clientWidth <= 224 && this.clientHeight <= 94) ? 1.0 : ((224 / this.clientWidth) < (94 / this.clientHeight) ? (224 / this.clientWidth) : (94 / this.clientHeight)));
+}
+
+/**
+ * tam: Advertising Banner Image; 2 Boxes on row.
+ */
+img.managedBoxBannerImage2
+{
+	border: none;
+	max-width: 352px;
+
+	_zoom: expression((this.clientWidth <= 352 && this.clientHeight <= 94) ? 1.0 : ((352 / this.clientWidth) < (94 / this.clientHeight) ? (352 / this.clientWidth) : (94 / this.clientHeight)));
+}
+
+/**
+ * tam: Advertising Banner Image; 1 Box on row.
+ */
+img.managedBoxBannerImage1
+{
+	border: none;
+	max-width: 737px;
+
+	_zoom: expression((this.clientWidth <= 737 && this.clientHeight <= 94) ? 1.0 : ((737 / this.clientWidth) < (94 / this.clientHeight) ? (737 / this.clientWidth) : (94 / this.clientHeight)));
+}
+
+
+/**
+ * tam: Advertising Box Body Text (applied to div and textarea, thus no
+ * tagname selector used)
+ */
+.managedBoxBodyText
+{
+	margin: 0px;
+	width: 100%;
+	height: 78px;
+	font-family: Arial, Helvetica, Geneva, Swiss, sans-serif;
+	color: #3d3d3d;
+	font-size: 11px;
+	line-height: 13px;
+	overflow: hidden;
+}
+
+/**
+ * tam: Advertising Box Body Text Anchor style
+ */
+a.managedBoxBodyText
+{
+	text-decoration: none;
+    height: 91px;
+}
+
+/**
+ * tam: Advertising Box Body Text Anchor style (hover)
+ */
+a.managedBoxBodyText:hover
+{
+	text-decoration: underline;
+}
+
+/**
+ * tam: Advertising Box Body Link Text (applied to span and input element, thus
+ * no tagname selector used)
+ */
+.managedBoxBodyLinkText
+{
+	margin: 0px;
+	width: 100%;
+	height: 15px;
+	font-family: Arial, Helvetica, Geneva, Swiss, sans-serif;
+	color: #3d3d3d;
+	text-align: right;
+	font-size: 11px;
+	line-height: 14px;
+	font-weight: bold;
+	overflow: hidden;
+}
+
+/* Quicklinks (Column right) ************************************* */
+
+/**
+ * tam: Quicklinks Box addtional templates (linkbar column)
+ */
+table.quicklinkBoxItem
+{
+	padding: 0px;
+	margin: 0px;
+	border-spacing: 0px;
+	border-collapse: collapse;
+	width: 213px;
+}
+
+/**
+ * tam: Quicklinks Box Item
+ */
+td.quicklinkBoxItem
+{
+	padding: 0px;
+	margin: 0px;
+	border: 1px solid #b2b2b2;
+	border-collapse: collapse;
+}
+
+/**
+ * tam: Quicklinks Box Small Image (image left of text)
+ */
+td.quicklinkBoxImageSmall
+{
+	border: none;
+	width: 38px;
+	font-size: 11px;
+	background-color: #e1e3f6;
+	vertical-align: middle;
+	padding: 0px;
+	margin: 0px;
+}
+
+/**
+ * tam: Quicklinks Box Full Image (full width image)
+ */
+td.quicklinkBoxImageFull
+{
+	border: none;
+	font-size: 11px;
+	background-color: #e1e3f6;
+	vertical-align: middle;
+	padding: 0px;
+	margin: 0px;
+	height: 29px;
+}
+
+/**
+ * tam: Quicklinks Box Text style
+ */
+td.quicklinkBoxText
+{
+	height: 29px;
+	border: none;
+	font-size: 11px;
+	background-color: #e1e3f6;
+	vertical-align: middle;
+	padding-left: 5px;
+	margin: 0px;
+}
+
+/**
+ * tam: Quicklinks Box Image Style (small image left of text)
+ */
+img.quicklinkBoxImageSmall
+{
+	border: none;
+	width: 38px;
+	height: 29px;
+}
+
+/**
+ * tam: Quicklinks Box Image Style (full width image)
+ */
+img.quicklinkBoxImageFull
+{
+	border: none;
+	width: 133px;
+	height: 29px;
+}
+
+/* Specialshops ************************************************ */
+
+/**
+ * tam: Special Shop Layout table (clean + width)
+ */
+table.specialShopView
+{
+	border: none;
+	padding: 0px;
+	margin: 0px;
+	width: 661px;
+	border-collapse: collapse;
+	border-spacing: 0px;
+}
+
+/**
+ * tam: Special Shop Group Box Header Layout (Manufacturer Logo or Name)
+ */
+td.specialshopGroupHead
+{
+	padding-top: 10px;
+	padding-bottom: 3px;
+	vertical-align: bottom;
+	text-align: left;
+}
+
+/**
+ * tam: Special Shop Group Head Text (only relevant if no logo present)
+ */
+td.specialshopGroupHeadText
+{
+	font-size: 16px;
+	font-weight: bold;
+}
+
+
+
+/**
+ * tam: Special Shop Group Box Content Layout (Group Image + Links)
+ */
+td.specialshopGroupBox
+{
+	border: 1px solid #b2b2b2;
+}
+
+
+/**
+ * tam: Group Image; max width only constraints.
+ */
+img.specialshopGroupLogo
+{
+	border: none;
+	max-width: 205px;
+	/* Zoom for IE */
+	_zoom: expression((this.clientWidth <= 205) ? 1.0 : (205 / this.clientWidth));
+}
+
+/**
+ * tam: Group Image; max width / height constraints.
+ */
+img.specialshopGroupImage
+{
+	border: none;
+	max-width: 150px;
+	max-height: 150px;
+	/* Zoom for IE */
+	_zoom: expression((this.clientWidth <= 150 && this.clientHeight <= 150) ? 1.0 : ((150 / this.clientWidth) < (150 / this.clientHeight) ? (150 / this.clientWidth) : (150 / this.clientHeight)));
+}
+
+
+
+
+/* Aktionen **************************************************** */
+
+/* SIS begin */
+
+/* Tabelle Uebersicht */
+table.ActionsView
+{
+	margin: 0px;
+/*	margin-left: 160px; */
+	padding: 0px;
+	border-collapse: collapse;
+	width: 652px;
+	border-width: 0px;
+}
+
+div.ActionsDetail
+{
+	width: 215px;
+}
+
+table.ActionsViewContent
+{
+	margin: 0px;
+	padding: 0px;
+	border-collapse: collapse;
+/*	width: 652px;*/
+	border-width: 0px;
+}
+
+/* Titel Uebersichtstabelle */
+td.ActionsViewHeader
+{
+	color: #1d2877;
+	font-weight: bold;
+	font-size: 11px;
+	line-height: 11px;
+	background-color: #ececec;
+	text-align: left;
+	text-indent: 0px;
+	vertical-align: middle;
+	padding-top: 2px;
+	padding-left: 8px;
+	border-bottom: solid 1px #b2b2b2;
+	width: 215px;
+	height: 25px;
+}
+/* Inhalt Uebersichtstabelle */
+td.ActionsViewContent
+{
+	margin: 0px;
+	padding: 0px 0px 0px 0px;
+	padding-bottom: 4px;
+	text-align: left;
+	vertical-align: top;
+	border: solid 1px #b2b2b2;
+/*	border: none; */
+/*	width: 215px; */
+}
+
+td.ActionsViewContentUnten
+{
+	margin: 0px;
+	padding: 0px 0px 0px 0px;
+	text-align: left;
+	vertical-align: top;
+/*	border: solid 1px #b2b2b2;*/
+/*	width: 215px; */
+}
+
+/* leere Kolonne */
+td.ActionsViewEmpty
+{
+	margin: 0px;
+	padding: 0px 0px 0px 0px;
+	text-align: left;
+	vertical-align: top;
+	border: none;
+/*	width: 215px;*/
+}
+/* Bilder Uebersichtstabelle */
+td.ActionsViewContentPic
+{
+	margin: 0px;
+	padding: 0px 0px 0px 0px;
+	text-align: center;
+	vertical-align: middle;
+	border-bottom: solid 1px #b2b2b2;
+/*	width: 215px;*/
+/*	height: 150px;*/
+}
+/* Abstand Horizontal */
+td.ActionsViewAbstandW
+{
+	margin: 0px;
+	padding: 0px 0px 0px 0px;
+	text-align: left;
+	vertical-align: top;
+	border: none;
+	width: 4px;
+}
+img.ActionsViewAbstandW
+{
+	margin: 0px;
+	padding: 0px;
+	width: 4px;
+	height: 1px;
+	border: 0px;
+}
+/* Abstand Vertikal */
+img.ActionsViewAbstandH
+{
+	margin: 0px;
+	padding: 0px;
+	width: 1px;
+	height: 4px;
+	border: 0px;
+}
+a.ActionsViewLinks
+{
+	font-size: 11px;
+	color: #3d3d3d;
+}
+
+a.ActionsViewLinks:active
+{
+	font-size: 11px;
+	color: #3d3d3d;
+}
+
+a.ActionsViewLinks:hover
+{
+	font-size: 11px;
+	color: #b54a9c;
+}
+img.ActionsViewPic
+{
+	max-width: 200px;
+	border: none;
+}
+img.ActionsViewLogo
+{
+	border: none;
+}
+/* Menu popup */
+ul.MenuPopup
+{
+	margin-left: 5px;
+	margin-top: 0;
+	margin-bottom: 0px;
+	padding-left: 15px;
+}
+li.MenuPopup
+{
+	padding-top: 5px;
+	font-size: 11px;
+	list-style-image: url('li_katalog.gif');
+}
+a.MenuPopup
+{
+	font-size: 11px;
+	color: #3d3d3d;
+}
+
+a.MenuPopup:active
+{
+	font-size: 11px;
+	color: #3d3d3d;
+}
+
+a.MenuPopup:hover
+{
+	font-size: 11px;
+	color: #b54a9c;
+}
+
+a.ProductDetailLink
+{
+	text-decoration:none;
+}
+
+a.ProductDetailLink:active, a.ProductDetailLink:hover
+{
+	text-decoration:underline;
+}
+
+table.MenuPopup
+{
+	margin-top: 2;
+}
+
+td.MenuPopupPoint
+{
+	padding-top: 3px;
+	font-size: 11px;
+	vertical-align: top;
+}
+
+td.MenuPopup
+{
+	padding-top: 3px;
+	margin-top: 0;
+	margin-left: 0px;
+	margin-bottom: 0px;
+	padding-left: 5px;
+	font-size: 11px;
+}
+
+img.MenuPopupPoint
+{
+	padding-top: 0px;
+	margin-left: 5px;
+	font-size: 11px;
+}
+
+div.menuPopup
+{
+	border: 1px solid #B2B2B2;
+	position: absolute;
+	margin-top: 25px;
+
+	padding-bottom: 7px;
+	padding-right: 5px;
+}
+
+
+table.configuratorCompare td, table.configuratorCompare th {
+	width: 160px;
+	height: auto;
+}
+
+td.configuratorThumb {
+	border-right:1px solid #B2B2B2;
+	text-align: center;
+}
+
+td.configuratorTableLine, th.configuratorTableLine{
+	border-left:1px solid #B2B2B2;
+	border-right:1px solid #B2B2B2;
+	padding: 3px;
+}
+
+th.configuratorResultTableBasket, td.configuratorResultTableBasket,
+    th.configuratorResultTableOrderlist, td.configuratorResultTableOrderlist {
+    width: 40px;
+    text-align: center;
+}
+
+.configuratorResultTableImage {
+    width: 130px;
+}
+
+th.configuratorResultTableImage {
+    border-left: 0; 
+}
+
+td.configuratorResultTableCompare, th.configuratorResultTableCompare {
+    width: 70px;
+    text-align: center;
+}
+
+td.configuratorResultTablePrice {
+    text-align: right;
+}
+
+.configuratorResultTablePrice {
+    width: 80px;
+}
+
+td.configuratorResultTableStock, th.configuratorResultTableStock {
+    width: 96px;
+    text-align: center;
+}
+
+td.configuratorTableLine p {
+	margin-top:	1px;
+}
+
+span.enabledFilter {
+	display: block;
+	
+}
+
+span.enabledFilter a:hover span.linkText
+{
+	color: #b54a9c;
+}
+
+table.enabledFilter, table.disabledFilter
+{
+	border-spacing: 0px;
+	font-size: 11px;
+	height: 15px;
+	padding-top: 3px;
+	border: 0px;
+	margin: 0px;
+}
+
+td.enabledFilter, td.disabledFilter
+{
+	padding-bottom: 0px;
+	padding-top: 0px;
+	padding-right: 2px;
+	padding-left: 2px;
+}
+
+.document0 a, .document1 a {
+	text-decoration:none;
+}
+
+.configuratorOptions a {
+	text-decoration:none;
+}
+
+span.linkText {
+	display: inline;
+	text-align: inherit;
+
+}
+
+td.comparatorThumb {
+	text-align: center;
+  vertical-align: top;
+}
+
+table.configuratorCompare td, table.configuratorCompare th {
+	border-right: 1px solid #B2B2B2;
+	border-bottom: 1px solid #B2B2B2;
+}
+
+table.configuratorCompare td table td {
+	border: none;
+	width: 30%;
+	font-size: 11px;
+}
+
+table.configuratorCompare td table.priceandicon td {
+	font-weight: bold;
+}
+
+img.comparatorThumb {
+	border: none;
+}
+
+div#configuratorComparePrintButton {
+    position:absolute;
+    left:550px;
+    top:30px;
+}
+
+a#configuratorComparePrintButton {
+	margin-bottom: 4px;
+	vertical-align: top;
+}
+
+table.priceandicon input {
+    margin-right:10px;
+}
+
+table.configuratorCompare td img {
+    vertical-align: text-bottom;
+}
+
+div#compareBackButtonContainer
+{
+	position: absolute;
+	top: 25px;
+    left: 673px;
+}
+
+div#configuratorResultButtonContainer
+{
+	position: absolute;
+	top: 25px;
+    right: 136px;
+}
+
+div#configuratorResultContainer table.resultPage
+{
+    border-bottom: 1px solid #B2B2B2;
+}
+
+div#compareBackButtonContainer input, div#compareBackButtonContainer button {
+	margin-top: 3px;
+}
+
+/*
+table.configuratorcompare td a{
+	vertical-align: middle;
+}
+
+table.configuratorcompare td input[type="image"]{
+	margin-left: 35px;
+	margin-right: -30px;
+	margin-top: 2px;
+	margin-bottom: 2px;
+	vertical-align: middle;
+}
+*/
+
+div.tooltip
+{
+	position: absolute;
+	width: 250px;
+	border: 2px solid black;
+	padding: 2px;
+	background-color: #E1E3F6;
+	visibility: hidden;
+	z-index: 100;
+	/*Remove below line to remove shadow. Below line should always appear last within this CSS*/
+	filter: progid:DXImageTransform.Microsoft.Shadow(color=gray,direction=135);
+}
+
+/* Image popup styles */
+div.imagePopup
+{
+	position: absolute;
+	width: 450px;
+	background-color: white;
+	border: solid 2px;
+	border-color: black;
+	/*filter: Alpha(Opacity=95); -moz-opacity:0.95;*/
+	padding-bottom: 5px;
+}
+
+div.imagePopupHeader
+{
+	background-color: #b2b2a0;
+	border: solid 1px;
+	border-color: black;
+	font-size: 14px;
+	padding: 5px;
+	cursor: move;
+	/*filter: Alpha(Opacity=95); -moz-opacity:0.95;*/
+}
+
+div.imagePopupTitle
+{
+	color: #3d3d3d;
+	font-weight: bold;
+	font-size: 12px;
+}
+
+div.imagePopupCloseButton
+{
+	text-align: right;
+}
+
+p.smallText
+{
+    font-size: 9px;
+}
+
+td.CernWelcomeButton
+{
+    padding-left:5px;
+    vertical-align: bottom;
+}

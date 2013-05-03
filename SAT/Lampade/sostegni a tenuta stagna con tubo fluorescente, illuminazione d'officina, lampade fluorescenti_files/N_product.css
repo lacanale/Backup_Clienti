@@ -1,0 +1,128 @@
+@import url("../../N_product.css");
+
+/* productPage v1.5 */
+#productBrand { color:  #59330E; }
+
+.AOCButtons { background: url("picts/N_nice/N_bouton/N_proCompbottomyellow.gif") no-repeat; position:relative; }
+
+input.proVariationaddbasket {
+	/*background: url("picts/N_nice/N_bouton/N_proaddbasket.gif") repeat-x;*/
+	background: url("picts/N_nice/N_bouton/N_proaddbasket.gif") no-repeat scroll center center;
+	color:#612E00;
+}
+
+.chooseVariationButton {
+	background:url("picts/N_nice/N_bouton/N_pillbutton.gif") no-repeat;
+	color:#612E00;
+}
+
+.productTabOn{
+	color:#fff;
+}
+/* END productPage v1.5 */
+
+#proDeliverypicto1 { background-image: url("picts/N_nice/N_product/N_proDeliverypicto.gif");}
+#proDeliverypicto2 { background-image: url("picts/N_nice/N_product/N_proDeliverypicto0.gif");}
+.proVariationaddbaskettop,.proVariationaddbasketbottom{background-image: url("picts/N_nice/N_bouton/N_addbasket.gif"); color:#000; }
+#proCloseqty{background-image: url("picts/N_nice/N_product/N_proClose.gif");color: #724A22;}
+
+/*#maiPathBackground ,#maiPathblockcontainer ,#maiPathblock,#catNewTopBox,*/
+#catSelectortop2,.catselectormiddle	
+	{background-color: #EDDD90;}
+.catGreen,.catTableTD,.catInfoprodblock1,.greentab 
+	{background-color: #F9F2D6;}
+	.proToppagination{background-color: #EDDD90;}
+.lightgreen ,.lightgreenprice 
+	{background-color: #FEFBEF;}
+.whitetab ,.whitetabprice,.catPaginOff,.catArrow 
+	{background-color: #fff;}
+
+/*.maiPathsuperior,a:link.maiPathtext1,a:hover.maiPathtext1,a:visited.maiPathtext1,
+a:active.maiPathtext1,.maiPathtext2,*/
+a.greenlink,.greenlink,#catNewName,#catNewTopBox,.catGotoprod,.catSelecttitle
+,.catProdname,#catSelectortop,#catSelectortop2,.catselectormiddle,.greentab,.catArrow
+	{color: #59330E;}
+.catGreen,.catProdprice,.catProdprice a,#catSelectorNbResults,.catPaginOn1,
+.catPaginOn, .catPaginOff, .catArrow  
+	{color: #878787;}
+.catPaginOn1, .catPaginOn, .catPaginOff, .catArrow,#proCloseqty 
+	{color: #fff;}
+.catPaginOff,.catArrow 
+	{color: #000;}
+.catProdvariation 
+	{color : black;}
+
+.proVariationtrtitle { background-color: #F3EED0; }
+.proVariationtr1 { background-color: #F3EED0; }
+
+.proVariationtdtitlequantity { background-color: #E9D9B6; }
+.proVariationtdquantity1 { background-color: #E9D9B6; }
+.proVariationtdquantity2 { background-color: #F3EED0; }
+.proVariationaddbaskettop {color:#000}
+.proVariationaddbasketbottom {color:#000}
+
+#proTechnicaldesc2, #proAdditionalinfo2 { color: #59330E; }
+
+/*#proNewName {color: #59330E;}
+#proNewTopBox {color: #59330E; background-color: #EDDD90;}*/
+#titleLine {color: #59330E;}
+#proNewPrint {
+	background: url("picts/N_nice/N_catalogmenu/N_print.gif") no-repeat;
+}
+#proNewSend {
+	background: url("picts/N_nice/N_catalogmenu/N_send.gif") no-repeat;
+}
+#proNewBack {
+	background: url("picts/N_nice/N_catalogmenu/N_Back.gif") no-repeat;
+}
+/*#proNewPrint, #proNewSend, #proNewBack {background-color: #EDDD90;}*/
+#proProdname {color: #59330E; }
+#proAddInfoTitle { color: #59330E;border-top: 2px dotted #59330E;}
+.protdaddinfo, .protdaddinfonoclick {color: #59330E; 
+}
+.proVariationtdtitleprice, .proVariationtdtitlelocal, .proVariationtdtitleglobalkdo{border-bottom: 1px solid #59330E; 
+}
+
+.proVariationtdtitleglobal, .proVariationtdtitlequantity, 
+.proVariationtdtitleprice, .proVariationtdtitlelocal, .proVariationtdtitleglobalkdo{ border-bottom: 1px solid #59330E; 
+}
+
+.proVariationtdtitleprice { color: #59330E; }
+.proVariationtdprice { color: #59330E; }
+.proOperand {color:#59330E;}
+#proTechnicaldesc0 { color: #59330E;}
+/*#proAddInfoTitlebis { color:  #59330E;}*/
+.proUnderpicture {color: #59330E}
+.proSeealltable {
+color: #59330E;	
+}
+#proAftersalepicto { background-image: url("picts/N_nice/N_product/N_proAftersalespicto0.gif");}
+/*  TABLE DESCRIPTION POPUPS */
+.proPopup {	
+	border: 2px solid #59330E;
+	background-color: #F5F5F5;
+}
+.proPopuplink {	
+	border: 1px solid #000000;	
+	background-color: #D6EFA5;
+	color: brown;
+}
+#proPopupClose {	
+	color: #59330E;	
+}
+#pctitle { 
+	background-color: #F3EED0;border-top: 1px solid #59330E;color:#59330E;
+}
+.proGreenbg { background-color: #F3EED0; }
+.pcseedetail a,.pcseedetail a:active,.pcseedetail a:visited { color: #59330E;}
+#proAttribute {color: #59330E;}
+
+/* Add by JFA on 20/06/06 */
+a.addQuantity
+{
+	background-image: url(picts/N_nice/N_bouton/N_addQuantity.gif);
+}
+a.remQuantity
+{
+	background-image: url(picts/N_nice/N_bouton/N_remQuantity.gif);
+}

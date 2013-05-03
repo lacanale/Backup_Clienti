@@ -1,0 +1,213 @@
+
+
+
+/* in substitution of N_css/ENVIRONMENT/N_product-[OINblue,MAFred,...].css */
+/* productPage v1.5 - 200701 - FreDC */
+
+/*yellow*/
+
+#catalogContentZone h1, #catalogContentZone h2 { color: #3a871f;} 
+#catalogContentZone h3 { color: #3a871f; border-top: 1px solid #3a871f; background: #E9F7D6; }
+
+#productColDesc h4 { color:#3a871f; }
+#productColDesc h5 { color:#3a871f;}
+
+.dottedBottom { border-bottom:1px dotted #3a871f; }
+.dottedTop { border-top:1px dotted #3a871f; }
+.dottedBottomTop { border-top:1px dotted #3a871f; border-bottom:1px dotted #3a871f; }
+
+#productDesc #strongPoint { color:#000000; font-weight:bold; }
+
+#proNewTopBox { color:#3a871f; }
+#proNewTopBox hr { color:#E9F7D6; background:#E9F7D6; }
+#priceZone { background: #E9F7D6; }
+#priceZone span.afterpromo { color:#ff0000; }
+
+.productTabOff{
+	background-color: #E9F7D6;
+}
+.productTabOff span{
+	background: url("http://static.manutangroup.com/N_css/ENVIRONMENT/N_picts/N_tabOffRight_MAFgreen.png") 0 0 no-repeat;
+}
+
+.productTabOn{
+	background: url("http://static.manutangroup.com/N_css/ENVIRONMENT/N_picts/N_tabOn_MAFgreen.png") 0 0 repeat-x;
+}
+.productTabOn span{
+	background: url("http://static.manutangroup.com/N_css/ENVIRONMENT/N_picts/N_tabOnRight_MAFgreen.png") 0 0 no-repeat;
+}
+
+#printContent{
+	border-color:#3a871f;
+}
+
+.printButton{
+	background:url("http://static.manutangroup.com/N_css/ENVIRONMENT/N_picts/N_detailsMAFgreen.gif") 0 0 repeat-x;
+	border-color:#3a871f;
+	color:#3a871f;
+}
+.printButton span{
+	background:url("http://static.manutangroup.com/N_css/ENVIRONMENT/N_picts/N_printSmallMAFgreen.gif") 0 0 no-repeat;
+}
+
+
+#proNewPrint {background-image: url("http://static.manutangroup.com/N_css/ENVIRONMENT/N_picts/N_printMAFgreen.gif"); }
+#proNewSend  {background-image: url("http://static.manutangroup.com/N_css/ENVIRONMENT/N_picts/N_sendMAFgreen.gif"); }
+
+#launchTechTable { background:url("http://static.manutangroup.com/N_css/ENVIRONMENT/N_picts/N_techtable_MAFgreen.gif") left no-repeat; }
+
+#productAdvice {
+	background:url("http://static.manutangroup.com/N_css/ENVIRONMENT/N_picts/N_icWarning_MAFgreen.gif") no-repeat;
+	background-position: 0 5px;
+}
+
+#glass {
+	border:1px solid #3a871f; 
+	background: #ffffff url("http://static.manutangroup.com/N_css/ENVIRONMENT/N_picts/N_loupe_MAFgreen.gif") no-repeat;
+	background-position: 1px 1px;
+}
+#productOtherView div { border: 1px dotted #3a871f; border-right: 0; }
+#productOtherView div.bRight { border-right: 1px dotted #3a871f; }
+#productOtherView div.ndLine { border-top: 0; }
+
+#otherViewPop #productOtherView div.ndLine { border: 1px dotted #3a871f; border-left: 0; }
+
+#proWarrantypicto {
+	background: url("http://static.manutangroup.com/N_css/ENVIRONMENT/N_picts/N_proWarrantypictoMAFgreen.gif") no-repeat;
+}
+#proAssemblyrequiredpicto {
+	background: url("http://static.manutangroup.com/N_css/ENVIRONMENT/N_picts/N_proAssemblyrequiredpictoMAFgreen.gif") no-repeat;
+}
+#proAftersalepicto {
+	background: url("http://static.manutangroup.com/N_css/ENVIRONMENT/N_picts/N_proAftersalespictoMAFgreen.gif") no-repeat;
+}
+
+.AOCInfos { background: #E9F7D6; }
+.pcseedetail a { color:#3a871f; }
+
+a.addQuantity {
+	background: url("http://static.manutangroup.com/N_css/ENVIRONMENT/N_picts/N_addQuantityMAFgreen.gif") no-repeat;
+}
+a.remQuantity {
+	background: url("http://static.manutangroup.com/N_css/ENVIRONMENT/N_picts/N_remQuantityMAFgreen.gif") no-repeat;
+}
+
+
+/*** variations table ***/
+
+.scrollText { color: #3a871f; }
+
+.proVariationtdtitlequantity,.proVariationtdquantity1,.greentab
+	{ background-color: #D2EBA9; }
+	
+.lightgreenprice,.proVariationtrtitle,.proVariationtr1,.proVariationtdquantity2,.lightgreen
+	{background-color: #E9F7D6;}
+	
+#proAddInfoTitle 
+	{border-top: 2px dotted #e6eef4;}
+#proShortdesc,#proTechnicaldesc2, #proAdditionalinfo2 
+	{border-bottom: 2px dotted #e6eef4;}
+	
+.proVariationtdtitleglobal,.proVariationtdtitlequantity,.proVariationtdtitleprice,.proVariationtdtitlelocal,.proVariationtdtitleglobalkdo  
+	{border-bottom: 1px solid #3a871f; }
+.proVariationtdtitleprice { color:#3a871f; }
+.proVariationtdprice { color:#3a871f; }
+
+#proShortdesc,#proTechnicaldesc2, #proAdditionalinfo2 
+	{border-bottom: 2px dotted #e6eef4;} 
+#proTechnicaldesc2, #proAdditionalinfo2 
+	{color: #0089aa;}
+.proVariationtdprice, .proVariationtdlocal,.proVariationtdglobal,.proVariationtdquantity1,.proVariationtdquantity2,.proVariationImg  {
+	border-bottom: 1px dotted #3a871f;
+}		
+#proAddInfoTitle 
+	{border-top: 2px dotted #e6eef4;}
+
+
+#proDeliverypicto2{ 
+	background-image: url("http://static.manutangroup.com/N_css/ENVIRONMENT/N_picts/N_proDeliverypictodefault.gif");
+}
+
+#proAssemblyrequiredpicto {
+	background-image: url("http://static.manutangroup.com/N_css/ENVIRONMENT/N_picts/N_proAssemblyrequiredpictoMAFgreen.gif");
+}
+.comProVariationclosepopupbottom {
+	background-image: url("http://static.manutangroup.com/N_css/ENVIRONMENT/N_picts/N_proclosepopup2.gif");
+}
+
+ .proVariationtdtitleglobalkdo,.proVariationtdtitleglobalkdo1{
+ 	background-image: url("http://static.manutangroup.com/N_css/ENVIRONMENT/N_picts/N_cadeauxMAFgreen.gif");
+}
+
+.proVariationtdtitleglobalkdo1Text{color:#20855c;}
+
+/* ======= PRODUCT BUIT ======= */
+#dottedBlock{
+	border:1px solid #3a871f;
+}
+
+html>body #dottedBlock{
+	border:1px dotted #3a871f;
+}
+
+.dottedLine{
+	border-top:1px dotted #3a871f;
+}
+
+.logoImg, #brandContent h2{
+	border:1px solid #3a871f;
+}
+
+html>body .logoImg, html>body #brandContent h2{
+	border:1px dotted #3a871f;
+}
+
+#priceBlock{
+	border-top:1px dotted #D2EBA9;
+	border-bottom:1px dotted #D2EBA9;
+	border-left:1px dotted #D2EBA9;
+	background-color:#E9F7D6;
+}
+
+#price{
+	color:#3a871f;
+}
+
+#productManServices{
+	color:#3a871f;
+}
+
+.tabOn{
+	background:url("http://static.manutangroup.com/N_css/ENVIRONMENT/N_picts/N_newTabOn_MAFgreen.png") right 0 no-repeat;
+}
+
+.tabOn span{
+	border-left:1px solid #3a871f;
+	border-top:1px solid #3a871f;
+	color:#3a871f;
+}
+
+.tabOff{
+	background:url("http://static.manutangroup.com/N_css/ENVIRONMENT/N_picts/N_newTabOff_MAFgreen.png") right 0 no-repeat;
+	border-bottom:1px dotted #D2EBA9;
+}
+
+.tabOff span{
+	border-left:1px solid #D2EBA9;
+	border-top:1px solid #D2EBA9;
+	background-color:#E9F7D6;
+	color:#3a871f;
+}
+
+.titleCell, .firstTitleCell{
+	color:#3a871f;
+}
+
+.titleCell{
+	border-top:1px dotted #3a871f;
+}
+/* ======= END PRODUCT BUIT ======= */
+
+#attributesLegend{
+	border:1px dotted #3a871f;
+}

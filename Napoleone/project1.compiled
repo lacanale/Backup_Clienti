@@ -1,0 +1,5 @@
+<?xml version="1.0"?>
+<CONFIG>
+  <Compiler Value="c:\programmi\lazarus\fpc\2.4.2\bin\i386-win32\fpc.exe" Date="1047030822"/>
+  <Params Value=" -MObjFPC -Scgi -O1 -gl -WG -vewnhi -l -FuE:\Clienti\Asamec\Napoleone\Icone -Fuc:\programmi\lazarus\components\sqldb\lib\i386-win32\win32 -Fuc:\programmi\lazarus\components\synedit\units\i386-win32 -Fuc:\programmi\lazarus\components\tachart\lib\i386-win32\win32 -Fuc:\programmi\lazarus\ideintf\units\i386-win32 -Fuc:\programmi\lazarus\lcl\units\i386-win32 -Fuc:\programmi\lazarus\lcl\units\i386-win32\win32 -Fuc:\programmi\lazarus\packager\units\i386-win32 -FuE:\Clienti\Asamec\Napoleone\ -Fu. -oDynaBus.exe -dLCL -dLCLwin32 project1.lpr"/>
+</CONFIG>
