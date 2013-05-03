@@ -1,0 +1,4 @@
+Allarme n. 25 = Attenzione fungo emergenza schiacciato
+Allarme n. 33 = Attenzione almeno un asse si trova in extracorsa
+Allarme n. 34 = Attenzione le barriere di protezione non sono libere
+Allarme n. 35 = Attenzione almeno un riparo non è chiuso

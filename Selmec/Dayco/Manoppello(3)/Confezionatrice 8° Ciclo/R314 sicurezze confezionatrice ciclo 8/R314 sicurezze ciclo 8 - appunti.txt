@@ -1,0 +1,126 @@
+
+ATTENZIONE:
+trovati collegamenti ai comuni errati (T0 e T1) della catena emergenza, extracorsa, selettore esclusione extracorsa e pulsante riarmo emergenza(I0, I1, I2, I3, I4del modulo principale)... cambiato sw, aggiornare lo schema.
+
+
+
+
+
+
+
+Comunicazioni PLC -> Multi
+
+   Out PLC  In Multi    Descrizione
+   M150.6  A50.6    in_3.I4  
+   M158.5  A58.5    in_3.I5  
+OK M158.6  A58.6    in_3.I6  Comando blocca porte
+   M158.7  A58.7    in_3.I7
+
+
+Comunicazioni Multi -> PLC
+
+   Out Multi   In PLC  Descrizione
+OK Out_4.OA0   e47.5   M147.5 Bimanuale legatura a PLC
+OK Out_4.OA1   E47.6   M147.6 Bimanuale rullo pressatore 
+OK Out_4.OA2   E47.7   M147.7 Sali rullo pressatore a PLC
+OK Out_4.OA3   E46.5   M146.5 OK per Spiralatura
+   Out_4.OA4   E46.6   M146.6 Mandrino fermo a PLC  
+OK OUT_4.OA5   E45.7   M145.7 Abilita rotaz. mandrino per PLC
+OK Out_4.OA6   E46.3   M146.3 Presenza campana a PLC
+   Out_4.OA7   E47.2   M147.2 Barriera e ripari OK per PLC
+OK  Out_4.OA9   E28.0   Aux ON a PLC
+   Out_4.OA12           Barriera e ripari Ok non considerando la barriera posteriore
+   Out_4.OA13          
+
+
+
+
+Protezione mandrino: 
+M154.2  A54.2  protezione mandrino  Set M153.2 Res M153.3
+E44.7 Protezione mandrino indietro  controlla su ribaltamentgo stampo
+E44.6 Protezione mandrino chiusa (attivata)
+
+
+
+M83.7   mandrino fermo
+
+pb4 fb8 fb12
+
+
+
+
+M212 fino 219 liberi
+T76-79  liberi
+T82-89  liberi
+
+
+M212.0 predisposizione freno mandrino... (uscita non esistente)
+M212.1 appoggio operazione di moltiplicazione
+M212.2 Risalita rullo pressatore da FTC
+M212.3 Ciclo automatico di scarico (per evitare più pressioni pulsante start)
+
+
+
+
+
+OK  M138.4 + M138.5 devono diventare M147.6 per discesa, M147.7 per salita!
+
+OK  M146.3 + M146.4 devono diventare M147.5
+
+
+M170.3 modo spiralatura selezionata
+M177.4 ciclo di spiralatura in corso
+M210.2 Richiesta di spiralatura
+
+
+
+M187.0 Ciclo Scarico stampo
+M187.1 ciclo carico stampo
+M153.4 EV contropulta orizzontale
+
+per carico 
+M187.5 disingombro avviato in carico scarico
+M29.2 programma movimento asse 1
+
+
+   
+
+
+
+M143.1 e M143.2 pedali rotazione stampo
+
+
+E33.0 torretta calandrati avanti
+E33.1 Torretta calandrati indietro
+M180.3 parte alta quota asse Z=0
+M180.4 Quota asse Z<0
+M180.5 abilita mov torretta per Ax2 in posizione
+E34.1 Contropunta avanti
+
+u M133.1 torretta calandrati avanti
+u M134.1 contropunta avanti
+u M134.4 contropunta orizzontale
+u M180.5 abilita mov torretta per Ax2 in posizione
+
+
+RULLO PRESSATORE:
+A52.6 sale
+A52.7 scende o sale
+A52.0 scende e rimane giu
+
+
+
+A B I L I T A    A L L A    L A V O R A Z I O N E
+
+M168.6 abilita alla lavorazione
+
+
+
+
+
+TORNIO
+
+carico pacco lame dopo errore pacco lame non trovato.... reset allarmi 
+
+errore FC torretta  qualdo accendi la macchina
+
