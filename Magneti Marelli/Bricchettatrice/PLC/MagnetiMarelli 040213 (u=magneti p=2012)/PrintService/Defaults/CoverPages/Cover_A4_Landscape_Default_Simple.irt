@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<Document Type="R:Document" XmlDataSource="TemplateDataBinding.xml" Tag="//TemplateDataBinding" GridStep="5" MetricUnit="Millimeter" Name="Cover_A4_Landscape_Default_Simple" RenderInMemory="false">
+	<StyleSheet Type="R:StyleSheet" />
+	<Tocs Type="R:TocList" />
+	<Pages Type="R:PageList">
+		<Item Type="R:Page" Location="0; 0" Orientation="Landscape" Name="Landscape" Size="297; 210">
+			<Margins Type="F:Margins" Top="10" Left="20" Bottom="10" Right="10" />
+			<Controls Type="R:ControlList">
+				<Item Type="R:Picture" Location="73.5; 10" ImageAlign="MiddleCenter" SizeMode="Stretch" Filename="" Name="05_Predefined_Logo" Size="160; 95">
+					<Border Type="F:Border" All="0.7 Solid Black" />
+				</Item>
+				<Item Type="R:TextBox" Tag="&amp;ProjectName" Location="73.5; 105" Text="&lt;Project Name&gt;" TextAlign="MiddleCenter" Font="Siemens Sans; 21.75pt; style=Bold" Name="05_Predefined_ProjectName" Size="160; 25">
+					<TextFill Type="F:SolidFill" Color="Black" />
+				</Item>
+				<Item Type="R:TextBox" Tag="&amp;Owner" Location="73.5; 130" Text="&lt;Owner&gt;" TextAlign="MiddleCenter" Font="Siemens Sans; 18pt" Name="05_Predefined_Owner" Size="160; 20">
+					<TextFill Type="F:SolidFill" Color="Black" />
+				</Item>
+				<Item Type="R:TextBox" Tag="&amp;Operator" Location="73.5; 150" Text="&lt;Operator&gt;" TextAlign="MiddleCenter" Font="Siemens Sans; 15.75pt; style=Italic" Name="05_Predefined_Operator" Size="160; 20">
+					<TextFill Type="F:SolidFill" Color="Black" />
+				</Item>
+				<Item Type="R:TextBox" Tag="&amp;DesignedBy" Location="73.5; 170" Text="&lt;Designed by - Date&gt;" TextAlign="MiddleCenter" Font="Siemens Sans; 11.25pt" Name="05_Predefined_Designer" Size="160; 20">
+					<TextFill Type="F:SolidFill" Color="Black" />
+				</Item>
+			</Controls>
+		</Item>
+	</Pages>
+</Document>

@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<SettingsRoot Version="1005.200.111.1" ChangeCounter="102" xmlns="http://www.siemens.com/2004/04/Automation/CommonServices/SettingsServiceValueData" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.siemens.com/2004/04/Automation/CommonServices/SettingsServiceValueData Automation-CommonServices-DataSettings-v1.0.xsd">
+  <SettingNode Name="PE_Print_Settings">
+    <SettingNode Name="TemplateDataBinding">
+      <Setting Name="FirstView" />
+      <Setting Name="ApprovedBy">17.08.2010</Setting>
+      <Setting Name="DesignedBy">14.07.2010</Setting>
+      <Setting Name="Owner">Stansz  Environment  Systems BV
+</Setting>
+      <Setting Name="Description1">Compression Unit MINI</Setting>
+      <Setting Name="Description2">with shredder STS24</Setting>
+      <Setting Name="CheckedBy">12.08.2010</Setting>
+      <Setting Name="Location" />
+      <Setting Name="Version">rev A</Setting>
+      <Setting Name="Operator">Omega Renk Bearings Pvt. Ltd.</Setting>
+    </SettingNode>
+    <SettingNode Name="Global_Settings">
+      <Setting Name="CurrentOutputPathNumber">50</Setting>
+      <Setting Name="CoverPageTemplateName">Cover_A4_Portrait_Default_Standard.irt</Setting>
+      <Setting Name="PrintComplexity">1</Setting>
+      <Setting Name="IncludeCoverPage">2</Setting>
+      <Setting Name="Orientation">0</Setting>
+      <Setting Name="PrintFrameTemplateName">Document_A4_Portrait_Custom_Template 8.irt</Setting>
+    </SettingNode>
+  </SettingNode>
+  <SettingNode Name="LoadService">
+    <SettingNode Name="{472-3641}">
+      <Setting Name="UseExtendedDownloadDialog">True</Setting>
+    </SettingNode>
+    <SettingNode Name="{472-1806}">
+      <Setting Name="UseExtendedDownloadDialog">False</Setting>
+    </SettingNode>
+    <SettingNode Name="{472-60833}">
+      <Setting Name="UseExtendedDownloadDialog">True</Setting>
+    </SettingNode>
+    <SettingNode Name="{472-4276}">
+      <Setting Name="UseExtendedDownloadDialog">False</Setting>
+    </SettingNode>
+  </SettingNode>
+  <SettingNode Name="Simatic">
+    <SettingNode Name="Lang">
+      <SettingNode Name="Frame">
+        <SettingNode Name="Compile">
+          <Setting Name="DeleteActualParameterOnAdaption">False</Setting>
+        </SettingNode>
+      </SettingNode>
+    </SettingNode>
+  </SettingNode>
+</SettingsRoot>
