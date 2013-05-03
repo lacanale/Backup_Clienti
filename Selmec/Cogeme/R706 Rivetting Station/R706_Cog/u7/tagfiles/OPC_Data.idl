@@ -1,0 +1,8 @@
+[
+	uuid(7bd16e8c-e4b3-445d-9d37-1d9a173f13b4),
+	helpstring("Taglib Type Library")
+]
+library U7HTAGLib
+{
+
+};
