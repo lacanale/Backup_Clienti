@@ -1,0 +1,54 @@
+TYPE "MM4_Control_Word"
+AUTHOR : PROTEKNO
+FAMILY : Profibus
+NAME : MM4
+VERSION : 0.1
+
+
+  STRUCT 	
+   Bit_8 : BOOL ;	//1=Jog right on/ 0=Jog right off
+   Bit_9 : BOOL ;	//1=Jog left on / 0=Jog left off
+   Bit_10 : BOOL ;	//1=Setpoint valid / 0=Setpoint invalid
+   Bit_11 : BOOL ;	//1=Setpoint inverted/ 0=Setpoint is not inverted
+   Bit_12 : BOOL ;	//-
+   Bit_13 : BOOL ;	//1=Motor potentiometer UP / 0=No meaning
+   Bit_14 : BOOL ;	//1=Motor potentiometer Down / 0=No meaning
+   Bit_15 : BOOL ;	//1=Local control active(BOP/AOP) / 0=Remote control active
+   Bit_0 : BOOL ;	//1=On/ 0=OFF
+   Bit_1 : BOOL ;	//1=Operating condition/ 0=OFF2 - pulse disable
+   Bit_2 : BOOL ;	//1=Operating condition/ 0=OFF3 - Rapid stop
+   Bit_3 : BOOL ;	//1=Enable operation/ 0=Disable operation
+   Bit_4 : BOOL ;	//1=Operating condition/ 0=Disable RFG
+   Bit_5 : BOOL ;	//1=Enable RFG / 0=Stop RFG
+   Bit_6 : BOOL ;	//1=Enable setpoint/ 0=Disable setpoint
+   Bit_7 : BOOL ;	//1=fault acknowledge / 0=No meaning
+  END_STRUCT ;	
+END_TYPE
+
+TYPE "MM4_Status_Word"
+AUTHOR : PROTEKNO
+FAMILY : Profibus
+NAME : MM4
+VERSION : 0.1
+
+
+  STRUCT 	
+   Bit_8 : BOOL ;	//1=No setpoint-act.val. deviation/ 0=setpoint-act.val. deviation
+   Bit_9 : BOOL ;	//1=Master control requested/ 0=Local operation
+   Bit_10 : BOOL ;	//1=fmax reached/ 0=fmax not reached
+   Bit_11 : BOOL ;	//1= / 0=Alarm:Motor at current limit
+   Bit_12 : BOOL ;	//1= / 0=Motor holding brake
+   Bit_13 : BOOL ;	//1= / 0=Motor overload
+   Bit_14 : BOOL ;	//1= CW rotation / 0= CCW rotation
+   Bit_15 : BOOL ;	//1= /0=Converter overload
+   Bit_0 : BOOL ;	//1=Ready for On/ 0=Not ready for On
+   Bit_1 : BOOL ;	//1=Ready for run/  0=Not ready for run
+   Bit_2 : BOOL ;	//1=Operation enabled/ 0=Operation disabled
+   Bit_3 : BOOL ;	//1=Fault active / 0=No fault active
+   Bit_4 : BOOL ;	//1=No OFF2 command applied / 0=OFF2 command applied
+   Bit_5 : BOOL ;	//1=No OFF3 command applied / 0=OFF3 command applied
+   Bit_6 : BOOL ;	//1=Starting lockout / 0=No Starting lockout 
+   Bit_7 : BOOL ;	//1=Alarm is active / 0= Alarm is active 
+  END_STRUCT ;	
+END_TYPE
+

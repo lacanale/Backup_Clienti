@@ -1,0 +1,44 @@
+
+FUNCTION InvertiMinuscMaiusc : VOID
+
+//restituisce la string acon minuscole al posto delle maiuscole
+//
+
+// Parametri del blocco
+VAR_INPUT
+  StrIn : STRING[64];
+  StrIn_At AT StrIn : UDT_STRING64;
+END_VAR
+
+VAR_IN_OUT
+    // Parametri di transito
+END_VAR
+
+VAR_OUTPUT
+  StrOut : STRING[64];
+  StrOut_At AT StrOut : UDT_STRING64;
+END_VAR
+
+VAR_TEMP
+    I, N : INT;
+    Ch : CHAR;
+END_VAR
+
+CONST
+    CharOffset := 16#20;
+END_CONST
+
+   N := BYTE_TO_INT(StrIn_At.StrLen);
+    
+   FOR I := 1 TO N DO
+       Ch := StrIn_At.Str[I];
+       IF Ch >= 'a' AND Ch <= 'z' THEN
+            Ch := INT_TO_CHAR(CHAR_TO_INT(Ch) - CharOffset);
+       ELSIF Ch >= 'A' AND Ch <= 'Z' THEN
+            Ch := INT_TO_CHAR(CHAR_TO_INT(Ch) + CharOffset);
+       END_IF;        
+       StrOut_At.Str[I] := Ch;
+   END_FOR;
+   StrOut_At.StrLen := StrIn_At.StrLen;
+ 
+END_FUNCTION

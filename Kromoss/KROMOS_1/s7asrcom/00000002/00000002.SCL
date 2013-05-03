@@ -1,0 +1,44 @@
+FUNCTION "FC_ControlloMsgEth" : VOID
+
+// La funzione controlla se i primi 2 caratteri della stringa Str
+// siano "L1" o "L2".
+//
+VAR_INPUT  
+  Str : STRING[64];
+  Str_At AT Str : UDT_STRING64;
+END_VAR
+
+VAR_OUTPUT
+  MsgL1 : BOOL; //La stringa Str inizia con "L1"
+  MsgL2 : BOOL; //La stringa Str inizia con "L2"
+END_VAR
+    
+VAR_TEMP
+   N     : INT;
+   Ch    : CHAR;
+END_VAR
+
+CONST
+    CharOffset := 16#20;
+END_CONST
+
+    MsgL1 := FALSE;
+    MsgL2 := FALSE;
+    
+    N := BYTE_TO_INT(Str_At.StrLen);
+ 
+    IF N >= 2 THEN
+       
+       Ch := Str_At.Str[1];
+       IF Ch >= 'a' AND Ch <= 'z' THEN
+            Ch := INT_TO_CHAR(CHAR_TO_INT(Ch) - CharOffset);
+       END_IF;
+
+
+       MsgL1 := Ch = 'L' AND Str_At.Str[2] = '1';
+    
+       MsgL2 := Ch = 'L' AND Str_At.Str[2] = '2';
+
+    END_IF;
+       
+ END_FUNCTION

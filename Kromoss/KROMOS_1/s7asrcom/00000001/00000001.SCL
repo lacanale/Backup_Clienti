@@ -1,0 +1,133 @@
+
+TYPE UDT_Manuali
+    STRUCT
+       Man001 : BOOL; // Comando Motore M1 estrattore EIDOS   
+       Man002 : BOOL; // Comando Motore M2 estrattore EIDOS
+       Man003 : BOOL; 
+       Man004 : BOOL; 
+       Man005 : BOOL; // Comando salita traslatore
+       Man006 : BOOL; // Comando discesa traslatore
+       Man007 : BOOL; // Comando Motore M3 catena traslatore
+       Man008 : BOOL; 
+       Man009 : BOOL; 
+       Man010 : BOOL; // Comando motore M20 rulliera 4 trofili
+       Man011 : BOOL; // Comando motore M21 rulliera 4 trofili
+       Man012 : BOOL; // Comando motore M22 rulliera 4 trofili
+       Man013 : BOOL; // Comando motore M23 rulliera 4 trofili
+       Man014 : BOOL; // Comando motore M24 rulliera 4 trofili
+       Man015 : BOOL; // Comando motore M25 rulliera 4 trofili
+       Man016 : BOOL; 
+       Man017 : BOOL; 
+       Man018 : BOOL; 
+       Man019 : BOOL; 
+       Man020 : BOOL;  //Comando salita nastro prelievo Linea 1
+       Man021 : BOOL;  //Comando discesa nastro prelievo Linea 1
+       Man022 : BOOL;  //Comando motore M11 catena basculante prelievo cadenzatore Linea 1
+       Man023 : BOOL;  //Comando motore M10 catena cadenzatore linea 1
+       Man024 : BOOL;  //Comando motore M9  catena basculante deposito cadenzatore Linea 1
+       Man025 : BOOL;  //Comando motore M8  cadenzatore Linea 1
+       Man026 : BOOL;  //Comando salita nastro deposito Linea 1
+       Man027 : BOOL;  //Comando discesa nastro deposito Linea 1
+       Man028 : BOOL; 
+       Man029 : BOOL; 
+       Man030 : BOOL;  //Comando motore M27 rulliera 1 ingresso estrusore Linea 1
+       Man031 : BOOL;  //Comando motore M28 rulliera 2 ingresso estrusore Linea 1
+       Man032 : BOOL;  //Comando motore M29 rulliera 3 ingresso estrusore Linea 1
+       Man033 : BOOL;  //Comando chiusura allinetore M27
+       Man034 : BOOL;  //Comando motore M32 rulliera 1 uscita estrusore Linea 1
+       Man035 : BOOL;  //Comando motore M33 rulliera 2 uscita estrusore Linea 1
+       Man036 : BOOL;  //Comando motore M34 rulliera 3 uscita estrusore Linea 1
+       Man037 : BOOL;  //Comando motore M35 rulliera 4 uscita estrusore Linea 1
+       Man038 : BOOL;  
+       Man039 : BOOL; 
+       Man040 : BOOL;  //Comando salita nastro prelievo scarico A Linea 1
+       Man041 : BOOL;  //Comando discesa nastro prelievo scarico A Linea 1
+       Man042 : BOOL;  //Comando motore M12 catena 1 scarico A linea 1
+       Man043 : BOOL;  //Comando motore M13 catena 2 scarico A linea 1
+       Man044 : BOOL; 
+       Man045 : BOOL;  //Comando salita nastro prelievo scarico B Linea 1
+       Man046 : BOOL;  //Comando discesa nastro prelievo scarico B Linea 1
+       Man047 : BOOL;  //Comando motore M14 catena 1 scarico B linea 1
+       Man048 : BOOL;  //Comando motore M15 catena 2 scarico B linea 1
+       Man049 : BOOL; 
+       Man050 : BOOL;  //Comando salita nastro prelievo Linea 2
+       Man051 : BOOL;  //Comando discesa nastro prelievo Linea 2
+       Man052 : BOOL;  //Comando motore M4 catena basculante prelievo cadenzatore Linea 2
+       Man053 : BOOL;  //Comando motore M5 catena cadenzatore linea 2
+       Man054 : BOOL;  //Comando motore M6  catena basculante deposito cadenzatore Linea 2
+       Man055 : BOOL;  //Comando motore M7  cadenzatore Linea 2
+       Man056 : BOOL;  //Comando salita nastro deposito Linea 2
+       Man057 : BOOL;  //Comando discesa nastro deposito Linea 2
+       Man058 : BOOL; 
+       Man059 : BOOL; 
+       Man060 : BOOL;  //Comando motore M25 rulliera 1 ingresso estrusore Linea 2
+       Man061 : BOOL;  //Comando motore M26 rulliera 2 ingresso estrusore Linea 2
+       Man062 : BOOL; 
+       Man063 : BOOL; 
+       Man064 : BOOL; 
+       Man065 : BOOL;  //Comando motore M30 rulliera 1 uscita estrusore Linea 2
+       Man066 : BOOL;  //Comando motore M31 rulliera 2 uscita estrusore Linea 2
+       Man067 : BOOL;  //Comando motore M16 cadenzatore scarico A Linea 2
+       Man068 : BOOL;  //Comando motore M17 catena scarico A linea 2
+       Man069 : BOOL;  //Comando motore M18 cadenzatore scarico B Linea 2
+       Man070 : BOOL;  //Comando motore M19 catena scarico B linea 2
+       Man071 : BOOL; 
+       Man072 : BOOL; 
+       Man073 : BOOL; 
+       Man074 : BOOL; 
+       Man075 : BOOL; 
+       Man076 : BOOL; 
+       Man077 : BOOL; 
+       Man078 : BOOL; 
+       Man079 : BOOL; 
+       Man080 : BOOL; 
+       Man081 : BOOL; 
+       Man082 : BOOL; 
+       Man083 : BOOL; 
+       Man084 : BOOL; 
+       Man085 : BOOL; 
+       Man086 : BOOL; 
+       Man087 : BOOL; 
+       Man088 : BOOL; 
+       Man089 : BOOL; 
+       Man090 : BOOL; 
+       Man091 : BOOL; 
+       Man092 : BOOL; 
+       Man093 : BOOL; 
+       Man094 : BOOL; 
+       Man095 : BOOL; 
+       Man096 : BOOL; 
+       Man097 : BOOL; 
+       Man098 : BOOL; 
+       Man099 : BOOL; 
+       Man100 : BOOL; 
+       Man101 : BOOL; 
+       Man102 : BOOL; 
+       Man103 : BOOL; 
+       Man104 : BOOL; 
+       Man105 : BOOL; 
+       Man106 : BOOL; 
+       Man107 : BOOL; 
+       Man108 : BOOL; 
+       Man109 : BOOL; 
+       Man110 : BOOL; 
+       Man111 : BOOL; 
+       Man112 : BOOL; 
+       Man113 : BOOL; 
+       Man114 : BOOL; 
+       Man115 : BOOL; 
+       Man116 : BOOL; 
+       Man117 : BOOL; 
+       Man118 : BOOL; 
+       Man119 : BOOL; 
+       Man120 : BOOL; 
+       Man121 : BOOL; 
+       Man122 : BOOL; 
+       Man123 : BOOL; 
+       Man124 : BOOL; 
+       Man125 : BOOL; 
+       Man126 : BOOL; 
+       Man127 : BOOL; 
+       Man128 : BOOL; 
+    END_STRUCT
+END_TYPE

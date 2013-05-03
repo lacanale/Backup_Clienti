@@ -1,0 +1,87 @@
+
+DATA_BLOCK DB_OP
+//
+// Commento al blocco ...
+//
+    STRUCT
+        PaginaRichiesta : INT; //Pagina richiesta sul pannello 
+        CambiaPagina    : INT; //La modifica di questo valore forza il cambio pagina sul pannello
+        Aux : ARRAY[1..10] OF DINT;
+        InfoPagina : STRUCT
+            TipoPagina     : WORD;
+            PaginaCorrente : INT;
+            Riservato1     : INT;
+            CampoCorrente  : INT;
+            Riservato2     : INT;
+        END_STRUCT;  
+        TastiGenerici : STRUCT
+            Tasto_1  : BOOL;
+            Tasto_2  : BOOL;
+            Tasto_3  : BOOL;
+            Tasto_4  : BOOL;
+            Tasto_5  : BOOL;
+            Tasto_6  : BOOL;
+            Tasto_7  : BOOL;
+            Tasto_8  : BOOL;
+            Tasto_9  : BOOL;
+            Tasto_10 : BOOL;
+            Tasto_11 : BOOL;
+            Tasto_12 : BOOL;
+            Tasto_13 : BOOL;
+            Tasto_14 : BOOL;
+            Tasto_15 : BOOL;  
+            Tasto_16 : BOOL; 
+        END_STRUCT;      
+        Allarmi      : UDT_Allarmi;       //Messaggi di allarme su
+        Segnalazioni : UDT_Segnalazioni;  //Segnalazioni su pannello
+        Manuali      : UDT_Manuali;       //Comandi manuali da pannello
+        StatoImpianto: INT;               //0: --; 1: MANUALE; 2: AUTOMATICO
+        dummy : ARRAY[1..49] OF INT;
+        MsgEthPort2000: STRING[64]; //Stringa ricevuta dal termiale linea 1
+        MsgEthPort2001: STRING[64]; //Stringa ricevuta dal termiale linea 2        
+    END_STRUCT
+BEGIN
+
+END_DATA_BLOCK
+
+
+
+FUNCTION FC_AllarmeAttivo : BOOL
+
+VAR_IN_out
+    // Variabili temporanee
+    Allarmi : UDT_Allarmi;
+    Allarmi_AT AT Allarmi: ARRAY[1..5] OF DINT;
+END_VAR
+   
+VAR_TEMP
+    i : INT;
+    Attivo : BOOL;
+END_VAR
+    
+    Attivo := FALSE;
+    FOR i := 1 TO 5 DO
+        Attivo := Attivo OR Allarmi_AT[i] <> 0;
+    END_FOR;
+    
+    FC_AllarmeAttivo := Attivo;    
+END_FUNCTION
+
+
+FUNCTION FC_ResetAllarmi : void
+
+VAR_IN_OUT
+    // Variabili temporanee
+    Allarmi : UDT_Allarmi;
+    Allarmi_AT AT Allarmi: ARRAY[1..5] OF DINT;
+END_VAR
+   
+VAR_TEMP
+    i : INT;
+END_VAR
+    
+    FOR i := 1 TO 5 DO
+        Allarmi_AT[i] := 0;
+    END_FOR;
+
+END_FUNCTION

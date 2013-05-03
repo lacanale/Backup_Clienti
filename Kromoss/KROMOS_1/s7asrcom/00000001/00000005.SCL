@@ -1,0 +1,338 @@
+
+//Struttura dati che definisce le variabili da inviare e ricevuta
+//durante la richiesta di scrittura o lettura di un parametro
+TYPE UDT_PARAM_INV
+  STRUCT
+    Job       : BYTE := 16#0; //Job richiesto 0 niente 2 lettura dword 3 scrittura dword 
+    NumParam  : INT;       //Numero paramentro
+    NumInd    : INT;       //Indice
+    Val       : REAL;      //Valore da scrivere
+    JobStatus : WORD;      //Esisto
+    RetVal    : REAL;      //Valore letto dal parametro
+  END_STRUCT
+END_TYPE
+
+
+
+//************************************************************
+TYPE UDT_PKW_INV
+
+TITLE = 'PKW inverter Siemens'
+//
+// UDT che definisce il record PKW dell'inverter
+//         ---------------------------------
+//         |   PKE                         |  WORD 1
+//         |-------------------------------- 
+// Bit.No. | 15   12 |  11 | 10          0 | 
+//         |   AK    | SPM | PNU           |
+//  
+//         ---------------------------------
+//         |   IND                         |  WORD 2
+//         |--------------------------------
+// Bit.No. | 15          8 | 7           0 |
+//         |                               |
+//
+//         ---------------------------------
+//         |   PWE                         |   
+//         |--------------------------------
+// Bit.No. | PWE1                          |  WORD 3
+//         | PWE2                          |  WORD 4
+//      
+//    AK :  Task ID or Reply ID
+//            TASK ID                            REPLY ID
+//              0 no task                          0 ok       7 o 8 error         
+//              1 Request parameter value          1 o 2 ok
+//              2 Change parameter Word            1 ok 
+//              3 Change parameter DWord           2 ok
+//              6 Request parameter value (array)  4 o 5
+//             
+//    SPM:  Toggle bit for processing the parameter change report
+//    PNU:  Paramenter number
+//
+AUTHOR  : Filip1
+NAME    : PKW
+FAMILY  : INVERTER
+
+  STRUCT
+     PKE    : WORD;     //Parameter ID
+     IND    : WORD;     //Index
+     PWE    : DWORD;     //Parameter value
+  END_STRUCT
+END_TYPE
+
+
+
+
+//************************************************************
+FUNCTION MM4_ReadWrite_Param: BOOL
+KNOW_HOW_PROTECT
+VAR_INPUT
+   ADDR       : INT;   //Indirizzo iniziale PKW 
+   Job        : BYTE;  //Codice comando 
+   NumParam   : INT;   //Numero parametro
+   NumInd     : INT;   //Sotto indice
+   WriteValue : DWORD; //Valore da scivere
+END_VAR
+
+VAR_OUTPUT
+   JobStatus  : WORD;  //Codice risposta
+   ReadValue  : DWORD; //Valore letto
+   Error      : BOOL; 
+//   RetType    : BOOL;  //0: WORD; 1: DWORD
+END_VAR    
+
+VAR_TEMP
+    PKW_TX : UDT_PKW_INV;
+    PKW_RX : UDT_PKW_INV;
+    K     : WORD;
+    Out   : INT;
+    Param : INT;
+    Sended: BOOL;
+END_VAR
+   
+   K := SHL(IN:= BYTE_TO_WORD(Job), N := 12);
+   
+   Param := NumParam;
+   IF Param >= 2000 THEN
+        Param   := Param - 2000;
+        PKW_TX.IND := 16#80;
+   ELSE
+        PKW_TX.IND := 0;
+   END_IF;
+     
+   PKW_TX.PKE   := K OR INT_TO_WORD(Param);
+   PKW_TX.IND   := PKW_TX.IND OR SHL(IN := INT_TO_WORD(NumInd), N := 8);
+   PKW_TX.PWE   := WriteValue; 
+   
+   Out := DPWR_DAT(LADDR  := INT_TO_WORD(ADDR),
+                   RECORD := PKW_TX);
+   
+   Out := DPRD_DAT(LADDR  := INT_TO_WORD(ADDR),
+                   RECORD := PKW_RX);
+                   
+   JobStatus := PKW_RX.PKE;
+   K := SHR(IN := JobStatus, N := 12);
+   Sended := ((PKW_TX.PKE AND 16#0fff) = (PKW_RX.PKE AND 16#0fff)) AND (PKW_TX.IND = PKW_RX.IND);
+   MM4_ReadWrite_Param := ((K = 1) OR (K = 2)) AND Sended;
+   Error     := (K = 7) AND Sended;
+   
+//   RetType   := K = 2;
+   
+   ReadValue := PKW_RX.PWE;                               
+ 
+END_FUNCTION
+
+
+
+
+//************************************************************
+FUNCTION_BLOCK ReadParamInverters 
+
+TITLE = 'Leggi parametri inverter'
+//
+// 
+VERSION : '1.0'
+AUTHOR  : Filip1
+NAME    : ReadInv
+FAMILY  : MM4
+
+CONST
+    KPercent  := 100.0;  
+    KSpeedMax := 32767.0; 
+    KSpeed    := KSpeedMax / KPercent; // / 2.0;
+    MaxParamRead := 24;
+END_CONST
+
+VAR_INPUT
+    Addr    : INT; 
+END_VAR  
+    
+VAR_IN_OUT
+    RecParam : UDT_Inverter_Record;
+END_VAR    
+
+VAR
+  ParamP: UDT_PARAM_INV;
+  PKW_IN  : ARRAY[1..4] OF WORD;
+  PKW_IN_R AT PKW_IN : UDT_PKW_INV;
+  PKW_OUT : ARRAY[1..4] OF WORD; 
+  PKW_OUT_R AT PKW_OUT: UDT_PKW_INV;
+  Index : INT;
+//NumParamToRead : ARRAY[1..MaxParamRead] OF INT := 20,21,22,24,25,26,27,31,32,35,37,39,752,752,947,947,947,947,2110,2110,2110,2110, 0, 0;  //Configurazione MM430 MM440
+  NumParamToRead : ARRAY[1..MaxParamRead] OF INT := 20,21,22,24,25,26,27,-1,-1,-1,37,39,752, -1,947,947,947,947,2110,2110,2110,2110, 0, 0;  //Configurazione MM420
+  IndParamToRead : ARRAY[1..MaxParamRead] OF INT :=  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0,  1,  0,  1,  2,  3,   0,   1,   2,   3, 0, 0;
+  ParamValue     : ARRAY[1..MaxParamRead] OF DWORD;
+  Esito     : BOOL;
+  ReadError : BOOL;
+END_VAR   
+
+VAR_TEMP
+  Aux  : WORD;
+  RetVal : DWORD;
+  FRetVal AT RetVal : REAL;
+END_VAR
+
+  
+  IF (Index < 1) OR (Index > MaxParamRead) THEN
+      Index := 1;
+  END_IF;  
+    
+  IF NumParamToRead[Index] = 0 THEN
+      Index := 1;
+  END_IF;
+    
+  ParamP.Job := 1;  //job di lettura
+  ParamP.NumParam := NumParamToRead[Index];
+  ParamP.NumInd   := IndParamToRead[Index];
+  
+  //Comunicazione con inverter 1
+  
+  Esito := MM4_ReadWrite_Param(ADDR       := Addr, 
+                               Job        := ParamP.Job, 
+                               NumParam   := ParamP.NumParam,
+                               NumInd     := ParamP.NumInd,
+                               WriteValue := 0, 
+                               JobStatus  := ParamP.JobStatus,
+                               ReadValue  := RetVal,
+                               Error      := ReadError);
+  
+  IF ReadError THEN
+    ParamValue[Index] := 0;
+    REPEAT
+        Index := Index + 1;
+    UNTIL NumParamToRead[Index] >= 0
+    END_REPEAT;
+     
+  ELSIF Esito THEN 
+    ParamValue[Index] := RetVal;
+    
+    CASE Index OF    
+         1: RecParam.SetpointFreq := DWORD_TO_REAL(paramValue[1]); //r20
+         2: RecParam.ActualFreq   := DWORD_TO_REAL(paramValue[2]); //r21
+         3: RecParam.RmpSpeed     := DWORD_TO_REAL(paramValue[3]); //r22
+         4: RecParam.OutFreq      := DWORD_TO_REAL(paramValue[4]); //r24       
+         5: RecParam.OutVoltage   := DWORD_TO_REAL(paramValue[5]); //r25
+         6: RecParam.DCBusVoltage := DWORD_TO_REAL(paramValue[6]); //r26
+         7: RecParam.OutCurrent   := DWORD_TO_REAL(paramValue[7]); //r27
+         8: RecParam.Coppia       := DWORD_TO_REAL(paramValue[8]); //r31    no su MM420
+         9: RecParam.Potenza      := DWORD_TO_REAL(paramValue[9]); //r32    no su MM420
+        10: RecParam.MotorTemp    := DWORD_TO_REAL(paramValue[10]); //r35    no su MM420
+        11: RecParam.InverterTemp := DWORD_TO_REAL(paramValue[11]); //r37
+        12: RecParam.EnergyCount  := DWORD_TO_REAL(paramValue[12]); //r39
+        13: RecParam.ADC_1        := DWORD_TO_REAL(paramValue[13]); //r752.0
+        14: RecParam.ADC_2        := DWORD_TO_REAL(paramValue[14]); //r752.1 no su MM420
+        15: RecParam.CodAnomalia1 := DWORD_TO_INT(paramValue[15]); //r947.0
+        16: RecParam.CodAnomalia2 := DWORD_TO_INT(paramValue[16]); //r947.1
+        17: RecParam.CodAnomalia3 := DWORD_TO_INT(paramValue[17]); //r947.2
+        18: RecParam.CodAnomalia4 := DWORD_TO_INT(paramValue[18]); //r947.3
+        19: RecParam.CodErrore1   := DWORD_TO_INT(paramValue[19]); //r2110.0
+        20: RecParam.CodErrore2   := DWORD_TO_INT(paramValue[20]); //r2110.1
+        21: RecParam.CodErrore3   := DWORD_TO_INT(paramValue[21]); //r2110.2
+        22: RecParam.CodErrore4   := DWORD_TO_INT(paramValue[22]); //r2110.3 
+    END_CASE;
+    
+    REPEAT
+        Index := Index + 1;
+    UNTIL NumParamToRead[Index] >= 0
+    END_REPEAT;
+
+  END_IF;
+          
+END_FUNCTION_BLOCK
+
+
+
+
+FUNCTION_BLOCK FB_ReadParamLoop
+
+VAR_TEMP
+    // Variabili temporanee
+
+END_VAR
+VAR
+    ReadInvM20 : ReadParamInverters;
+    ReadInvM21 : ReadParamInverters;
+    ReadInvM22 : ReadParamInverters;
+    ReadInvM23 : ReadParamInverters;
+    ReadInvM24 : ReadParamInverters;
+    ReadInvM25 : ReadParamInverters;
+    ReadInvM26 : ReadParamInverters;
+    ReadInvM27 : ReadParamInverters;
+    ReadInvM28 : ReadParamInverters;
+    ReadInvM29 : ReadParamInverters;
+    ReadInvM30 : ReadParamInverters;
+    ReadInvM31 : ReadParamInverters;
+    ReadInvM32 : ReadParamInverters;
+    ReadInvM33 : ReadParamInverters;
+    ReadInvM34 : ReadParamInverters;
+    ReadInvM35 : ReadParamInverters;
+    Multiplex : INT := 0;
+END_VAR
+    
+    Multiplex := Multiplex + 1;
+    CASE Multiplex OF 
+     // Parte istruzioni
+        1:  ReadInvM20(Addr     := 272,
+                      RecParam := DB_InverterParams.Params[20]);
+   
+        2:  ReadInvM21(Addr     := 284,
+                      RecParam := DB_InverterParams.Params[21]);
+               
+        3:  ReadInvM22(Addr     := 296,
+                       RecParam := DB_InverterParams.Params[22]);                      
+            
+        4:  ReadInvM23(Addr     := 308,
+                       RecParam := DB_InverterParams.Params[23]);
+           
+        5:  ReadInvM24(Addr     := 320,
+                       RecParam := DB_InverterParams.Params[24]);
+                       
+        6:  ReadInvM25(Addr     := 332,
+                       RecParam := DB_InverterParams.Params[25]);                      
+        
+        7:  ReadInvM26(Addr     := 344,
+                       RecParam := DB_InverterParams.Params[26]);
+           
+        8:  ReadInvM27(Addr     := 356,
+                       RecParam := DB_InverterParams.Params[27]);
+                       
+        9:  ReadInvM28(Addr     := 368,
+                       RecParam := DB_InverterParams.Params[28]);                      
+            
+        10: ReadInvM29(Addr     := 380,
+                       RecParam := DB_InverterParams.Params[29]);
+           
+        11: ReadInvM30(Addr     := 392,
+                       RecParam := DB_InverterParams.Params[30]);
+                       
+        12: ReadInvM31(Addr     := 404,
+                       RecParam := DB_InverterParams.Params[31]);                      
+            
+        13: ReadInvM32(Addr     := 416,
+                       RecParam := DB_InverterParams.Params[32]);                      
+        
+        14: ReadInvM33(Addr     := 428,
+                       RecParam := DB_InverterParams.Params[33]);                      
+        
+        15: ReadInvM34(Addr     := 440,
+                       RecParam := DB_InverterParams.Params[34]);                      
+                   
+        16: ReadInvM35(Addr     := 452,
+                       RecParam := DB_InverterParams.Params[35]); 
+            Multiplex := 0;                                
+    ELSE:
+        Multiplex := 0;
+    END_CASE;
+       
+END_FUNCTION_BLOCK
+
+
+
+DATA_BLOCK DB_ReadParamLoop FB_ReadParamLoop
+//
+// DB Di instanza di CMD_Inverter
+//
+BEGIN
+
+END_DATA_BLOCK
+

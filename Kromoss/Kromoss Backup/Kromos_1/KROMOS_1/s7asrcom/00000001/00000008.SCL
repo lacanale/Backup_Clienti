@@ -1,0 +1,229 @@
+
+FUNCTION_BLOCK "FB_LinkEthernet"
+
+TITLE = 'Gestione ricezione stringa via ethernet di lunghezza variabile'
+//
+// La funzione necessita di un collegamento TCP progettato.
+// Il collegamento TCP deve essere configurato con le seguenti impostazioni:
+//
+// La funzione usa le seguenti funzioni di libreria:
+//              FC 5    AG_SEND v4.2    (funzione di libreria SIMATIC NET CP343)   
+//              FC 6    AG_RECV v4.7    (funzione di libreria SIMATIC NET CP343)
+//
+// UDT usate dalla funzione:
+//              UDT 271 UDT_String64  
+//              UDT 274 UDT_ANY_Pointer  
+//  
+VERSION : '1.0'
+AUTHOR  : Filip1
+NAME    : StrEth
+FAMILY  : Ethernet
+
+VAR_INPUT
+    ID        : INT     := 1;          //ID del Collegamento ethernet TCP
+    LAddr      : WORD   := W#16#0100;  //Address della CP343-1 ethernet TCP
+    Cmd_SendStr : BOOL;
+    Cmd_EchoRcv : BOOL := TRUE; //Ritrasmette tutto quello che viene ricevuto
+    SendStr     : STRING[64];
+    SendStr_At AT SendStr: UDT_String64;
+END_VAR
+
+VAR_OUTPUT
+    RcvStr     : STRING[64];
+    RcvStr_At AT RcvStr: UDT_String64;
+    RcvStrNew  : BOOL;   // E' stata ricevuta una nuova stringa (dura un ciclo)
+    RcvL1Msg   : BOOL;   // La stringa ricevuta inizia per L1
+    RcvL2Msg   : BOOL;   // La stringa ricevuta inizia per L2
+    Ready      : BOOL;   // Connessione presente con il terminale e funz. pronta a ricevere 
+    Out_Error  : BOOL;   // Errore nelle connessione ethernt
+END_VAR  
+
+VAR
+    Send      : STRUCT
+        Start     : BOOL;
+        Done      : BOOL;
+        Error     : BOOL;
+        Status    : WORD;
+        LEN       : INT;
+        Cont      : INT;
+        ContErr   : INT;
+        LastErr   : WORD;
+    END_STRUCT;
+    Rcv       : STRUCT
+        Ndr       : BOOL;
+        Error     : BOOL;
+        Status    : WORD;
+        LEN       : INT;
+        Cont      : INT;
+        ContErr   : INT;
+        LastErr   : WORD;
+        LenFcRx   : INT;
+        Head      : INT;
+        EthRxBuf  : ARRAY[1..2] OF BYTE; 
+    END_STRUCT;
+    RxWait      : BOOL; 
+    TxEchoRcv   : BOOL;
+    SendStarted : BOOL;
+    TxOk        : BOOL;
+    MemStrL1    : BOOL;
+    MemStrL2    : BOOL;
+    T_TimeoutRx: TON;
+    T_TimeoutTx: TON; 
+    BufferTx  : ARRAY[1..240] OF BYTE;
+    BufferRx  : ARRAY[1..240] OF BYTE;
+END_VAR
+
+VAR_TEMP
+    P        : ANY;
+    AnyP AT P: UDT_ANY_Pointer;
+    i,n : INT;
+END_VAR
+      
+    IF TxEchoRcv AND NOT Send.Start THEN
+        InvertiMinuscMaiusc(StrIn := RcvStr,
+                            StrOut := SendStr);
+                            
+        N := BYTE_TO_INT(SendStr_At.StrLen);                    
+        
+        FOR I := 1 TO N DO
+            BufferTx[I] := CHAR_TO_BYTE(SendStr_AT.Str[i]);
+        END_FOR;   
+                            
+        Send.LEN := Rcv.LEN;
+        Send.Start := TRUE;
+        TxEchoRcv := FALSE;
+    END_IF;    
+          
+    AG_SEND(Act      := Send.Start,
+            ID       := ID,
+            LADDR    := LAddr,
+            SEND     := BufferTx,
+            LEN      := Send.LEN,
+            DONE     := Send.Done,
+            ERROR    := Send.Error,
+            STATUS   := Send.Status);
+              
+              
+    IF Send.Start THEN
+        SendStarted := TRUE;
+    END_IF;
+        
+    IF Send.Error THEN
+        Send.ContErr := Send.ContErr + 1;
+        Send.LastErr := Send.Status;
+        Send.Start   := FALSE;
+        Out_Error    := TRUE;
+        TxOk         := FALSE;
+    END_IF;
+          
+    IF Send.DONE THEN
+        Send.Cont    := Send.Cont + 1;
+        //LastTxErr := Status;
+        Send.Start   := FALSE;
+        SendStarted  := FALSE;
+        TxOk         := TRUE;
+    END_IF;
+    
+    IF T_TimeoutTx.Q AND SendStarted THEN
+        Out_Error := TRUE;  
+        SendStarted := FALSE;     
+    END_IF;
+
+    
+              
+    P := Rcv.EthRxBuf;  
+    AnyP.Size := 1;//Imposto l'ethernet per ricevere un carattere alla volta
+                  
+    AG_RECV(ID       := ID,
+                        LADDR    := LAddr,
+                        RECV     := P,
+                        NDR      := Rcv.Ndr,
+                        ERROR    := Rcv.Error,
+                        STATUS   := Rcv.Status,
+                        LEN      := Rcv.LenFcRx);
+                    
+    IF Rcv.Error AND Rcv.Status = 16#8183 THEN 
+        Ready := FALSE;  
+    ELSIF Rcv.Ndr THEN
+        Ready := true;              
+    END_IF;
+
+    IF Rcv.Error THEN
+        Rcv.LastErr := Rcv.Status;
+        Out_Error    := TRUE;
+    END_IF;  
+  
+    IF NOT RxWait THEN
+        Rcv.LEN := 0;
+    END_IF;      
+  
+    IF Rcv.Ndr THEN
+        Out_Error    := FALSE;
+    
+        Rcv.Cont := Rcv.Cont + 1;
+     
+        FOR i := 1 TO Rcv.LenFcRx DO
+            BufferRx[Rcv.LEN + i] := Rcv.EthRxBuf[i];
+        END_FOR;
+    
+        Rcv.LEN := Rcv.LEN + Rcv.LenFcRx;
+
+        // Start := True;
+    END_IF;
+       
+    IF Rcv.Ndr THEN
+        RxWait := TRUE;
+    END_IF;
+               
+    IF T_TimeoutRx.Q THEN
+        RxWait := FALSE;
+    END_IF;   
+    
+    RcvStrNew := FALSE;
+    
+    IF T_TimeoutRx.Q THEN
+        N := Rcv.LEN;
+        IF N > 64 THEN 
+            N := 64;
+        END_IF;
+        
+        FOR I := 1 TO N DO
+            RcvStr_AT.Str[i] := BYTE_TO_CHAR(BufferRx[i]);
+        END_FOR;    
+        RcvStr_AT.StrLen := INT_TO_BYTE(N);
+        
+        TxEchoRcv := Cmd_EchoRcv;
+        
+        RcvStrNew := TRUE;
+    END_IF;
+                
+    FC_ControlloMsgEth(Str := RcvStr,
+                       MsgL1 := MemStrL1,
+                       MsgL2 := MemStrL2);    
+                       
+    RcvL1Msg := MemStrL1;
+    RcvL2Msg := MemStrL2;
+                                                    
+    T_TimeoutRx(IN := RxWait AND NOT Rcv.Ndr,
+                        PT := T#100ms);                 
+    T_TimeoutTx(IN := SendStarted,
+                        PT := T#5s);                     
+END_FUNCTION_BLOCK
+                
+                
+
+DATA_BLOCK "DB_LinkEthernet_1"  "FB_LinkEthernet"
+//
+// Commento al blocco ...
+//
+BEGIN
+
+END_DATA_BLOCK
+              
+DATA_BLOCK "DB_LinkEthernet_2"  "FB_LinkEthernet"
+//
+// Commento al blocco ...
+//
+BEGIN
+
+END_DATA_BLOCK                

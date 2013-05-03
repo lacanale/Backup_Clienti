@@ -1,0 +1,42 @@
+
+TYPE UDT_Inverter_Record
+    STRUCT
+        SetpointFreq : REAL; //r20
+        ActualFreq   : REAL; //r21
+        RmpSpeed     : REAL; //r22
+        OutFreq      : REAL; //r24       
+        OutVoltage   : REAL; //r25
+        DCBusVoltage : REAL; //r26
+        OutCurrent   : REAL; //r27
+        Coppia       : REAL; //r31    no su MM420
+        Potenza      : REAL; //r32    no su MM420
+        MotorTemp    : REAL; //r35    no su MM420
+        InverterTemp : REAL; //r37
+        EnergyCount  : REAL; //r39
+        ADC_1        : REAL; //r752.0
+        ADC_2        : REAL; //r752.1 no su MM420
+        CodAnomalia1 : INT;  //r947.0
+        CodAnomalia2 : INT;  //r947.1
+        CodAnomalia3 : INT;  //r947.2
+        CodAnomalia4 : INT;  //r947.3
+        CodErrore1   : INT;  //r2110.0
+        CodErrore2   : INT;  //r2110.1
+        CodErrore3   : INT;  //r2110.2
+        CodErrore4   : INT;  //r2110.3
+    END_STRUCT
+END_TYPE
+
+
+
+
+
+DATA_BLOCK DB_InverterParams
+//
+// Parametri inverter
+//
+    STRUCT
+         Params: ARRAY[20..35] OF UDT_Inverter_Record;
+    END_STRUCT
+BEGIN
+
+END_DATA_BLOCK

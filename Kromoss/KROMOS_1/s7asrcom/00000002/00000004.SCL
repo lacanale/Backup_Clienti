@@ -1,0 +1,114 @@
+
+
+FUNCTION_BLOCK FB_GestCodeEstrusori
+
+// Parametri del blocco
+VAR_INPUT
+    // Parametri d'ingresso
+    InserisciInCoda1 : BOOL;  //Richiesta inserimento elemento in CODA 1
+    EliminaDaCoda1   : BOOL;  //Richiesta eliminazione elemento da CODA 1
+    ValoreDaInsCoda1 : INT;   //Valore da inserire in CODA 1
+    InserisciInCoda2 : BOOL;  //Richiesta inserimento elemento in CODA 2
+    EliminaDaCoda2   : BOOL;  //Richiesta eliminazione elemento da CODA 2
+    ValoreDaInsCoda2 : INT;   //Valore da inserire in CODA 2
+END_VAR
+
+VAR_IN_OUT
+    // Parametri di transito
+END_VAR
+
+VAR_OUTPUT
+    // Parametri di uscita
+    PrimoInCoda1 : INT;   //Elemento in cima alla CODA 1
+    ContCoda1    : INT;   //Numero elementi in CODA 1
+    PrimoInCoda2 : INT;   //Elemento in cima alla CODA 2
+    ContCoda2    : INT;   //Numero elementi in CODA 2
+    Coda1Piena   : BOOL;  //Numero massimo di elementi in CODA1
+    Coda1Vuota   : BOOL;  //Coda1 vuota
+    Coda2Piena   : BOOL;  //Numero massimo di elementi in CODA2
+    Coda2Vuota   : BOOL;  //Coda1 vuota    
+END_VAR
+
+VAR_TEMP
+    // Variabili temporanee
+    I : INT;
+END_VAR
+
+CONST
+    MaxInCoda := 16;
+END_CONST
+
+VAR
+    Coda1 : ARRAY[1..MaxInCoda] OF INT;     //0: non presente; 1: Scarica su A; 2: Scarica su B
+    Coda2 : ARRAY[1..MaxInCoda] OF INT;     //0: non presente; 1: Scarica su A; 2: Scarica su B
+    AuxFronteIns1 : BOOL;
+    AuxFronteDel1 : BOOL;
+    AuxFronteIns2 : BOOL;
+    AuxFronteDel2 : BOOL;
+END_VAR
+
+    // GESTIONE CODA 21
+    Coda1Piena := ContCoda1 >= MaxInCoda;
+    Coda1Vuota := ContCoda1 = 0;
+    IF InserisciInCoda1 AND NOT AuxFronteIns1 THEN
+        IF NOT Coda1Piena THEN
+            ContCoda1 := ContCoda1 + 1;
+            Coda1[ContCoda1] := ValoreDaInsCoda1;
+        END_IF;    
+    END_IF;
+    AuxFronteIns1 := InserisciInCoda1;
+    
+    IF EliminaDaCoda1 AND NOT AuxFronteDel1 THEN
+        IF ContCoda1 > 1 THEN
+            FOR I := 2 TO ContCoda1 DO
+                Coda1[I - 1] := Coda1[I];
+            END_FOR;
+        END_IF;
+        IF NOT Coda1Vuota THEN
+            Coda1[ContCoda1] := 0;
+            ContCoda1 := ContCoda1 - 1;
+        END_IF;    
+    END_IF;      
+    AuxFronteDel1 := EliminaDaCoda1;
+       
+    PrimoInCoda1 := Coda1[1];
+    ContCoda1    := ContCoda1;     
+    
+    
+    // GESTIONE CODA 2 
+    Coda2Piena := ContCoda2 >= MaxInCoda;
+    Coda2Vuota := ContCoda2 = 0;
+    IF InserisciInCoda2 AND NOT AuxFronteIns2 THEN
+        IF NOT Coda2Piena THEN
+            ContCoda2 := ContCoda2 + 1;
+            Coda2[ContCoda2] := ValoreDaInsCoda2;
+        END_IF;    
+    END_IF;
+    AuxFronteIns2 := InserisciInCoda2;
+    
+    IF EliminaDaCoda2 AND NOT AuxFronteDel2 THEN
+        IF ContCoda2 > 1 THEN
+            FOR I := 2 TO ContCoda2 DO
+                Coda2[I - 1] := Coda2[I];
+            END_FOR;
+        END_IF;
+        IF NOT Coda2Vuota THEN
+            Coda2[ContCoda2] := 0;
+            ContCoda2 := ContCoda2 - 1;
+        END_IF;    
+    END_IF;      
+    AuxFronteDel2 := EliminaDaCoda2;
+    
+    PrimoInCoda2 := Coda2[1];
+    ContCoda2    := ContCoda2; 
+END_FUNCTION_BLOCK
+
+
+
+DATA_BLOCK DB_GestCodeEstrusori  FB_GestCodeEstrusori
+//
+// Commento al blocco ...
+//
+BEGIN
+
+END_DATA_BLOCK
