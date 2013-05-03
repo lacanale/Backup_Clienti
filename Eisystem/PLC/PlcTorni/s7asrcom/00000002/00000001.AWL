@@ -1,0 +1,33 @@
+TYPE UDT 2
+
+  STRUCT 	
+   ChanA : ARRAY [1 .. 8] OF STRUCT 	//From Channel 1 to Channel 10
+    FDD_5C00xx : ARRAY  [0 .. 15 ] OF //Feed disable A.no.51000-510015
+    BOOL ;	
+    FDD_RID_5C01xx : ARRAY  [0 .. 31 ] OF //Feed and read-in disable A.no.510100-510131
+    BOOL ;	
+    RID_5C02xx : ARRAY  [0 .. 31 ] OF //Read-in disable A.no.510200-510231
+    BOOL ;	
+    NCSD_5C03xx : ARRAY  [0 .. 15 ] OF //NC start disable A.no.510300-510315
+    BOOL ;	
+    FdStop_1_5C11xx : ARRAY  [0 .. 15 ] OF //Feed stop GEOaxis 1 A.no.511100-511115
+    BOOL ;	
+    FdStop_2_5C12xx : ARRAY  [0 .. 15 ] OF //Feed stop GEOaxis 2 A.no.511200-511215
+    BOOL ;	
+    FdStop_3_5C13xx : ARRAY  [0 .. 15 ] OF //Feed stop GEOaxis 3 A.no.511300-511315
+    BOOL ;	
+   END_STRUCT ;	
+//Alarmno for Chan are 5Cxxxx; C is the ChannelNo, except Channel 10. Channel 10 has a value C = 0
+    AxisA : ARRAY [1 .. 18] OF STRUCT  //From Axis 1 to Axis 31
+    AAFdStop60AAxx : ARRAY  [0 .. 15 ] OF //Feed stop axis/spindle
+    BOOL ;	
+   END_STRUCT ;	
+//Alarmno for Axis are 60AAxx; A is the Axisno.
+   UserA : ARRAY [0 .. 31] OF STRUCT
+   A70UUxx : ARRAY  [0 .. 63 ] OF //Alarm 700000-700063 (user area 0)
+   BOOL ;	
+   END_STRUCT ;	
+//Alarmno for UserAlarms are 7yUUxx; U is the Userarea, y = Db1004.UserDek2No[U]
+  END_STRUCT ;	
+END_TYPE
+

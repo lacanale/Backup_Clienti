@@ -1,0 +1,207 @@
+FUNCTION_BLOCK FB 29
+TITLE =
+//
+AUTHOR : NUMERIK
+FAMILY : _800D
+NAME : Diag
+VERSION : 1.0
+CODE_VERSION1
+
+
+VAR_INPUT
+  Func : INT ;	//Function number
+//0 = No Function, 1 = Signalrecorder, 2 = Datatrigger
+  Signal_1 : BOOL ;	
+  Signal_2 : BOOL ;	
+  Signal_3 : BOOL ;	
+  Signal_4 : BOOL ;	
+  Signal_5 : BOOL ;	
+  Signal_6 : BOOL ;	
+  Signal_7 : BOOL ;	
+  Signal_8 : BOOL ;	
+  NewCycle : BOOL ;	
+  Var1 : BYTE ;	
+  Var2 : INT ;	
+  Var3 : INT ;	
+  BufDB : INT ;	
+  ClearBuf : BOOL ;	
+  DataAdr : POINTER ;	//Area pointer to testing word
+  TestVal : WORD ;	//Value for triggering
+  AndMask : WORD ;	//AND- Mask to the testing word   
+END_VAR
+VAR_OUTPUT
+  TestIsTrue : BOOL ;	
+END_VAR
+VAR_IN_OUT
+  BufAddr : INT ;	
+END_VAR
+VAR
+  Cycle : INT ;	
+  edgePN : ARRAY  [0 .. 15 ] OF BOOL ;	
+  BufPtr : DWORD ;	
+  reset_edge : BOOL ;	
+END_VAR
+VAR_TEMP
+  dbtest : WORD ;	
+  value : WORD ;	
+  return : INT ;	
+  dest : ANY ;	
+END_VAR
+BEGIN
+NETWORK
+TITLE =
+
+      L     #Func; //Function
+      SPL   z009; 
+      SPA   z009; 
+      SPA   z001; 
+      SPA   z002; 
+z009: BEA   ; 
+NETWORK
+TITLE = Function 1
+
+z001: AUF   DB [#BufDB]; //DB RingBuffer
+      U     #ClearBuf; //Clear the buffer
+      FP    #reset_edge; 
+      SPBN  goon; 
+      L     B#16#0; //clear value
+      T     #value; 
+      T     #Cycle; 
+      LAR1  P##dest;
+//make variable ANY of whole BufDB       
+      L     W#16#1004; //Type = WORD (04)
+      T     LW [AR1,P#0.0]; 
+      L     DBLG; //length of Buffer-DB
+      SRW   1; //in WORDs
+      T     LW [AR1,P#2.0]; 
+      L     #BufDB; //DB-Number
+      T     LW [AR1,P#4.0]; 
+      L     P#DBX 0.0; //Offset in DB = 0
+      T     LD [AR1,P#6.0]; 
+      CALL  SFC 21 (//clear the Buffer
+           BVAL                     := #value,
+           RET_VAL                  := #return,
+           BLK                      := #dest);
+
+      SPA   res; 
+goon: U     #NewCycle; //if new cycle
+      SPBN  m400; 
+      L     #Cycle; //Increment of cycle counter
+      +     1; 
+      T     #Cycle; 
+m400: LAR1  P##Signal_1; //Test any edge of signals
+      LAR2  P##edgePN; 
+      L     DIB [AR1,P#0.0]; //Signals
+      L     DIB [AR2,P#0.0]; //edge buffer
+      XOW   ; 
+      SPZ   end1; //no edge
+      TAK   ; 
+      T     DIB [AR2,P#0.0]; //to edge buffer
+      LAR2  #BufPtr; 
+      T     DBB [AR2,P#2.0]; //Signals to RingBuffer
+      L     #Cycle; 
+      T     DBW [AR2,P#0.0]; //Delta cycle count to RingBuffer
+      L     #Var1; 
+      T     DBB [AR2,P#3.0]; //Var1 to RingBuffer 
+      L     #Var2; 
+      T     DBW [AR2,P#4.0]; //Var2 to RingBuffer
+      L     #Var3; 
+      T     DBW [AR2,P#6.0]; //Var3 to RingBuffer
+      L     B#16#0; //Clear cycle counter
+      T     #Cycle; 
+      +AR2  P#8.0; //next offset in Buffer
+      TAR2  ; 
+      T     #BufPtr; 
+      SRW   3; 
+      T     #BufAddr; 
+      L     DBLG; //max. length of Buffer
+      ==I   ; 
+      SPBN  end1; 
+res:  L     B#16#0; //Buffer-Pointer to Zero
+      T     #BufPtr; 
+      T     #BufAddr; 
+end1: BEA   ; 
+NETWORK
+TITLE = Function 2
+
+z002: LAR1  P##DataAdr; //catch Pointer
+      L     DIW [AR1,P#0.0]; 
+      T     #dbtest; 
+      L     DID [AR1,P#2.0]; 
+      LAR1  ; 
+      AUF   DB [#dbtest]; //DB of testing word
+      L     W [AR1,P#0.0]; //load testing word
+      L     #AndMask; 
+      UW    ; //mask it
+      L     #TestVal; 
+      ==I   ; //compare it after masking
+      =     #TestIsTrue; //error in TestIsTrue
+END_FUNCTION_BLOCK
+
+
+DATA_BLOCK DB 80
+TITLE =
+//Instanz-DB FB 29
+VERSION : 1.0
+
+ FB 29
+BEGIN
+END_DATA_BLOCK
+
+//******************************
+
+//must be a DB from the User Area
+
+DATA_BLOCK DB 81
+TITLE =
+//Ring buffer-DB for FB 29
+VERSION : 1.0
+
+
+  STRUCT 	
+   Feld : ARRAY  [0 .. 249 ] OF STRUCT 	//can be any size of this struct
+    Cycle : INT ;	//Delta cycle to last storage in buffer
+    Signal_1 : BOOL ;	//Signal names same as FB 29
+    Signal_2 : BOOL ;	
+    Signal_3 : BOOL ;	
+    Signal_4 : BOOL ;	
+    Signal_5 : BOOL ;	
+    Signal_6 : BOOL ;	
+    Signal_7 : BOOL ;	
+    Signal_8 : BOOL ;	
+    Var1 : BYTE ;	
+    Var2 : WORD ;	
+    Var3 : WORD ;	
+   END_STRUCT ;	
+  END_STRUCT ;	
+BEGIN
+END_DATA_BLOCK
+
+//Example for use
+
+
+FUNCTION FC 99: VOID
+TITLE =  
+VERSION : 0.0
+
+BEGIN
+NETWORK
+TITLE =   NETWORK
+
+      CALL FB    29 , DB    80 (
+           Func                     := 1,
+           Signal_1                 := M    100.0,
+           Signal_2                 := M    100.1,
+           Signal_3                 := M    100.2,
+           Signal_4                 := M    100.3,
+           Signal_5                 := M    100.4,
+           Signal_6                 := M    100.5,
+           Signal_7                 := M    100.6,
+           Signal_8                 := M    100.7,
+           NewCycle                 := TRUE,
+           Var1                     := MB   100,
+           BufDB                    := 81,
+           ClearBuf                 := M     50.0);
+
+END_FUNCTION
+
