@@ -1,0 +1,69 @@
+N010 ;PROGRAMMA MAIN DI LAVORAZIONE 
+N020 ;
+N030 ;Solo dopo il comando M34 viene comunicato al PLC che il coperchio
+N040 ;è stato assemblato correttamente, altrimenti per il PLC l'esito
+N050 ;avvitatura è scarta. Quindi se la funzione AvvitaCoperchio non viene
+N060 ;ultimata verrà eseguito un M30 al PLC ma il ciclo sarà scarto.
+N070 ;
+N080 LAB1="AUTO"
+N090 G90 G64
+N091 SOFT
+N100 ADIS=3000
+N110 ADISPOS=3000
+N120 R1552=0 ; Azzera ultima funzione eseguita
+N121 R1553=0
+N130 ;************** INIZIO CICLO COPERCHIO **************
+N140 Stopre
+N150 Vite_Coperchio=0 Svita_Coperchio=FALSE
+N160 F_Veloce=40000  ;40000
+N170 F_Lenta=2000    ;2000
+N180 If ($AA_IM[Z]>100) ; Controllo asse Z in posizione di sicurezza
+N181		M50 
+N182		GotoF Esci
+N183	endif 
+N190 ;Verifica attivazione ciclo parcheggio
+N200 Stopre
+N210 If ($A_DBW[0] B_AND 8192) == 8192 ; ciclo parcheggio
+N220  Origine
+      G4 F2
+      Stopre
+N230  M30
+N240 endif
+N250 
+N260 ;Verifica attivazione ciclo check lubbering
+N270 Stopre
+N280 If ($A_DBW[0] B_AND 4096) == 4096 ; Attiva heck lubbering
+N290  Check_Lubbering
+      G4 F2
+      Stopre
+N300  M30
+N310 endif
+N320 
+N330 ;Verifica attivazione ciclo capability BLM
+N340 Stopre
+N350 If ($A_DBW[0] B_AND 2048) == 2048 ; Attiva iclo capability BLM
+N360  Check_BLM_Coperchio
+      G4 F2
+      Stopre
+N370  M30
+N380 endif
+N390 
+N400 ;Verifica attivazione ciclo avvitature
+N410 Stopre
+N420 If ($A_DBW[0] B_AND 16) == 16 ; ciclo avvitature
+N430  If R1201>15 Gotof Esci ; Numero avvitature
+;N435  AvvitaCoperchio		;Con scarto avvitatura, svita la vite sul ripeti e riprova ad avvitarla 
+N440  AvvitaCoperchio_Mod	;Con scarto avvitatura, svita la vite sul ripeti e torna a fare il prelievo vite
+N450  Nr_Messaggio=16
+N460  Messaggio ; Ciclo avvitatura completato correttamente
+N470  Origine 
+      G4 F2 
+      ;Stopre
+N480  ;M34 ; Pezzo buono a PLC
+N490  ;Nr_Messaggio=17
+N500  ;Messaggio ;Registrazione dati a supervisore
+N510  ;M61 ; Registrazione a PLC
+N520 endif
+N530 
+N540 Esci:
+N550 M30

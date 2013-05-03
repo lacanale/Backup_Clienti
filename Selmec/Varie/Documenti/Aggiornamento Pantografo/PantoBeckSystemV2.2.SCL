@@ -1,0 +1,925 @@
+//***********************************************************************************************
+(*---------------LIFE BIT--------------*)
+//***********************************************************************************************
+FUNCTION_BLOCK FB_LifeBit
+VAR_INPUT
+    NumCicli:INT;    //numero di cicli in cui il mio lifebit alterna true e false; es: 10 significa 10 cicli su e 10 cilci giù 
+END_VAR
+VAR_OUTPUT
+    LifeBit: BOOL;
+END_VAR    
+
+VAR
+    Cicli:    INT;
+    resto:    INT;
+END_VAR
+
+IF NumCicli<> 0
+THEN
+    cicli:= cicli +1;
+    resto:= cicli MOD (NumCicli*2);  //classe di resto con l'intero ciclo: fase true + fase false
+    
+    IF resto <= (NumCicli-1)        //prima metà true seconda metà false
+    THEN
+        LifeBit:= TRUE;
+    ELSE
+        LifeBit:= FALSE;
+    END_IF;
+ELSE
+    LifeBit:= FALSE;
+END_IF;
+
+IF cicli >= 1000
+THEN
+    cicli:= 0;
+END_IF;
+
+
+END_FUNCTION_BLOCK
+
+
+(*-------------------------------------CICLI------------------------*)
+
+//***********************************************************************************************
+(*---------------CycleDataSending--------------*)
+//***********************************************************************************************
+FUNCTION_BLOCK PantoBeckCycleDataSend
+TITLE = 'Cycle send data to Backhoff'
+VERSION : '1.0'
+AUTHOR  : PaoloDG
+NAME    : Send
+FAMILY  : XYZ
+VAR_INPUT
+    Cm_ON:BOOL;(*il Cm_On sarà dato dal comando*) 
+    HOLD:BOOL;
+    STEP:BOOL;
+    PartnerMsgNum:  BYTE; (*messo qui da usare per tutti i cicli std di invio dati con Handshake a MsgNumber*)
+    EsitoAccodamentoDati: BYTE;
+END_VAR
+VAR_OUTPUT
+    CicloInCorso:BOOL;
+    CicloTerminatoOK:BOOL;
+    CicloTerminatoKO:BOOL;
+    CicloStato:INT;
+    CicloPagina: INT;
+    CicloMessaggio:INT; 
+END_VAR
+VAR_IN_OUT
+    MyMsgNum: BYTE;       (*messo qui da usare per tutti i cicli std di invio dati con Handshake a MsgNumber*)
+END_VAR    
+VAR
+    Stato:INT;
+    StatoSeguente:INT;
+    FrontePassoSingolo:BOOL;
+    CicloTermOK:BOOL;
+    CicloTermKO:BOOL;
+    Cycling:BOOL;
+    (*variabili messe qui ad uso test -> da linkare al DB_PantoBeckImgOUT e al DB_PantpBeckImgIN*)
+    
+END_VAR
+
+(*----------------------------------------aggiornamento stato*)
+IF NOT Cm_ON
+THEN
+    StatoSeguente := 0;
+END_IF;
+IF STEP
+OR NOT HOLD (*Incremento lo stato se non ho HOLD oppure se ho HOLD con STEP*)
+THEN
+    Stato := StatoSeguente;
+END_IF;
+
+(*-------------------------------------------stati particolari*)
+Cycling     := Stato <> 0;
+CicloTermOK := Stato = 60;
+CicloTermKO := Stato = 59;
+
+(*Stato <0> : Ciclo off Attendo Command ON*)
+IF    Stato = 0
+THEN
+    IF    Cm_ON
+    THEN
+        StatoSeguente := 7;
+    END_IF;
+END_IF; 
+
+(*Stato <7> : Invio Command ON al ciclo di ricezione punti del Beckhoff*)
+IF Stato = 7
+THEN
+    StatoSeguente:= 10;
+END_IF;
+
+
+(*Stato <10> : check messaggi*)
+IF Stato = 10
+THEN
+    (*attendo l'Handshake da parte del BeckHoff*)
+    IF PartnerMsgNum = INT_TO_BYTE (BYTE_TO_INT(MyMsgNum) + 1)
+    THEN
+        IF Stato=StatoSeguente THEN
+            StatoSeguente:= 20;
+            MyMsgNum:= PartnerMsgNum;
+        END_IF;
+    END_IF;    
+END_IF;
+    
+
+(*State <20> Beckhoff Reading -  valutazione esiti*)
+IF Stato = 20
+THEN
+        (*segnale di fine accodamento da parte del BeckHoff*)
+    IF PartnerMsgNum = INT_TO_BYTE (BYTE_TO_INT(MyMsgNum) + 1)
+    THEN
+        (*in alternativa provare a saltare ad uno stato intermedio es. 25 dove dare il check del'esito accodamento dati*)
+        IF EsitoAccodamentoDati = INT_TO_BYTE(1)
+        THEN
+            StatoSeguente:= 30;
+        END_IF;
+        IF EsitoAccodamentoDati = INT_TO_BYTE(2)
+        THEN
+            StatoSeguente:= 40;
+        END_IF;  
+   END_IF;   
+END_IF; 
+
+(*Stati <30 e 40> ACK della fine accodamento*)
+IF Stato = 30 OR Stato = 40 
+THEN
+    IF Stato=StatoSeguente THEN
+        MyMsgNum:= PartnerMsgNum;
+        StatoSeguente:= 60;
+    END_IF;
+END_IF;    
+
+(*Uscite*)
+CicloStato := Stato;
+CicloInCorso := Cycling;
+CicloTerminatoOK := CicloTermOK;
+CicloTerminatoKO := CicloTermKO;
+END_FUNCTION_BLOCK
+
+
+
+//***********************************************************************************************
+(*---------------CycleMatching--------------*)
+//***********************************************************************************************
+FUNCTION_BLOCK PantoBeckCycleMatching  
+TITLE = 'Cycle bolt matching with Backhoff'
+(*eventi da mappare:    10 -> 20    AvvitatoreEsitoOK->da ImgOUT_Static
+                        10 -> 30    Final_Position_KO->da PantoBeck_IN OR AvvitatoreEsitoKO->da ImgOUT_Static 
+                        20 -> 60    ACK_FinalPosition->da ImgOUT_Static
+                        30 -> 59    ACK_FinalPosition->da ImgOUT_Static*)
+VERSION : '1.0'
+AUTHOR  : PaoloDG
+NAME    : Match
+FAMILY  : XYZ
+
+VAR_INPUT
+    Cm_ON:BOOL;
+    HOLD:BOOL;
+    STEP:BOOL;
+    AvvitaturaInCorso:  BOOL;
+    AvvitatoreEsitoOK:  BOOL;   (*->da ImgOUT_Static*)
+    AvvitatoreEsitoKO:   BOOL;
+    ACK_FinalPosition:  BOOL;
+    Final_Position_KO:  BOOL;   (*->da PantoBeck_IN*)    
+END_VAR
+VAR_OUTPUT
+    CicloInCorso:BOOL;
+    CicloTerminatoOK:BOOL;
+    CicloTerminatoKO:BOOL;
+    CicloStato:INT;
+    CicloPagina: INT;
+    CicloMessaggio:INT;
+END_VAR
+VAR
+    Stato:INT;
+    StatoSeguente:INT;
+    FrontePassoSingolo:BOOL;
+    CicloTermOK:BOOL;
+    CicloTermKO:BOOL;
+    Cycling:BOOL;
+    OLDAvvitatoreEsitoOK:  BOOL;   (*->da ImgOUT_Static*)
+    OLDAvvitatoreEsitoKO:  BOOL;
+
+    (*variabili da linkare all'interno del PantoBeckSystems -> vedi eventi da mappare*)
+END_VAR
+
+(*----------------------------------------aggiornamento stato*)
+IF STEP
+OR NOT HOLD
+THEN
+    Stato := StatoSeguente;
+END_IF;
+
+(*-------------------------------------------stati particolari*)
+Cycling     := Stato <> 0;
+CicloTermOK := Stato = 60;
+CicloTermKO := Stato = 59;
+
+(*Stato <0> : Ciclo off*)
+IF    Stato = 0
+THEN
+    IF    Cm_ON
+    THEN
+        StatoSeguente := 10;
+    END_IF;
+END_IF; 
+
+IF     Stato = 10 
+THEN
+    IF AvvitaturaInCorso
+    THEN
+        StatoSeguente := 15;
+    END_IF;
+END_IF;        
+
+    
+(*Stato <15> : Avvitatura In Corso / attesa finalposition *)
+IF  Stato = 15 
+THEN
+    IF AvvitatoreEsitoOK (*AND NOT OLDAvvitatoreEsitoOK*)
+    THEN
+        StatoSeguente := 20;
+    END_IF;
+    IF AvvitatoreEsitoKO (*AND NOT OLDAvvitatoreEsitoKO*)
+    THEN
+         StatoSeguente := 10;(*30;*)
+    END_IF;    
+END_IF;
+
+(*Stato <20> : FinalPosition OK - Attesa ACK*)
+IF Stato = 20 
+THEN
+    IF  ACK_FinalPosition
+    THEN
+        StatoSeguente := 25;
+    END_IF;
+    IF Final_Position_KO
+    THEN
+         StatoSeguente := 10;(*30;*)
+    END_IF;    
+END_IF;
+
+(*Stato <25> : ACK - State*)
+IF Stato = 25 
+THEN
+    IF  ACK_FinalPosition
+    THEN
+        StatoSeguente := 60;
+    END_IF;
+END_IF;
+
+(*Stato <30> : Scarto - Attesa ACK*)
+IF     Stato = 30
+THEN
+    IF ACK_FinalPosition
+    THEN
+        StatoSeguente := 35;
+    END_IF;
+END_IF;
+
+(*Stato <35> : ACK - State*)
+IF     Stato = 35
+THEN
+    IF ACK_FinalPosition
+    THEN
+        StatoSeguente := 59;
+    END_IF;
+END_IF;
+
+(*Stato <60> : Fine ciclo OK*)
+IF     Stato = 60 
+OR NOT Cm_ON
+THEN
+    StatoSeguente := 0;
+END_IF;
+
+(*Stato <59> : Fine ciclo KO*)
+IF     Stato = 59 
+OR NOT Cm_ON
+THEN
+    StatoSeguente := 0;
+END_IF;
+
+OLDAvvitatoreEsitoOK:= AvvitatoreEsitoOK;
+OLDAvvitatoreEsitoKO:= AvvitatoreEsitoKO;
+
+(*Uscite*)
+CicloStato := Stato;
+CicloInCorso := Cycling;
+CicloTerminatoOK := CicloTermOK;
+CicloTerminatoKO := CicloTermKO;
+END_FUNCTION_BLOCK
+
+
+//ROMANIA
+//***********************************************************************************************
+(*---------------SYSTEMS--------------*)
+//***********************************************************************************************
+FUNCTION_BLOCK FB_PantoBeckhoffSystems  
+
+TITLE = 'System Pantografo con Beckhoff'
+(*struttura: lifebit;  inviopuntivite(ciclo datasending;); default-mapping(ciclo matching); staticmapping; stati*)
+(*usa   UDT: UDT_Flangia, UDT_PantoParameter, UDT_PantoStaticOutput, UDT_PantoBeckScrew, UDT_PantoBeck_IN *)
+(*CALL TREE: FB_PantoBeckhoffSystems        
+                FBcall    FB_LifeBit    
+                        subcall       TON SFB4
+                FBcall    PantoBeckCycleDataSend    
+                FBcall    PantoBeckCycleMatching*)
+VERSION : '1.0'
+AUTHOR  : PaoloDG
+NAME    : SysBeck
+FAMILY  : XYZ
+
+VAR_INPUT  
+    In_NumFlange:   INT := 1;    //Numero flangie da avvitare 1 a 3 
+    In_MaxScrews:   INT := 1;    //Numero massimo di viti nella flangia da 1 a 10
+    
+    AddrIN:         INT;    //indirizzo HW di ingresso
+    AddrOUT:        INT;   //indirizzo HW di uscita
+ 
+    Cmd_Enable:             BOOL := FALSE; //Abbilita il pantografo 
+    Cmd_Reset:              BOOL := FALSE; //reset Esiti avvitature Viti
+    Cmd_SendScrewsPos:      BOOL; //trasferisce le avvitature delle In_NumFlange 
+
+    In_WorkFlange:          INT := 1;  //Flangia in uso in fase di avvitatura o acquisizione punti
+    
+    In_STEP:                BOOL := FALSE; //Ingresso avanzamento step by step
+    In_HOLD:                BOOL := FALSE; //Ingresso Hold avanzamento
+    
+    In_Start_PLS:           BOOL;       //start PLS esterno
+    In_ScrewDrivingOk:      BOOL;      //stato avvitatorura Ok
+    In_ScrewDrivingKo:      BOOL;      //stato avvitatorura scarto 
+    In_ScrewDrivingStarted: BOOL;      //stato avvitatorura in corso
+    In_ScrewDrivingEnd:     BOOL;      //stato avvitatorura fine
+    In_ScrewDrivingRepeat:  BOOL;      //ripeti avvitatura su vite non svitabile
+    In_DefaultScrewProg:    BYTE := 1; //Programma di Avvitatura utilizzato con check x y z disabilitati
+    
+    In_ToolRotationAngle:   REAL := 0.0;  //gradi angolo rotazione attrezzatura    
+       
+    In_MaxSendRetriesKO:    INT     := 3; // massimo numero tentativi reinvio dati (se superato Err_InvioVite)
+    
+    Cmd_Mode_ACQ_Pos:       BOOL;   // acquisisci Punto Vite 
+   
+    ACQ_AutoNumerazione:    BOOL; // numerazione automatica per ACQ completa
+    ACQ_TestModeEnable:     BOOL; //da linkare solo per debug modifica sul db Zmin Zmax Delta
+    ACQ_TestModeTollR:      REAL; //Raggio dell'area di avvitabilità
+    ACQ_TestModeTollZ:      REAL; //altezza dell'area larga di avvitabilità
+    ACQ_TestModeZmin:       REAL; //Zmin di fine avvitatura OK
+    ACQ_TestModeZmax:       REAL; //Zmax di fine avvitatura OK
+    
+    IN_BuzzerTime:    TIME:=T#250ms ;  // Tempo di segnalazione acustica 
+END_VAR    
+VAR_OUTPUT
+    (*
+    assegnate nell'UDT
+    W_RicettaVuota          : BOOL;  //Rimandare la ricetta
+    W_OffsetMancante        : BOOL;  //Controlla Parametri Globali
+    W_ParametriLubMancanti  : BOOL;  //Controlla Parametri Macchina
+    W_ParkZoneInconsistente : BOOL;  //mancano coord Parkzone
+    W_AngleArmsGainMissing  : BOOL;  //è in uso gain generico angolo braccio 
+    W_ZAxisGainMissing      : BOOL;  //è in uso gain generico Z 
+    W_LthArmsGainMiss       : BOOL;  //è in uso gain generico Est. braccio 
+    W_Z2_PolsoGainMissing   : BOOL;  //è in uso gain generico Z2 o Polso 
+*)
+    
+    Out_Pantosystem         : "UDT_FB_PantoSystem"; // UDT Pantosystem del bench system    
+
+  BuzzerON:               BOOL; //resta su per il tempo Buzzer Time 
+  AvvitaturaOK:           BOOL; //resta su fino al rilascio del pulsante start avvitatore
+  Z_FinalPositionOK:       BOOL; //posizione z finale OK
+  Z_FinalPositionKO:       BOOL; //posizione z finale KO
+  ACQ_Point_Executed:              BOOL; //Fronte acquisizione avvenuta
+              
+END_VAR
+VAR_IN_OUT    
+    ACQ_IdViteDaAcquisire: INT := 1;  // ID vite da remoto
+    Flange:             ARRAY[1..9] OF UDT_Flangia;  
+    PantografoParametri:UDT_PantoParameter; //da linkare con il db parametri UDT_PantoParameter
+END_VAR        
+VAR_TEMP
+    I : INT;
+    Addr : INT;    
+END_VAR
+VAR
+    MaxVitiConst: INT:= 15;
+    jump: INT;  //appoggio per gestire il pagine in due casi 1:Cmd_InvioAvvitature 0: NOT Cmd_InvioAvvitature
+    
+    (*Panto_Communication:    FB_SystemLifeBitCheck;*)
+    PantoLifeBit:   FB_LifeBit;
+    TimeOut:        TON;
+    BeckLifeBitOLD: BOOL;   //appoggio valore ciclo precedente    
+    
+    (*invio punti vite*)
+    UltimaVite:             BOOL;
+    UltimaFlangia:          BOOL;
+    Ist_CycleDataSending:   PantoBeckCycleDataSend;  //Istanza ciclo di invio un avvitatura
+    
+    CicloInvioViti:         BOOL;
+    
+    InviaDatiVite:          BOOL;
+    InviaDatiViteSingola:   BOOL;
+     
+    Flangia_da_Inviare: INT;
+    Vite_da_Inviare:    INT;  
+    Vite_da_InviareOLD: INT;
+    CounterInviiKO:         INT;    //contatore di numero di esiti errati
+
+    CicloMatching:          PantoBeckCycleMatching;
+    tmp_In_ScrewDrivingOk:  BOOL; //interblocco per evitare il salto di stato
+    tmp_In_ScrewDrivingKo:  BOOL;
+    tmp_In_ScrewDrivingEnd: BOOL;
+    In_ScrewDrivingEndOLD:  BOOL;
+    sta_in_STEP:            BOOL;
+    sta_app_STEP:           BOOL;
+    OLDStato:               INT;
+    ACQ_FlangiaInCorsoOLD: INT;    (*appoggio per il valore del ciclo precedente*)
+      
+    ACQ_RqstNuovaAcqOLD:    BOOL; (*appoggio ciclo precedente per verifica del fronte positivo*)
+   
+    STA_BuzzerT  :    "TON"; // timer per buzzer
+    STA_BuzzerON :    BOOL;  // attivazione buzzer
+
+    vitiEffettuateOLD: INT;
+  
+    TestRealInviato:    REAL;
+    ACQ_CmdTeachInOLD:  BOOL;   (*appoggio per fronte StartPls in ACQ Mode*)
+
+    (*Gestione Paginf*)
+    PantoStaticOutput:  UDT_PantoStaticOutput;  //UDT_PantoStaticOutput
+    PantoDynamicOutput: ARRAY[28..127] OF BYTE; //ARRAY[28..127] OF BYTE    
+
+    MapScrew AT PantoDynamicOutput: UDT_PantoBeckScrew;    (*GESTIONE INVIO PUNTIVITE mapping in caso di InvioViti*)
+    MapParam AT PantoDynamicOutput: UDT_PantoParameter;     (*mapping in caso di not invio viti*)
+    
+    AtPantoStaticOutput AT PantoStaticOutput: ARRAY[0..13] OF WORD;
+    AtPantoDynamicOutput AT PantoDynamicOutput: ARRAY[14..63] OF WORD; 
+    
+    PantoBeck_IN:   UDT_PantoBeck_IN; // Ingressi da Beckhoff UDT_PantoBeck_IN 
+    AtPantoBeck_IN  AT PantoBeck_IN: ARRAY[0..31] OF DWORD;       
+        
+ END_VAR
+ 
+IF In_STEP XOR sta_app_STEP THEN
+    IF In_STEP THEN
+        sta_in_STEP:= In_STEP;
+    END_IF;
+    sta_app_STEP:= In_STEP;
+ELSE
+    sta_in_STEP:= false;    
+END_IF;
+
+(*refresh immagine degli ingressi*)
+FOR I := 0 TO 31 DO
+   AtPantoBeck_IN[I] := PED[AddrIN + I * 4]; 
+END_FOR;
+
+
+//********************************************
+(*---------gestione life bit----------*)
+//********************************************
+
+(*Gestione del PLC LifeBite per comunicare che il PLC è vivo*)
+PantoLifeBit(NumCicli:= 10);
+PantoStaticOutput.Header.Communication.PlcLifeBit:= PantoLifeBit.LifeBit;
+
+(*Gestione del time out per verificare che il Beckhoff è vivo*)
+TimeOut(IN:= PantoBeck_IN.StaticMap.Header.Communication.BeckLifeBit = BeckLifeBitOLD, (*conta se il life bit del Beckhoff non cambia*)
+        PT:= T#15s);           
+Out_Pantosystem.PantoCommunicationOK:= NOT TimeOut.Q;
+Out_Pantosystem.PantoCommunicationKO := NOT Out_Pantosystem.PantoCommunicationOK;
+BeckLifeBitOLD:= PantoBeck_IN.StaticMap.Header.Communication.BeckLifeBit; //memorizzazione valore per il successivo ciclo
+
+PantoStaticOutput.Header.Communication.EchoBeckLifeBit:=  PantoBeck_IN.StaticMap.Header.Communication.BeckLifeBit;   
+
+//********************************************
+(*---FINE--gestione life bit----------*)
+//********************************************
+
+
+Out_Pantosystem.OUT_StartPls                := In_Start_PLS OR PantoBeck_IN.StaticMap.PantoE.StartPls;//pulsante mappato dall'esterno PantoBeck_IN.StaticMap.PantoE.StartPls;
+Out_Pantosystem.OUT_ParkingPosition         := PantoBeck_IN.StaticMap.PantoE.ParkingPosition;
+Out_Pantosystem.OUT_FrizioneComandata       := PantoBeck_IN.StaticMap.PantoE.FrizioneComandata;
+Out_Pantosystem.OUT_Enabled                 := Cmd_Enable;
+    (*Posizione*)
+Out_Pantosystem.X:= PantoBeck_IN.StaticMap.PantoE.X;
+Out_Pantosystem.Y:= PantoBeck_IN.StaticMap.PantoE.Y;
+Out_Pantosystem.Z:= PantoBeck_IN.StaticMap.PantoE.Z;
+
+Out_Pantosystem.CH1_Linearizzato:= PantoBeck_IN.CH01_Linearizzato;
+Out_Pantosystem.CH2_Linearizzato:= PantoBeck_IN.CH02_Linearizzato;
+Out_Pantosystem.CH3_Linearizzato:= PantoBeck_IN.CH03_Linearizzato;
+Out_Pantosystem.CH4_Linearizzato:= PantoBeck_IN.CH04_Linearizzato;
+
+Z_FinalPositionOK:= PantoBeck_IN.StaticMap.PantoE.Final_Position_OK;
+Z_FinalPositionKO:= PantoBeck_IN.StaticMap.PantoE.Final_Position_KO;
+
+    (*Canali*)
+Out_Pantosystem.CH1:= PantoBeck_IN.CH1;
+Out_Pantosystem.CH2:= PantoBeck_IN.CH2;
+Out_Pantosystem.CH3:= PantoBeck_IN.CH3;
+Out_Pantosystem.CH4:= PantoBeck_IN.CH4;
+
+Out_Pantosystem.CMD.Acquisition:= Cmd_Mode_ACQ_Pos;   
+Out_Pantosystem.CMD.AutoNumeration:= ACQ_AutoNumerazione;
+Out_Pantosystem.CMD.RetrieveRecipePoint:= Cmd_SendScrewsPos;
+
+
+    
+IF ACQ_IdViteDaAcquisire > 15 OR ACQ_IdViteDaAcquisire < 1 THEN
+    ACQ_IdViteDaAcquisire := 1;
+END_IF;    
+
+IF In_WorkFlange <= 0 OR In_WorkFlange > 9 THEN
+    In_WorkFlange := 1;
+END_IF;
+
+IF Flangia_da_Inviare <= 0 OR Flangia_da_Inviare > 9 THEN
+    Flangia_da_Inviare := 1;
+END_IF;    
+        
+(*Cmd Rippristina*)
+PantoStaticOutput.Header.Command.RSTEsitiAvvitature:= Cmd_Reset; 
+(*il link al comando di invio avvitature è nella sezione Invio Avvitature*)
+PantoStaticOutput.Header.Command.Matching:= Cmd_Enable; 
+
+(*INTERFACCIARE Verso il Beckhoff CON STATICOUTPUT*)
+PantoStaticOutput.PantoA.StartPls:= Out_Pantosystem.OUT_StartPls;
+PantoStaticOutput.PantoA.freeX1:= FALSE;
+PantoStaticOutput.PantoA.AvvitaturaInCorso:=    In_ScrewDrivingStarted;(*AvvitaturaInCorso*)
+PantoStaticOutput.PantoA.AvvitatoreEsitoOK:=    tmp_In_ScrewDrivingOk;(* AvvitatoreEsitoOK*)
+PantoStaticOutput.PantoA.AvvitatoreEsitoKO:=    tmp_In_ScrewDrivingKo;(*AvvitatoreEsitoKO*)
+PantoStaticOutput.PantoA.AvvitaturaFine:=       tmp_In_ScrewDrivingEnd;(*AvvitaturaFine*)
+
+PantoStaticOutput.PantoA.AvvitaturaRipeti:=     In_ScrewDrivingRepeat;
+PantoStaticOutput.PantoA.freeX7:= FALSE;
+PantoStaticOutput.PantoA.ECHO_Viti_Effettuate:= PantoBeck_IN.StaticMap.PantoE.Viti_Effettuate;
+PantoStaticOutput.PantoA.Viti_Totali_Flangia:=  INT_TO_BYTE(Flange[In_WorkFlange].Viti_Totali);
+PantoStaticOutput.PantoA.FlangiaInCorso:=       INT_TO_BYTE(In_WorkFlange); 
+PantoStaticOutput.PantoA.AngoloPallet:=         In_ToolRotationAngle;
+PantoStaticOutput.PantoA.GenericScrewerProg:=   In_DefaultScrewProg;
+
+    (*OUTPUT*)
+            (*WARNING*)
+Out_Pantosystem.W_RicettaVuota:=            PantoBeck_IN.StaticMap.Header.Warning.RicettaVuota;             //Rimandare la ricetta
+Out_Pantosystem.W_OffsetMancante:=          PantoBeck_IN.StaticMap.Header.Warning.OffsetMancante;           //Controlla Parametri Globali
+Out_Pantosystem.W_ParametriLubMancanti:=    PantoBeck_IN.StaticMap.Header.Warning.ParametriLubMancanti;     //Controlla Parametri Macchina
+Out_Pantosystem.W_ParkZoneInconsistente:=   PantoBeck_IN.StaticMap.Header.Warning.ParkZoneInconsistente;    //mancano coord Parkzone
+Out_Pantosystem.W_AngleArmsGainMissing:=    PantoBeck_IN.StaticMap.Header.Warning.AngleArmsGainMissing;     //è in uso gain generico angolo braccio 
+Out_Pantosystem.W_ZAxisGainMissing:=        PantoBeck_IN.StaticMap.Header.Warning.ZAxisGainMissing;         //è in uso gain generico Z 
+Out_Pantosystem.W_LthArmsGainMiss:=         PantoBeck_IN.StaticMap.Header.Warning.LengthArmsGainMissing;    //è in uso gain generico Est. braccio 
+Out_Pantosystem.W_Z2_PolsoGainMissing:=     PantoBeck_IN.StaticMap.Header.Warning.Z2_Polso_GainMissing;     //è in uso gain generico Z2 o Polso 
+
+ 
+
+
+Out_Pantosystem.ST_PantoFlangiaTerminata:=PantoBeck_IN.StaticMap.PantoE.AvvitatureTerminate AND NOT Cmd_SendScrewsPos AND NOT Cmd_Mode_ACQ_Pos;                    
+Out_Pantosystem.ST_PantoFlangeTerminate:=  Out_Pantosystem.ST_PantoFlangiaTerminata AND (In_WorkFlange = In_NumFlange);                 
+Out_Pantosystem.OUT_PantoFlangiaInCorso:= In_WorkFlange;    
+Out_Pantosystem.ST_Panto_Screw:= (PantoBeck_IN.StaticMap.PantoE.AbilitaAvvitatura) AND NOT (Cmd_SendScrewsPos OR Cmd_Mode_ACQ_Pos) AND Cmd_Enable;   
+
+    (*verificare se c'è il check con svitatura su scarto*)
+Out_Pantosystem.ST_Panto_UnScrew:= (PantoBeck_IN.StaticMap.PantoE.AbilitaSvitatura) AND NOT (Cmd_SendScrewsPos OR Cmd_Mode_ACQ_Pos) AND Cmd_Enable;   
+
+Out_Pantosystem.ST_ViteAvvitare     := PantoBeck_IN.StaticMap.PantoE.AbilitaAvvitatura;
+Out_Pantosystem.ST_ViteSvitare      := PantoBeck_IN.StaticMap.PantoE.AbilitaSvitatura;
+Out_Pantosystem.ST_ViteRiavvitare   := PantoBeck_IN.AbilitaRiavvitatura;
+Out_Pantosystem.ST_ViteNonSvitabile := PantoBeck_IN.ViteNonSvitabile;
+
+Out_Pantosystem.OUT_PantoUtensile   := PantoBeck_IN.Utensile;
+
+Out_Pantosystem.OUT_PuntoViteCatturato:= BYTE_TO_INT(PantoBeck_IN.StaticMap.PantoE.Vite_in_Corso);
+Out_Pantosystem.OUT_PantoScrewProgNum:= PantoBeck_IN.StaticMap.PantoE.ProgrammaAvvitatore;
+
+Out_Pantosystem.OUT_vitiEffettuate := BYTE_TO_INT(PantoBeck_IN.StaticMap.PantoE.Viti_Effettuate); 
+Out_Pantosystem.OUT_vitiTotali      := Flange[In_WorkFlange].Viti_Totali;
+
+IF Out_Pantosystem.OUT_vitiEffettuate <> vitiEffettuateOLD
+THEN
+    AvvitaturaOK := TRUE;
+    STA_BuzzerON := TRUE;
+END_IF;
+
+IF NOT Out_Pantosystem.OUT_StartPls
+THEN
+    AvvitaturaOK := FALSE;
+END_IF;
+
+Sta_buzzerT (IN:= STA_BuzzerON,
+                PT:= IN_BuzzerTime);             
+    
+ 
+IF Sta_buzzerT.Q 
+THEN
+     STA_BuzzerON := FALSE;
+END_IF;     
+   
+BuzzerON:= STA_BuzzerON;
+vitiEffettuateOLD:=  Out_Pantosystem.OUT_vitiEffettuate;   
+
+Out_Pantosystem.ST_RipristinoTerminato:= PantoBeck_IN.StaticMap.Header.MacroStati.EsitiResettati;
+
+Out_Pantosystem.ST_InvioAvvitInCorso:= PantoBeck_IN.StaticMap.Header.MacroStati.TxScrewingData;
+                         
+Out_Pantosystem.ERR_InvioVite:=  CounterInviiKO > In_MaxSendRetriesKO AND Cmd_SendScrewsPos;
+(*OUT_ViteInErrore e OUT_FlangiaInErrore assegnati nella gestione invio vite VALUTARE se RST o meno in caso di caduta comando invio vite*)
+
+Out_Pantosystem.ST_ACQ_Pos_InCorso:= Cmd_Mode_ACQ_Pos;
+
+ACQ_Point_Executed:= FALSE; //init dello stato di acquisizione effettuata
+
+//INIT del ciclo di Acquisizione
+IF Cmd_Mode_ACQ_Pos 
+THEN 
+    Out_Pantosystem.ST_ACQ_PuntiModificati:= TRUE; 
+    Out_Pantosystem.ST_InvioAvvitTerminato:= FALSE; //RST InvioAvvTerminato perchè si presuppone che almeno un punto è stato modificato
+     
+    IF ACQ_FlangiaInCorsoOLD <> In_WorkFlange
+    THEN
+        ACQ_IdViteDaAcquisire:= 1;
+        Out_Pantosystem.ST_ACQ_VitiFlangiaCount:= 0;       
+    END_IF;
+ELSE 
+    IF Out_Pantosystem.ST_InvioAvvitTerminato
+    THEN    
+        Out_Pantosystem.ST_ACQ_PuntiModificati:= FALSE; (*RST solo a fine invio punti *) 
+    END_IF;    
+         (*init valori*)
+    (*ACQ_Id_Vite:= 1;*)
+    ACQ_IdViteDaAcquisire:= 1;
+    Out_Pantosystem.ST_ACQ_VitiFlangiaCount:= 0;
+    Out_Pantosystem.OUT_ACQ_X:= 0;
+    Out_Pantosystem.OUT_ACQ_Y:= 0;
+    Out_Pantosystem.OUT_ACQ_Z:= 0;
+    InviaDatiViteSingola := 0;
+END_IF;  
+  
+MaxVitiConst:=15;
+Out_Pantosystem.Err_CmdMultipli:= Cmd_SendScrewsPos AND Cmd_Mode_ACQ_Pos; (*per ora semplice perchè solo 2 comandi esterni*)
+
+Out_Pantosystem.Err_IdVite:= (((ACQ_IdViteDaAcquisire + 1) > Flange[In_WorkFlange].Viti_Totali) 
+                                AND (Cmd_Mode_ACQ_Pos AND NOT ACQ_AutoNumerazione))
+                                OR Vite_da_Inviare > Flange[Flangia_da_Inviare].Viti_Totali
+                                OR Flange[Flangia_da_Inviare].Viti_Totali > MaxVitiConst;
+Out_Pantosystem.Err_VitiTotaliFlangia:= Flange[In_WorkFlange].Viti_Totali > In_MaxScrews
+                                OR Flange[In_WorkFlange].Viti_Totali > In_MaxScrews
+                                OR In_MaxScrews > MaxVitiConst;
+Out_Pantosystem.Err_FlangiaInCorso:=   (In_WorkFlange > In_NumFlange)
+                                OR  (In_WorkFlange > In_NumFlange)
+                                OR  Flangia_da_Inviare > In_NumFlange
+                                OR (In_NumFlange>8);
+    
+    
+    
+    
+
+CicloInvioViti := Cmd_SendScrewsPos OR InviaDatiViteSingola; 
+
+
+IF CicloInvioViti  (*OR InvioForzato*)
+THEN 
+    IF NOT Out_Pantosystem.Err_CmdMultipli 
+    AND NOT Out_Pantosystem.Err_IdVite (*interblocco accessi indici array inesistenti*)
+    AND NOT Out_Pantosystem.Err_FlangiaInCorso
+    THEN 
+        jump:= 1;
+                (*init*)
+    END_IF;    
+ELSE 
+    jump:= 0;
+    (*init*)
+    Flangia_da_Inviare:= 1; (*init*)
+    Vite_da_Inviare:= 1;    (*init*)
+    UltimaVite:= FALSE;  
+    UltimaFlangia:= FALSE;  
+    InviaDatiVite := FALSE;
+    CounterInviiKO:= 0;
+   (* vitemappata:= FALSE;    (*init*)  *)
+    PantoStaticOutput.Header.Command.TxScrewingData:= FALSE;
+    PantoStaticOutput.Header.Communication.PlcMsgNum:= PantoBeck_IN.StaticMap.Header.Communication.BeckMsgNum; 
+    Out_Pantosystem.ST_InvioAvvitTerminato:= FALSE; //resetto invio viti terminato
+    
+END_IF;
+
+
+tmp_In_ScrewDrivingOk:=     In_ScrewDrivingOk;
+tmp_In_ScrewDrivingKo:=     In_ScrewDrivingKo;
+tmp_In_ScrewDrivingEnd:=    In_ScrewDrivingEnd;
+
+PantoStaticOutput.Header.Communication.PLC_ACK:=  PantoBeck_IN.StaticMap.PantoE.Final_Position_KO OR PantoBeck_IN.StaticMap.PantoE.Final_Position_OK; 
+    
+ 
+
+        
+    
+    (*istanza ciclo matching*)
+CicloMatching(  Cm_ON :=PantoBeck_IN.StaticMap.PantoE.AbilitaAvvitatura AND (Jump = 0),(* AND Cmd_AbilitaPantografo,*)
+                HOLD :=In_HOLD,
+                STEP :=sta_in_STEP,
+                AvvitaturaInCorso:= In_ScrewDrivingStarted,
+                AvvitatoreEsitoOK:= tmp_In_ScrewDrivingOk, 
+                AvvitatoreEsitoKO:= tmp_In_ScrewDrivingKo,
+                ACK_FinalPosition:= PantoStaticOutput.Header.Communication.PLC_ACK,
+                Final_Position_KO:= PantoBeck_IN.StaticMap.PantoE.Final_Position_KO);(*->da PantoBeck_IN*) 
+OLDStato:= CicloMatching.Stato; //memorizzo il vecchio stato       
+
+                 
+                        
+Ist_CycleDataSending(   Cm_ON:=    InviaDatiVite AND (Jump = 1),
+                        HOLD:=     In_HOLD,
+                        STEP:=     sta_in_STEP,
+                        PartnerMsgNum:= PantoBeck_IN.StaticMap.Header.Communication.BeckMsgNum,
+                        EsitoAccodamentoDati:= PantoBeck_IN.EsitoAccodamentoDati,
+                        MyMsgNum:= PantoStaticOutput.Header.Communication.PlcMsgNum);
+
+    
+Out_Pantosystem.ST_ACQ_FlangiaTerminata:= (Out_Pantosystem.ST_ACQ_VitiFlangiaCount >= Flange[In_WorkFlange].Viti_Totali) AND ACQ_AutoNumerazione;
+
+    CASE jump OF
+    
+    0:  //Azioni in caso di NOT Cmd_InvioAvvitature
+        
+                
+        //*********************************************************
+        (*--ACQUISIZIONE PUNTI -SENZA CICLO------*)
+        //********************************************************
+            
+         
+                     
+IF Cmd_Mode_ACQ_Pos AND NOT Out_Pantosystem.Err_CmdMultipli AND NOT Out_Pantosystem.ST_ACQ_FlangiaTerminata(* AND Cmd_AbilitaPantografo*)         
+THEN
+    IF (Out_Pantosystem.OUT_StartPls AND NOT ACQ_CmdTeachInOLD)
+        AND(In_ScrewDrivingEnd AND NOT In_ScrewDrivingEndOLD) 
+        AND In_ScrewDrivingOk 
+    THEN
+        Flange[In_WorkFlange].Vite[ACQ_IdViteDaAcquisire].Id_Vite:= INT_TO_BYTE(ACQ_IdViteDaAcquisire);
+        (*coordinate*)
+        Flange[In_WorkFlange].Vite[ACQ_IdViteDaAcquisire].X:= Out_Pantosystem.X;
+        Flange[In_WorkFlange].Vite[ACQ_IdViteDaAcquisire].Y:= Out_Pantosystem.Y;
+        Flange[In_WorkFlange].Vite[ACQ_IdViteDaAcquisire].Z:= Out_Pantosystem.Z;
+        Out_Pantosystem.OUT_ACQ_X:= Out_Pantosystem.X;     //per l'operatore
+        Out_Pantosystem.OUT_ACQ_Y:= Out_Pantosystem.Y; 
+        Out_Pantosystem.OUT_ACQ_Z:= Out_Pantosystem.Z;   
+        Out_Pantosystem.ST_ACQ_VitiFlangiaCount:= Out_Pantosystem.ST_ACQ_VitiFlangiaCount + 1;
+        
+        ACQ_Point_Executed:= TRUE; 
+        
+        //modalità test per aggiungere su db Zmin, Zmax e DeltaZ
+        IF ACQ_TestModeEnable 
+        THEN
+            Flange[In_WorkFlange].Vite[ACQ_IdViteDaAcquisire].TollR :=   ACQ_TestModeTollR;
+            Flange[In_WorkFlange].Vite[ACQ_IdViteDaAcquisire].TollZ :=   ACQ_TestModeTollZ;
+            Flange[In_WorkFlange].Vite[ACQ_IdViteDaAcquisire].ZMin :=    Flange[In_WorkFlange].Vite[ACQ_IdViteDaAcquisire].Z - ACQ_TestModeZMin;
+            Flange[In_WorkFlange].Vite[ACQ_IdViteDaAcquisire].ZMax :=    Flange[In_WorkFlange].Vite[ACQ_IdViteDaAcquisire].Z + ACQ_TestModeZMax;     
+        END_IF;    
+        
+        Vite_da_Inviare := BYTE_TO_INT(Flange[In_WorkFlange].Vite[ACQ_IdViteDaAcquisire].Id_Vite);
+        Flangia_da_Inviare := In_WorkFlange;
+        //InviaDatiViteSingola := TRUE;
+        
+        IF ACQ_AutoNumerazione (*così facendo non si perde la numerazione in caso cadi il modo automatico*)
+        THEN
+            ACQ_IdViteDaAcquisire:= ACQ_IdViteDaAcquisire + 1;     
+        END_IF; 
+        
+        ACQ_CmdTeachInOLD:= TRUE;
+    ELSE
+        ACQ_CmdTeachInOLD:= FALSE;
+    END_IF;(*fine TouchUp*)    
+
+ELSE(*se non sono in ACQ MODE*)
+
+    ACQ_IdViteDaAcquisire:= 1;
+    Out_Pantosystem.ST_ACQ_VitiFlangiaCount:=0;
+    ACQ_CmdTeachInOLD:= FALSE;
+END_IF;(*fine ACQ MODE*)  
+       
+ACQ_FlangiaInCorsoOLD:= In_WorkFlange;      (*appoggio flangia ciclo precedente*)
+In_ScrewDrivingEndOLD:=  In_ScrewDrivingEnd;   
+      
+MapParam:= PantografoParametri;   (*Paging dei Parametri*)
+     
+        //************FINE AZIONI senza Comando invio Punti
+        
+        
+        
+1:  //*********************************************************
+    (*------------GESTIONE INVIO PUNTIVITE-----------*)
+    //*********************************************************
+      
+          (*check flangia da inviare*)
+    IF Flangia_da_Inviare <= In_NumFlange
+    THEN
+        InviaDatiVite:= TRUE; //aggiunta paolo 20090910
+        Out_Pantosystem.ST_InvioAvvitTerminato:= FALSE;
+        IF (Ist_CycleDataSending.Stato = 10) OR (Ist_CycleDataSending.Stato = 20) 
+        THEN 
+            //Paging della singola avvitatura
+            MapScrew                    :=  Flange[Flangia_da_Inviare].Vite[Vite_da_Inviare];     
+            (*refresh ID Vite  ID Flangia e viti totali flangia indipendetemente se c'è o meno su ricetta*)
+            MapScrew.Id_Vite            := INT_TO_BYTE(Vite_da_Inviare);
+            MapScrew.VitiTotaliFlangia  := INT_TO_BYTE(Flange[Flangia_da_Inviare].Viti_Totali);
+            MapScrew.Flangia            := INT_TO_BYTE(Flangia_da_Inviare);
+        ELSE(*se terminete le viti*)
+            MapParam:= PantografoParametri;   (*Paging dei Parametri*)
+        END_IF; (*fine check viti totali*)   
+        
+               //Definizione Ultima Vite e Ultima Flangia                   
+        UltimaVite:= (Vite_da_Inviare >= Flange[Flangia_da_Inviare].Viti_Totali) OR InviaDatiViteSingola;  
+        UltimaFlangia:= (Flangia_da_Inviare >= In_NumFlange) OR InviaDatiViteSingola;             
+
+   
+       (*condizione da valutare prima dell'istanza per il caso di invio forzato dopo acquisizione punti*)
+
+       //tolto da paolo 20090910-> abbasso invia viti appena arriva a 60 InviaDatiVite := (*Vite_da_Inviare = Vite_da_InviareOLD AND*) CicloInvioViti;
+       
+        (*PLCMsg è il valore in OUT dall FB se il ciclo è in corso, altrimenti è inizializzato al Msg number del beckhoff*)
+        (*IF  Ist_CycleDataSending.CicloInCorso AND NOT (Ist_CycleDataSending.Stato = 60)*)
+        IF Ist_CycleDataSending.Stato = 7
+        THEN
+            PantoStaticOutput.Header.Communication.PlcMsgNum:= Ist_CycleDataSending.MyMsgNum;
+            PantoStaticOutput.Header.Command.TxScrewingData:= TRUE;   
+        END_IF;
+        
+        IF Ist_CycleDataSending.Stato = 60
+        THEN
+            PantoStaticOutput.Header.Communication.PlcMsgNum:= PantoBeck_IN.StaticMap.Header.Communication.BeckMsgNum;
+            PantoStaticOutput.Header.Command.TxScrewingData:= FALSE;     
+            IF PantoBeck_IN.EsitoAccodamentoDati = INT_TO_BYTE(0) 
+            THEN
+                InviaDatiVite := FALSE; 
+            END_IF;
+        END_IF;
+        
+           
+                                 
+                       
+  //stato di esito accodamento OK 
+       IF Ist_CycleDataSending.Stato = 30  
+       THEN
+           //tolto da paolo il 20090910 -> lo abbasso allo stato 60 InviaDatiVite := FALSE;
+           CounterInviiKO:= 0;         (*resetto il counter degli invii KO*)
+            (*se è l'ultima vite della flangia passo alla flangia successiva altrimenti alla vite successiva*) (*nello stato 60 ci sto per un solo ciclo*)
+           IF InviaDatiViteSingola THEN
+                  InviaDatiViteSingola := FALSE;
+           ELSE    
+               IF UltimaVite
+               THEN
+                  IF Vite_da_InviareOLD <> Vite_da_Inviare THEN
+                       Flangia_da_Inviare:= Flangia_da_Inviare +1;
+                       Vite_da_Inviare:= 1; (*init vite da inviare*)
+                   END_IF;
+               ELSE 
+                   IF Vite_da_InviareOLD <> Vite_da_Inviare THEN
+                       Vite_da_Inviare:= Vite_da_Inviare + 1; 
+                   END_IF;
+               END_IF; (*fine controllo ultima vite*)  
+               Vite_da_InviareOLD:= Vite_da_Inviare;                          
+           END_IF;
+       ELSE
+            Vite_da_InviareOLD:= 0;                          
+       END_IF; (*fine stato 30 esito accodamento ok*)     
+               
+       IF Ist_CycleDataSending.Stato = 40 (*stato con esito accodamento KO*) 
+       THEN
+           CounterInviiKO:= CounterInviiKO + 1;    (*nello stato 60 ci sto per un solo ciclo*)
+           Out_Pantosystem.OUT_ViteInErrore:= Vite_da_Inviare;     (*restituisco l'ultima vite con un errore di accodamento *) 
+           Out_Pantosystem.OUT_FlangiaInErrore:= Flangia_da_Inviare;(*Flangia della vite in errore*)
+        END_IF;(*fine esito KO*) 
+        
+        
+    ELSE
+    //************init a fine invio flange***************************
+        (*   Flangia_da_Inviare:= 0; (*init*)*)
+        Vite_da_Inviare:=   1;    
+        InviaDatiViteSingola := FALSE;
+        UltimaVite:=        FALSE;  
+        UltimaFlangia:=     FALSE;
+        CounterInviiKO:=    0;
+        PantoStaticOutput.Header.Command.TxScrewingData:= FALSE;
+//RST Stato di Invio Terminato
+         Out_Pantosystem.ST_InvioAvvitTerminato:= TRUE;
+    END_IF; (*fine check Flangia da inviare*)         
+    //************************--FINE----GESTIONE INVIO PUNTIVITE---*********************************
+    
+END_CASE;
+
+Out_Pantosystem.OUT_Busy := CicloInvioViti OR Ist_CycleDataSending.CicloInCorso;
+
+
+    
+    
+FOR I := 0 TO 13 DO // refresh a WORD dei primi  28 byte
+    PAW[AddrOUT + I * 2] := AtPantoStaticOutput[I];
+END_FOR;
+    
+FOR I := 14 TO 63 DO// refresh a WORD dei secondi 100 byte
+    PAW[AddrOUT + I * 2] := AtPantoDynamicOutput[I];
+END_FOR;
+    
+
+    
+END_FUNCTION_BLOCK
+
+

@@ -1,0 +1,10 @@
+
+TYPE UDT_ANY_Pointer
+    STRUCT
+       ID_Any   : BYTE := 16#10; //ID tipo any
+       DataType : BYTE;
+       Size     : INT;
+       DB_Num   : INT;
+       Address  : DWORD;
+    END_STRUCT
+END_TYPE

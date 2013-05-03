@@ -1,0 +1,99 @@
+N010 ;PROGRAMMA MAIN DI LAVORAZIONE 
+N020 ; --------Seleziona Ricetta richiesta da PLC---------
+N030 ;
+N040 LAB1="AUTO"
+N050 G90 G641
+N060 ADIS=1
+N070 ADISPOS=1
+N080 ;************** INIZIALIZZAZIONE VARIABILI ***********
+N090 Vite_Nozzle=0 SVITA_NOZZLE=FALSE
+N100 Vite_Chra=0 SVITA_CHRA=FALSE 
+N110 F_Veloce=25000 ;25000;2000
+N120 F_Lenta=2000   ;2000;500
+N125 VELOLIM[C]=100
+N130 ;*****************************************************
+N140 G1 F=F_Veloce
+N150 G4 F.1
+N160 Stopre
+N161 ProtezioneAssi
+N170 ;*****************************************************
+N180 ;**************** CICLO RIPOSO ***********************
+N190 ;*****************************************************
+N200 If ($A_DBW[0] B_AND 1) == 1 
+N210 	Origine
+N220 	GotoF Finito
+N230 Endif
+
+N250  Stopre
+N300 	; Verifica capability nozzle
+N310 	if (($A_DBW[0] B_AND 2048) == 2048)
+N513      Check_BLM_Nozzle ;
+	    Origine 	
+N514 	endif
+
+N250  Stopre
+N300 	; Verifica capability chra
+N310 	if (($A_DBW[0] B_AND 4096) == 4096)
+N320 	    Check_BLM_Chra ;
+          Origine
+N514 	endif
+
+N270 ;**************** CICLO CHRA *************************
+N290 If  (($A_DBW[0] B_AND 4) == 4)
+N233 ;*************CICLO CAPABILITY CHRA ******************
+N340 
+N350 	Avvita_Chra
+N360 	
+N370 	; Il ciclo dimamometro modifica il valore della funzione di uscita (R1553=5) 
+N380 	; solo quando il ciclo è scarto altrimenti lascia invariato il valore
+N390  ; di uscita della funzione precedente.
+N400 	Stopre
+N410 	If (R1206==1) AND (Svita_Chra==false) ;Verifica se dinamometro abilitato
+N420 	 Dinamometro
+N430 	Endif
+N440 	
+N450 	Origine
+N460 	GotoF Finito
+N470 endif
+N480 
+N490 ;*****************************************************
+N500 ;*************** CICLO NOZZLE ************************
+N510 ;*****************************************************
+N520 If  (($A_DBW[0] B_AND 2) == 2)
+N530 	Stopre
+N540 	; Seleziona tipo di viti
+N550 	If (R1201==3) ; Verifica se step2 o step3
+N560  		Nr_Messaggio=1
+N570  		Messaggio
+N580  		M47 ; Seleziona Viti 1
+N581 	 		M33 ;Ruota su Lato avvitature
+N590 	Else
+N600  		Nr_Messaggio=2
+N610  		Messaggio
+N620  		M46 ; Seleziona Viti 2
+N630 	Endif
+N640 	
+N690 	
+N730  Avvita_Nozzle
+N731  ;AAA:
+N732  ;M22
+N734  ;M48
+N735  ;M19
+N736  ;G4 F1
+N737  ;GotoB AAA
+N740 	Origine 
+N750 	GotoF FINITO
+N760 endif
+N770 ;
+N780 
+N790 Nr_Messaggio = 56 ; Errore chiamata funzione
+N800 Messaggio
+N810 Finito:
+N811 nr_messaggio=58
+N812 messaggio
+N813 M61 ; Verifica stato Buffer pezzi
+N814 Stopre
+N815 nr_messaggio=59
+N816 messaggio
+N820 M62 ; Salvataggio dati a supervisore
+N830 M30

@@ -1,0 +1,48 @@
+; ********** Check_BLM_CHRA ******************
+
+;R1208 = Altezza Lubbering
+;R1209 = Lunghezza Lubbering
+                         
+Nr_Messaggio=32
+Messaggio; Approccio al punto Check BLM CHRA in corso...
+N070 R1553=4 ; Imposta scarto avvitatura
+F=F_Veloce
+G1 Z0
+Stopre
+IF R1212==0				 ;Chiave dritta
+	G1 X=R1306 Y=R1307 
+	G1 C=R1309
+	F=F_Lenta
+	G1 Z=R1308
+else
+	G1 X=R1331 Y=R1332 	;Chiave Lubberring
+	G1 C=R1334
+	F=F_Lenta
+	G1 Z=R1333
+endif
+
+IF LAB1<>"AUTO" GotoF Fine
+
+ Ripeti:
+ Nr_Messaggio=33
+ Messaggio ; Ciclo capability chra in corso...
+ ;Questa funzione si resetta sull'esito di OK o KO da PLC
+ M71 ; Avvia ciclo capability chra
+ ;
+ If (($A_DBW[0] B_AND 1024) <> 1024) ; Verifica esito ciclo capability nozzle
+    Nr_Messaggio=34
+    Messaggio ; Ciclo capability chra fallito
+    Ripeti_Annulla
+    Stopre
+    If Return==2 GotoB Ripeti
+    Nr_Messaggio=35
+    Messaggio ; Ciclo abortito per errore check capability nozzle
+    Origine 
+    M30
+endif
+Stopre
+G1 Z0 F=F_Veloce
+Origine
+Fine:
+RET 
+

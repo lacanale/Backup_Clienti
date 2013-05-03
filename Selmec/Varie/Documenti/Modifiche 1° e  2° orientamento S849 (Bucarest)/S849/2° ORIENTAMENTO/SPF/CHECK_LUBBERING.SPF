@@ -1,0 +1,9 @@
+N10 G1 F=F_Veloce           ;Solleva Z 
+N20 C-180
+N30 X-4.5 Y35 Z2.5
+Stopre
+N40 G1 C-90
+N45 ; Funzione di chek lubbering
+Stopre
+N50 R1552 = 3 ; Conferma esecuzione funzione
+N50 Ret

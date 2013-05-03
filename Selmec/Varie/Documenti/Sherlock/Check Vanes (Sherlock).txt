@@ -1,0 +1,2 @@
+Rotazione oraria encoder positivo e controllo tangenziale
+Rotazione antioraria encoder negativo e controllo radiale

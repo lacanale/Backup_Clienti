@@ -1,0 +1,45 @@
+; ********** Svitatura_Chra ******************
+
+DEF Int Offset_R,ID_Vite
+
+Continua:
+ID_Vite=R[(Vite_Chra * 5) + 1] ; Leggo ID della vite R1 - R6 - R11... 
+Offset_R=301 + ((ID_Vite-1)* 52) ; R301 - R353 - R405 ...
+$A_DBW[2]=Vite_Chra + 1 ; Comunica al PLC la vite attualmente in elaborazione
+
+Nr_Messaggio=53 ;Ciclo di svitatura in corso…
+Messaggio
+
+G1 F=F_Veloce
+G1 Z0
+Begin_Pos_IN:
+STOPRE
+X=R[Offset_R] Y=R[Offset_R+1] Z=R[Offset_R+2] C=R[Offset_R+3]
+Offset_R=Offset_R+5
+End_Pos_IN:
+REPEAT Begin_Pos_IN End_Pos_IN P=8
+
+F=F_Lenta
+
+;Ingresso
+;R346 - R398 - R450 ...
+X=R[Offset_R] Y=R[Offset_R+1] Z=R[Offset_R+2] C=R[Offset_R+3]
+
+M99 ; Svita
+
+Esci_Punto:
+;Uscita
+F=F_Veloce
+
+Begin_Pos_OUT:
+Stopre
+X=R[Offset_R] Y=R[Offset_R+1] Z=R[Offset_R+2] C=R[Offset_R+3]
+Offset_R=Offset_R-5
+End_Pos_OUT:
+Repeat Begin_Pos_OUT End_Pos_OUT P=9
+
+Z0
+
+Vite_Chra=Vite_Chra-1
+If Vite_Chra >= 0 GotoB Continua
+Ret

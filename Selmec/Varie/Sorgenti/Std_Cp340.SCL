@@ -1,0 +1,181 @@
+
+FUNCTION_BLOCK Std_Cp340
+
+TITLE = 'Gestione CP340'
+//
+// La funzione gestisce la ricezione di una stringa da CP340 con
+// il filtraggio dei caratteri iniziali nel caso si usi lo scanner SICK.
+// Filtra anche i caratteri CR LF
+VERSION : '0.9'
+AUTHOR  : Filip1
+NAME    : StdCP340
+FAMILY  : CP340
+
+// Parametri del blocco
+VAR_INPUT
+    Cmd_Receive : BOOL;
+    Cmd_Send    : BOOL;
+    Address     : INT;
+    Mode        : INT := 0; //0: nessun filtro; 1; Filtro CR LF; 2: Filtro SICK
+END_VAR
+
+VAR_IN_OUT
+   RxString  : STRING;
+   AtRxString AT RxString : UDT_STRING;
+   TxString  : STRING;
+   AtTxString AT RxString : UDT_STRING; 
+END_VAR
+
+VAR_OUTPUT
+    St_Receive  : BOOL;
+    St_Send     : BOOL;
+    All_RxErr   : BOOL; // Errore in Trasmissione
+    All_TxErr   : BOOL; // Errore in Ricezione
+    AllRxCode   : WORD; //  Codice Errore in Ricezione
+    AllTxCode   : WORD; //  Codice Errore in Trasmissione 
+END_VAR
+
+VAR_TEMP
+    Rx_Reset     : BOOL; 
+    Tx_Reset     : BOOL;
+    NumDB        : INT;
+    OffDB        : INT;
+    I            : INT;
+    AnyBuffer    : ANY;
+    PuntAnyData AT AnyBuffer : UDT_ANY_Pointer;
+END_VAR
+VAR
+    RCV      : P_RCV;
+    SEND     : P_SEND; 
+    RxBuffer : ARRAY[0..255] OF CHAR;
+    TxBuffer : ARRAY[0..255] OF CHAR;
+    R_LEN    : INT;
+    T_LEN    : INT;
+    FN_Cmd_Receive: BOOL;
+    FN_Cmd_Send   : BOOL;
+    FP_St_Read  : BOOL;
+    Mem_St_Read : BOOL;
+END_VAR
+
+
+CONST
+    ModeNormal := 0; //Gestione ricezione seriale modo Normale
+    ModeCrLf   := 1; //Filtra i caratteri finali CR LF
+    ModeSick   := 2; //Gestione ricezione da scanner SICK
+    STX        := 2;  //Carattere STX
+    CR         := 13; //Carattere CR
+    LF         := 10; //Carattere LF
+END_CONST
+
+    Rx_Reset := NOT Cmd_Receive AND FN_Cmd_Receive;  
+    FN_Cmd_Receive := Cmd_Receive;  
+     
+    //Estrazione del puntatore DB + Offset del buffer di ricezione
+    AnyBuffer := RxBuffer;
+    NumDB := PuntAnyData.DB_Num;
+    OffDB := DWORD_TO_INT(SHR(IN := PuntAnyData.Address, N := 3));
+     
+    //Richiamo della funzione di ricezione della CP340 
+    RCV(EN_R   := Cmd_Receive AND NOT Rx_Reset,
+        //R      := Rx_Reset,
+        LADDR  := Address,
+        DB_NO  := NumDB,
+        DBB_NO := OffDB); 
+        
+    R_LEN := RCV.LEN;
+        
+    //Se è attivo il comando di rezione da CP    
+    IF Cmd_Receive THEN    
+        IF RCV.ERROR AND NOT All_RxErr THEN 
+            All_RxErr := TRUE;
+            AllRxCode := RCV.STATUS;
+        END_IF;
+           
+        IF RCV.NDR AND NOT St_Receive THEN
+            St_Receive := TRUE;
+        END_IF;
+    ELSE
+        All_RxErr := FALSE;
+        St_Receive := FALSE;
+    END_IF;
+    
+    
+                
+    FP_St_Read := St_Receive AND NOT Mem_St_Read;
+    Mem_St_Read := St_Receive;
+    
+    IF FP_St_Read THEN
+        
+        //In base al Modo tolgo i caratteri in testa alla stringa
+        CASE Mode OF
+            ModeSick : IF RxBuffer[0] = BYTE_TO_CHAR(STX) AND R_LEN >= 3 THEN 
+                            R_LEN := R_LEN - 3;
+                            FOR I := 0 TO R_LEN - 1 DO
+                                RxBuffer[I] := RxBuffer[I + 3];
+                            END_FOR;                         
+                       END_IF;     
+        ELSE: ;
+        END_CASE;
+      
+        IF Mode = ModeCrLf OR Mode = ModeSick THEN
+            //Verifica presenza in coda dei caratteri <CR> <LF>
+            IF RxBuffer[R_LEN - 2] = BYTE_TO_CHAR(CR) OR RxBuffer[R_LEN - 2] = BYTE_TO_CHAR(LF) THEN
+                R_LEN := R_LEN - 2;
+            ELSIF RxBuffer[R_LEN - 1] = BYTE_TO_CHAR(CR) OR RxBuffer[R_LEN - 1] = BYTE_TO_CHAR(LF) THEN
+                R_LEN := R_LEN - 1;   
+            END_IF;    
+        END_IF;
+        
+        IF R_LEN >= BYTE_TO_INT(AtRxString.DefLen) THEN
+            R_LEN := BYTE_TO_INT(AtRxString.DefLen);
+        END_IF;    
+        AtRxString.StrLen := INT_TO_BYTE(R_LEN);
+        
+        FOR I := 1 TO R_LEN DO
+            AtRxString.Str[I] := RxBuffer[I - 1];
+        END_FOR;    
+    END_IF;
+    
+    
+    //************* SEND ******************
+    
+    
+
+    Tx_Reset := NOT Cmd_Send AND FN_Cmd_Send;  
+    FN_Cmd_Send := Cmd_Send;  
+    
+    IF Cmd_Send THEN
+        T_LEN := BYTE_TO_INT(AtTxString.StrLen); 
+                  
+        FOR I := 1 TO T_LEN DO
+            TxBuffer[I - 1] := AtTxString.Str[I];
+        END_FOR;
+    END_IF;    
+            
+    //Estrazione del puntatore DB + Offset del buffer di trasmissione
+    AnyBuffer := TxBuffer;
+    NumDB := PuntAnyData.DB_Num;
+    OffDB := DWORD_TO_INT(SHR(IN := PuntAnyData.Address, N := 3));
+                      
+    SEND(REQ    := Cmd_Send,
+         R      := FN_Cmd_Send,
+         LADDR  := Address,
+         DB_NO  := NumDB,
+         DBB_NO := OffDB,
+         LEN    := T_LEN);
+    
+    IF Cmd_Send THEN
+        IF SEND.ERROR AND NOT All_TxErr THEN
+            All_TxErr := TRUE;
+            AllTxCode := SEND.Status;
+        END_IF;
+        
+        IF SEND.DONE AND NOT St_Send THEN     
+            St_Send := TRUE;
+        END_IF;
+    ELSE
+        St_Send := FALSE;
+        All_TxErr := FALSE;
+    END_IF;
+    
+END_FUNCTION_BLOCK

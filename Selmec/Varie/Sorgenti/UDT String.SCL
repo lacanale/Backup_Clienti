@@ -1,0 +1,25 @@
+TYPE "UDT_STRING"
+  //UDT che definisce una stringa di 254 caratteri
+  STRUCT
+    DefLen : BYTE;                 //Lunghezza stringa dichiarata  
+    StrLen : BYTE;                 //Lunghezza stringa effettiva 
+    Str : ARRAY[1..254] OF CHAR;   //Caratteri stringa
+  END_STRUCT
+END_TYPE
+
+TYPE "UDT_STRING50"
+  //UDT che definisce una stringa di 254 caratteri
+  STRUCT
+    DefLen : BYTE;                 //Lunghezza stringa dichiarata  
+    StrLen : BYTE;                 //Lunghezza stringa effettiva 
+    Str : ARRAY[1..50] OF CHAR;   //Caratteri stringa
+  END_STRUCT
+END_TYPE
+
+TYPE "UDT_STRING6"
+  STRUCT
+    DefLen : BYTE;                 //Lunghezza stringa dichiarata  
+    StrLen : BYTE;                 //Lunghezza stringa effettiva 
+    Str : ARRAY[1..6] OF CHAR;     //Caratteri stringa
+  END_STRUCT
+END_TYPE

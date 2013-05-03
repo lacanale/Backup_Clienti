@@ -1,0 +1,2 @@
+Se non arriva nessun segnale analogico verificare che lo 0V sia collegato sul morsetto 1
+e il segnale sul morsetto 2.

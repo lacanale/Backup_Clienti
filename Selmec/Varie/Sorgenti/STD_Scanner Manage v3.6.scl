@@ -1,0 +1,235 @@
+FUNCTION_BLOCK "Std_ScannerManagement"
+
+TITLE = 'Function for Scanner management'
+//
+// ATTENZIONE: La funzione usa FB31 (Std_CP340), FC10 (EQ_STRNG), FC198(Check_Cmd) 
+//             UDT160 (Sv.DataFunctions_Chra, FB2 (P_RCV), FB3 (P_SEND).
+//
+// DESCRIZIONE: La funzione provvede a ricevere dalla CP340 una stringa 
+//              di MAX 40 caratteri ed in base ai comandi ricevuti effettua
+//              le seguenti operazioni:
+//   Cmd_Read_SN: Legge una stringa dallo scanner e lo scrive dentro
+//                la stringa StrLabel della struttuta Data_Record di tipo 
+//                Sv.DataFunctions_Chra passata come parametro. Viene messo a 1
+//                St_Read_SN appena viene ricevuta la stringa.
+//   St_Read_CHRA: Legge una stringa dallo scanner e lo scrive dentro
+//                la stringa Chra_or_SN_Lost della struttuta Data_Record di tipo 
+//                Sv.DataFunctions_Chra passata come parametro. Viene messo a 1
+//                St_Read_CHRA appena viene ricevuta la stringa.
+//   Cmd_CheckLabel: Confronta la stringa ricevuta dallo scanner con 
+//                la stringa contenuta in StrLabel della struttuta Data_Record di tipo 
+//                Sv.DataFunctions_Chra passata come parametro. Viene messo a 1
+//                St_CheckLabelOK appena viene ricevuta la stringa ed il confronto a esito
+//                positivo altrimenti viene posto a 1 St_CheckLabelKO.
+//  25/02/2010  Versione 3.6
+//              Gestito l'autoreset delle stringhe e degli esiti su fronte positivo del CMD_ON
+//  02/09/2009: Versione 3.5
+//              Aggiunto comando read custom 2
+//  11/02/2009: Versione 3.5
+//              Aggiunto il richiamo al FC198 Check_Cmd per avere la discriminazione di un solo comando attivo 
+//              
+//  11/02/2009: Versione 3.4
+//              Aggiunto comando esterno per pulire il buffer della seriale.
+//              Aggiunta abilitazione per la pulizia dei buffer della seriale automatica e
+//              comando per la pulizia manuale.
+//
+//  11/02/2009: Replicato in uscita il valore relativo alla label
+//  MDQ         per evitare di dover leggere nella db di istanza 
+//              aggiunto il reset dei risultati a richiesta
+//              aggiunta l'abilitazione per l'autoreset dei risultati
+//              aggiunto comando empty buffer per evitare che la CP340 bufferizzi più codici
+
+//  31/01/2009: Aggiunto parametro Mode:
+//                  Mode = 0  :  Nessun filtro sulla stringa letta da scanner
+//                  Mode = 1  :  Elimina CR, CRLF dalla fine della stringa letta da scanner
+//                  Mode = 2  :  Elinina le stringhe e i caratteri di controllo inseriti
+//                               dai scanner SICK
+//
+//  15/03/2008: Inserito comando per leggere una stringa generica dallo scanner la cui 
+//              lunghezza massima può essere 254 caratteri.
+//              Cmd_ReadStr: Legge una tringa dallo scanner e la mette in Out_ReadStr.
+//              Dopo l'acquisizione della stringa in Out_ReadStr viene posto a 1
+//              il bit di stato St_ReadStr.
+//
+
+VERSION : '3.6'
+AUTHOR  : Filip1
+NAME    : ScanMng
+FAMILY  : Scanner
+
+// Parametro del blocco
+VAR_INPUT
+  Cmd_Empty_Buffer  : BOOL; //Command: Empty buffer Needed to avoid wrong code
+  Cmd_Read_SN       : BOOL; //Command: Read Serial Number in Label String
+  Cmd_Read_CHRA     : BOOL; //Command: Read CHRA
+  Cmd_CheckLabel    : BOOL; //Command: Read from scanner and compare with Label
+  Cmd_ReadStr       : BOOL; //Command: Read a generic string in Out_ReadStr
+  Cmd_Read_Custom   : BOOL; //Command: Read Serial Number in Label String
+  Cmd_Read_Custom2  : BOOL; //Command: Read Serial Number in Label String2
+  Cmd_ResetResult   : BOOL; //Command: Reset result of read
+  Enb_AutoReset     : BOOL; //Command: Enable auto reset of data when command go off
+  Address           : INT;  //CP340 base address
+  Mode              : INT := 1; //0: nessun filtro; 1; Filtro CRLF; 2: Filtro Scanner SICK
+END_VAR
+
+VAR_IN_OUT
+  Data_Record   : "Sv.DataFunctions_Chra";
+  Out_ReadStr   : STRING;
+END_VAR
+
+VAR_OUTPUT
+  // Parametro di uscita
+  St_Read_SN     : BOOL; //State: Serial Number readed
+  St_Read_CHRA   : BOOL; //State: CHRA readed
+  St_CheckLabelOK: BOOL; //State: String readed and compared with Label and result OK
+  St_CheckLabelKO: BOOL; //State: String readed and compared with Label and result KO 
+  St_ReadStr     : BOOL;  //State: String readed and placed in Out_ReadStr
+  St_Read_Custom : BOOL;  //State: String readed and placed in Out_ReadCustom
+  St_Read_Custom2: BOOL;  //State: String readed and placed in Out_ReadCustom2
+  All_CmdError   : BOOL;  //Errore: Non è possibile dare più di un comando per volata 
+  All_RxError    : BOOL;  //CP340 in error
+  All_Code       : WORD;  //CP340 error code
+  Label_string   : STRING[254]; //Label_String
+END_VAR
+
+
+VAR_TEMP
+  // Variabili temporanee
+  CompareStr : BOOL;
+  AuxBit     : BOOL;
+  CMD_ON     : BOOL;
+END_VAR
+VAR
+  CP340: "Std_CP340";
+  Scanner_String: STRING[254];
+  StrLabelAux   : STRING[40];
+  CP340_Buffer  : ARRAY[0..255] OF CHAR;
+  STA_CMD_ON    : BOOL;
+END_VAR
+
+
+    //Non è permesso dare più di un comando per volta
+    CMD_ON := (Cmd_Read_SN OR Cmd_Read_CHRA OR Cmd_CheckLabel OR Cmd_ReadStr OR Cmd_Read_custom OR Cmd_Read_custom2);
+
+    All_CmdError:=     Check_Cmd(bit0:=Cmd_Read_SN,
+                                 bit1:=Cmd_Read_CHRA,
+                                 bit2:=Cmd_CheckLabel,
+                                 bit3:=Cmd_ReadStr,       
+                                 bit4:=Cmd_Read_custom,
+                                 bit5:=Cmd_Read_custom2, 
+                                 bit6:=false,
+                                 bit7:=false,
+                                 bit8:=false,
+                                 bit9:=false,
+                                 bit10:=false,
+                                 bit11:=false,
+                                 bit12:=false,
+                                 bit13:=false,
+                                 bit14:=false,
+                                 bit15:=false);
+                                     
+    CP340.Cmd_Reset := Cmd_Empty_Buffer;  
+    CP340.Cmd_Receive := (CMD_ON AND NOT All_CmdError AND NOT Cmd_Empty_Buffer AND NOT CP340.St_Reset); 
+    CP340.Mode := Mode;
+    CP340(Address    := Address,
+          RxString   := Scanner_String);
+  
+    All_RxError := CP340.All_RxERR;
+    All_Code    := CP340.AllRxCode;
+                    
+ //Se la lettura è corretta
+    IF Enb_AutoReset THEN
+        IF CMD_ON AND NOT STA_CMD_ON THEN
+            St_Read_SN := FALSE;
+                                   //1234567890123456789012345678901234567890  
+            Data_Record.StrLabel := 'no Serial Number!';                  
+        
+            St_Read_CHRA := FALSE;
+                                          //12345678901234567890
+            Data_Record.Chra_or_SN_Lost := 'no CHRA!            ';
+            St_CheckLabelOK := FALSE;
+            St_CheckLabelKO := FALSE;
+            St_ReadStr := FALSE;
+            St_Read_Custom     := FALSE;
+            Data_Record.Custom := 'no custom!   ';   
+            St_Read_Custom2     := FALSE;
+            Data_Record.Generic := 'no custom!   ';   
+        END_IF;
+    END_IF; 
+STA_CMD_ON:=CMD_ON;
+
+
+    IF CP340.St_Receive AND CMD_ON THEN
+        //Salva il serial number letto dallo scanner in StrLabel
+        IF Cmd_Read_SN AND NOT St_Read_SN THEN
+            St_Read_SN      := TRUE;
+            Data_Record.StrLabel := Scanner_String;    
+        END_IF;
+        
+        IF Cmd_Read_CHRA AND NOT St_Read_CHRA THEN
+            St_Read_CHRA      := TRUE;
+            Data_Record.Chra_or_SN_Lost := Scanner_String;    
+        END_IF;
+
+        IF Cmd_CheckLabel AND NOT (St_CheckLabelOK OR St_CheckLabelKO) THEN
+            StrLabelAux := Data_Record.StrLabel;
+            St_CheckLabelOK := StrLabelAux = Scanner_String; 
+            St_CheckLabelKO := NOT St_CheckLabelOK;  
+            Label_string  :=Scanner_String;
+        END_IF;
+        
+        IF Cmd_ReadStr AND NOT St_ReadStr THEN
+            Out_ReadStr := Scanner_String;
+            St_ReadStr := TRUE;
+        END_IF;    
+        
+        IF Cmd_Read_Custom AND NOT St_Read_Custom THEN
+            St_Read_Custom     := TRUE;
+            Data_Record.Custom := Scanner_String;    
+        END_IF;
+        
+        IF Cmd_Read_Custom2 AND NOT St_Read_Custom2 THEN
+            St_Read_Custom2     := TRUE;
+            Data_Record.generic := Scanner_String;    
+        END_IF;
+
+
+    END_IF;
+ //AZZERO I RISULTATI SE NON HO PIU' IL COMANDO  
+    IF NOT Cmd_Read_SN AND St_Read_SN THEN
+        St_Read_SN := FALSE;                     
+    END_IF;
+
+    IF NOT Cmd_Read_CHRA AND St_Read_CHRA  THEN
+        St_Read_CHRA := FALSE;  
+    END_IF;
+    
+     IF NOT Cmd_CheckLabel AND(St_CheckLabelOK OR St_CheckLabelKO) THEN
+        St_CheckLabelOK := FALSE;
+        St_CheckLabelKO := FALSE;
+    END_IF;
+    
+    IF NOT Cmd_ReadStr AND St_ReadStr THEN
+       St_ReadStr := FALSE;
+    END_IF;
+
+    IF NOT Cmd_Read_Custom AND St_Read_Custom THEN
+        St_Read_Custom     := FALSE; 
+    END_IF;
+    IF NOT Cmd_Read_Custom2 AND St_Read_Custom2 THEN
+        St_Read_Custom2     := FALSE;
+    END_IF;
+
+    IF Cmd_ResetResult THEN
+        St_Read_SN := FALSE;
+                               //1234567890123456789012345678901234567890  
+        Data_Record.StrLabel := 'no Serial Number!                       ';
+        St_Read_CHRA := FALSE;
+                                      //12345678901234567890
+        Data_Record.Chra_or_SN_Lost := 'no CHRA!            ';        
+        St_CheckLabelOK := FALSE;
+        St_CheckLabelKO := FALSE;
+        St_ReadStr := FALSE; 
+    END_IF;
+   
+END_FUNCTION_BLOCK

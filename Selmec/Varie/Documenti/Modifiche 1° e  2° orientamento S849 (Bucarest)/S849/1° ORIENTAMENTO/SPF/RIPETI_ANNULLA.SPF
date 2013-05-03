@@ -1,0 +1,22 @@
+; ********** RipetiAnnulla ******************
+
+;Return=1 Annulla
+;Return=2 Ripeti
+Return=0
+Ripeti:
+M55	;Visualizza tasto annulla a pannellino
+Stopre
+if ($A_DBW[0] B_AND 16384) == 16384
+  Return=1
+  GotoF Esci
+endif
+Stopre
+if ($A_DBW[0] B_AND 32768) == 32768
+  Return=2
+  GotoF Esci
+endif
+
+GOTOB Ripeti
+Esci:
+Stopre
+RET

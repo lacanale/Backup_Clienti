@@ -1,0 +1,32 @@
+DEF INT TEMP
+;Se tutti i parametri sono a 0 il controllo della zona
+;di sicurezza viene annullato
+IF (R1214==0) AND (R1215==0) AND (R1216==0) AND (R1217==0)
+	NPROT(1,0,0,0,0)
+	X_Disingombro=490
+	Y_Disingombro=0
+	GOTO FINE
+ENDIF
+G17
+STOPRE
+NPROTDEF(1,false,3,300,-1)
+G01 X=R1214 Y=R1215
+X=R1216
+Y=R1217
+X=R1214
+Y=R1215
+EXECUTE(TEMP)
+NPROT(1,2,0,0,0)
+
+; Disingombro
+If ($A_DBW[0] B_AND 8192) == 8192 
+	; PER TURBO T5
+	X_Disingombro=190
+	Y_Disingombro=0
+else
+; PER TURBO GTD
+	X_Disingombro=490
+	Y_Disingombro=230
+endif
+FINE:
+ret

@@ -1,0 +1,198 @@
+FUNCTION_BLOCK MIS_Panto
+//TITLE = 'Messa in servizio di pantografi'
+//
+// 
+//
+VERSION : '1.2'
+AUTHOR  : MDQ
+NAME    : Mis_Pan
+FAMILY  : Panto
+KNOW_HOW_PROTECT
+// ver 1.1 - aggiunto: Tavola e Polso
+// ver 1.2 - reso fisso 150.0 all'offset dell'altezza - aggiunto errore per il calcolo al polso
+// Parametri del blocco
+VAR_INPUT
+    // Parametri d'ingresso
+    IN_Enable   :   BOOL;
+    IN_Est_F1   :   BOOL;
+    IN_Pol_F2   :   BOOL;
+    IN_Alt_F3   :   BOOL;
+    IN_Tav_F4   :   BOOL;
+    IN_Alt_F5   :   BOOL;
+    IN_Ang_F7   :   BOOL;
+    IN_Pew_Est  :   WORD;
+    IN_Pew_Pol  :   WORD;
+    IN_Pew_Alt  :   WORD;
+    IN_Pew_Tav  :   WORD;
+    IN_Pew_Alt2 :   WORD;   
+    IN_Pew_Ang  :   WORD;
+END_VAR
+
+VAR_IN_OUT
+    // Parametri di transito
+    IO_Start    :   BOOL;
+    IO_Acq      :   BOOL;
+    IO_Memorizza:   BOOL;
+    IO_ParamDB  :   "UDT_Mis_panto";
+    IO_Spost    :   REAL;
+    IO_Offset   :   REAL;
+    IO_Lunghezza:   REAL;
+
+END_VAR
+
+VAR_OUTPUT
+    // Parametri di uscita
+    OUT_Busy    :   BOOL;
+    OUT_Msg     :   INT;
+END_VAR
+
+VAR_TEMP
+    // Variabili temporanee
+    TMP_msg     :   INT;
+    TMP_Calc    :   REAL;
+    TMP_Start   :   REAL;
+END_VAR
+VAR
+    // Variabili statiche
+    STA_PEW_app :   INT;
+    STA_PEW1    :   INT;
+    STA_PEW2    :   INT;
+    Msg         :   INT;
+    Tasto       :   INT;
+    Tasto_Old   :   INT;
+    STEP        :   INT;
+END_VAR
+        TMP_msg:=0;
+        TMP_Calc:=0;
+    IF NOT IN_Enable THEN
+        OUT_Busy    :=False;
+        STA_PEW_app :=0;
+        STA_PEW1    :=0;
+        STA_PEW2    :=0;
+        Msg         :=0;
+        Tasto       :=0;
+        Tasto_Old   :=0;
+        Step        :=0;
+        IO_Start    :=false;
+        IO_Acq      :=false;
+        IO_Spost    :=0.0; 
+        IO_Offset   :=0.0; 
+        IO_Lunghezza:=0.0;
+        IO_ParamDB.Test.guadagno:=0.0;
+        IO_ParamDB.Test.Offset  :=0.0;                
+    ELSE
+        IF IN_Est_F1 THEN
+            Tasto:=1;
+            STA_PEW_app:=WORD_TO_INT(IN_Pew_Est);
+        ELSIF IN_Pol_F2 THEN
+            Tasto:=2;   
+            STA_PEW_app:=WORD_TO_INT(IN_Pew_Pol); 
+        ELSIF IN_Alt_F3 THEN
+            Tasto:=3;   
+            STA_PEW_app:=WORD_TO_INT(IN_Pew_Alt); 
+        ELSIF IN_tav_F4 THEN
+            Tasto:=4;   
+            STA_PEW_app:=WORD_TO_INT(IN_Pew_Alt);  
+        ELSIF IN_Alt_F5 THEN
+            Tasto:=5;
+            STA_PEW_app:=WORD_TO_INT(IN_Pew_Alt2); 
+        ELSIF IN_Ang_F7 THEN
+            Tasto:=7;
+            STA_PEW_app:=WORD_TO_INT(IN_Pew_Ang); 
+        ELSE 
+            Tasto:=0;
+            MSG:=1; 
+        END_IF;
+        TMP_msg:=tasto*10;
+        IF Tasto<>0 AND Tasto_old=0 THEN
+            Tasto_old:=Tasto;
+        ELSIF Tasto <> Tasto_Old THEN
+            STA_PEW_app :=0;
+            STA_PEW1    :=0;
+            STA_PEW2    :=0;
+            Msg         :=0;
+            STEP        :=0;
+            Tasto_old:=Tasto;
+            IO_Spost    :=0.0; 
+            IO_Offset   :=0.0;
+            IO_Lunghezza:=0.0;
+            IO_ParamDB.Test.guadagno:=0.0;
+            IO_ParamDB.Test.Offset  :=0.0;  
+        END_IF;
+        OUT_Busy :=step>0;
+        IF Out_Busy AND IO_Start THEN            
+            Step:=1;
+            STA_PEW_app :=0;
+            STA_PEW1    :=0;
+            STA_PEW2    :=0;
+            IO_Start    :=False;
+            IO_Spost    :=0.0; 
+            IO_Offset   :=0.0; 
+            IO_Lunghezza:=0.0;
+            IO_ParamDB.Test.guadagno:=0.0;
+            IO_ParamDB.Test.Offset  :=0.0;  
+        END_IF;
+        IF tasto>0 THEN 
+        CASE Step OF
+            0 : Msg:=0;
+                IF IO_Start THEN
+                    Step:=1;
+                   IO_Start:=false;
+                END_IF;
+            1 : Msg:=TMP_msg+1;
+                IF IO_Acq THEN
+                   STA_PEW1:=STA_PEW_app;
+                   Step:=2;
+                   IO_Acq:=false;
+                END_IF; 
+            2 : Msg:=TMP_msg+2;
+                IF IO_Acq THEN
+                   STA_PEW2:=STA_PEW_app;
+                   Step:=3;
+                   IO_Acq:=false;
+                END_IF; 
+            3 : Msg:=TMP_msg+3;
+                IF IO_Spost>0.0 THEN
+                   Step:=4; 
+                END_IF;
+            4 : Msg:=TMP_msg+4;
+                TMP_calc:=IO_Spost/INT_TO_REAL((STA_PEW2-STA_PEW1));
+                IO_ParamDB.Test.guadagno:=TMP_calc;                
+                IF tasto=2 THEN     
+                    TMP_Start:=TMP_calc*INT_TO_REAL(STA_PEW1)+IO_Offset;                              
+                    IO_ParamDB.Test.Offset:=-TMP_Start;  
+                ELSIF tasto=3 THEN
+                    TMP_Start:=TMP_calc*INT_TO_REAL(STA_PEW1); 
+                    IO_ParamDB.Test.Offset:=150.0-TMP_Start;  
+                ELSE 
+                    TMP_Start:=TMP_calc*INT_TO_REAL(STA_PEW1); 
+                    IO_ParamDB.Test.Offset:=IO_Offset-TMP_Start;     
+                END_IF;    
+                IF IO_memorizza THEN
+                   IO_Memorizza:=false;
+                   Step:=0;
+                   CASE tasto OF
+                        1: IO_ParamDB.estensione.guadagno:= tmp_calc;
+                           IO_ParamDB.estensione.Offset:= IO_ParamDB.Test.Offset;
+                        2: IO_ParamDB.polso.guadagno:= tmp_calc;
+                           IO_ParamDB.Polso.Offset:= IO_ParamDB.Test.Offset;
+                           IO_ParamDB.Polso.Raggio:= IO_Lunghezza;
+                        3: IO_ParamDB.Altezza.guadagno:= tmp_calc;
+                           IO_ParamDB.Altezza.Offset:= IO_ParamDB.Test.Offset;
+                        4: IO_ParamDB.Tavola.guadagno:= tmp_calc;
+                           IO_ParamDB.Tavola.Offset:= IO_ParamDB.Test.Offset;   
+                        5: IO_ParamDB.AltezzaTastatore.guadagno:= tmp_calc;
+                           IO_ParamDB.AltezzaTastatore.Offset:= IO_ParamDB.Test.Offset;
+                        7: IO_ParamDB.Angolo.guadagno:= tmp_calc;
+                           IO_ParamDB.Angolo.Offset:= IO_ParamDB.Test.Offset;                           
+                   END_CASE;
+                END_IF;    
+        END_CASE;
+        END_IF;
+             
+    END_IF;   
+    OUT_Msg:=Msg;
+        
+    // Parte istruzioni
+    ;
+END_FUNCTION_BLOCK

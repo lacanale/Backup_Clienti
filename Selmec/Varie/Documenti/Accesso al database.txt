@@ -1,0 +1,3 @@
+host=indirizzo IP server
+user=service
+password=sylvain

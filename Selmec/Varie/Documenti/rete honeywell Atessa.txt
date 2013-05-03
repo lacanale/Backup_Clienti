@@ -1,0 +1,11 @@
+[Rete]
+it25-ap
+48ed5a66b1
+
+[Server]
+server=\\it25W0001\Departments\Technology_Trace
+utente=global\e460165
+password=Atd050141 (progressivo)
+
+utente=global\e458929
+password=Atessa01

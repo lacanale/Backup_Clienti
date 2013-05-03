@@ -1,0 +1,31 @@
+; ********** CheckAvvitaturaNozzle ******************
+
+Ritenta:
+Nr_Messaggio=60
+Messaggio ; Start avvitatura nozzle
+M23		   ;Avvita Nozzle
+Stopre
+G4F.1
+;Verifica esito avvitatura
+Stopre
+IF (($A_DBW[0] B_AND 32) <> 32)				;CONTROLLO AVVITATURA
+ G4F.5
+ Nr_Messaggio=28
+ Messaggio ; Errore avvitatura nozzle da bosch
+ Ripeti_Annulla
+ Stopre
+ if Return==2 
+   Nr_Messaggio=29
+   Messaggio ; Svitatura in corso
+   M98 ; Svita
+   GotoB Ritenta
+ endif
+ if Return==1 
+ 	Nr_Messaggio=30
+ 	Messaggio ;Ciclo abrtito dopo errore avvitatura nozzle da bosch 
+ 	;M37  ; Scarto da avvitatura nozzle
+ 	Origine
+ 	M30
+ endif		 			           
+Endif
+RET

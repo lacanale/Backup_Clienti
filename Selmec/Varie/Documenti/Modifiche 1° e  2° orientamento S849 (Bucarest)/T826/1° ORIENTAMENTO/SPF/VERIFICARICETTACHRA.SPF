@@ -1,0 +1,37 @@
+; *********  VerificaRicettaChra ******************
+
+Stopre 
+If LAB1<>"AUTO" Gotof Manuale
+; ********************* Verifica ID > Max *******************************
+IF R[(Vite_Chra*5)+1]>R1204 ;(R1 - R6 - R11....)
+  Nr_Messaggio=42
+  Messaggio ; Errore impostazione ID da ricetta solo annulla
+  Ripeti_Annulla
+  Nr_Messaggio=9
+  Messaggio ; Ciclo abortito per errore impostazione numero vite da ricetta
+  Origine
+  M30
+Endif		
+RET
+
+Manuale:
+; ********************* Verifica ID = 0 *******************************
+IF R[(Vite_Chra*5)+1]==0 ;(R1 - R6 - R11....)
+   Nr_Messaggio=8
+   Messaggio ; Errore impostazione ID da ricetta 
+	 Ripeti_Annulla
+	 Nr_Messaggio=9
+	 Messaggio ; Ciclo abortito per errore impostazione numero vite da ricetta
+	 Origine
+	 M30
+Endif		
+
+; **************** Errore impostazione programma BOSCH ********************
+Stopre
+If (R[(Vite_Chra*5)+3]==0)
+	Nr_Messaggio=55
+	Messaggio
+	Origine
+	M30
+endif
+RET

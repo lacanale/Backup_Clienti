@@ -1,0 +1,13 @@
+TYPE "Sv.DataFunctions_Chra"
+VERSION : 0.1
+
+
+  STRUCT 	
+   StrLabel : STRING  [40 ];	
+   SerialNumber : STRING  [20 ];	
+   Chra_or_SN_Lost : STRING  [20 ];	
+   Password : STRING  [20 ];	
+   BarCodeActuator : STRING  [10 ];	
+  END_STRUCT ;	
+END_TYPE
+

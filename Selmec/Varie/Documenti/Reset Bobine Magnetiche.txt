@@ -1,0 +1,7 @@
+Dopo un forzamento il micro va in errore e lampeggiano in maniera alternata i due led rosso e arancione.
+
+Per resettare:
+Accostare il magnete alla bobina e comandare il bloccaggio (portare a +24V il filo 22006), si nota che i led lampeggiano ma simultaneamente.
+Dopo 10 min i led si spengono.
+Ripristinare il collegamento del filo 22006.
+Terminato.

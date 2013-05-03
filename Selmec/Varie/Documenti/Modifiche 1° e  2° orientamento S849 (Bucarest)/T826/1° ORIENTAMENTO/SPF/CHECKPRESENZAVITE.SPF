@@ -1,0 +1,71 @@
+; ********** CheckPresenzaVite ******************
+
+DEF INT Manca_Vite,Manca_Vite_Sparo
+Ritenta_Vite:
+Manca_Vite=0
+Manca_Vite_Sparo=0
+
+M19 ;Inserto Giu
+G4 F0.1
+;Verifica se manca la vite (micro=1 vite mancante)
+Stopre
+;Verifica se nuova vite o ripasso
+IF (($A_DBW[0] B_AND 16) == 16) AND ((Vite_Nozzle)<=R1202)
+ Nr_Messaggio=25
+ Messaggio ; Vite non rilevata dai sensori
+ Stopre
+ Manca_Vite=Manca_Vite+1
+ Nr_Messaggio=24
+ Messaggio ;Comando inserto su 
+ M22	;INSERTO SU
+ Rispara:
+ Nr_Messaggio=26
+ Messaggio ; Sparo vite in corso...
+ M48	;SPARO VITE
+ Stopre 
+ G4 F1
+ If (($A_DBW[0] B_AND 8) <> 8) ; Verifica vite caricata
+     Nr_Messaggio=27
+     Messaggio ; Vite non rilevata ripeto sparo vite
+     Stopre
+     if Manca_Vite_Sparo > 2 GotoF Ann_Rip
+     Manca_Vite_Sparo=Manca_Vite_Sparo+1
+     GotoB Rispara
+ endif 
+ Nr_Messaggio=21
+ Messaggio; Comando Inserto Giu
+ Manca_Vite_Sparo=0
+ GotoB Ritenta_Vite
+Endif
+GotoF Fine
+
+Ann_Rip:
+; Verifica numero di ritenta
+Stopre
+IF (Manca_Vite>3) or (Manca_Vite_Sparo>2)
+   Nr_Messaggio=23
+   Messaggio ; Sono stati eseguiti 3 tentativi di sparo vite falliti
+   Ripeti_Annulla ; Attesa scelta operatore
+   Stopre
+   IF Return == 1 ;Annulla
+      Nr_Messaggio=24
+      Messaggio ; Comando inserto su 
+      Nr_Messaggio=20
+      Messaggio
+      Origine 
+      ; Da verificare ???????????????????????????????????????????
+      ;If (Vite_Nozzle+1)>R1202
+      ;    Vite_Nozzle=R1202-1
+      ;Endif
+      ; Da verificare ???????????????????????????????????????????
+      ;M37 ;ERRORE A PLC
+      M30
+   ENDIF
+   Stopre
+   IF Return == 2
+    GotoB Ritenta_Vite
+   endif
+   M30
+endif
+Fine:
+RET

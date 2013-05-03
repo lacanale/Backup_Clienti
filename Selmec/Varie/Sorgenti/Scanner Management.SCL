@@ -1,0 +1,122 @@
+
+
+
+FUNCTION_BLOCK "Std_ScannerManagement"
+
+TITLE = 'Function for Scanner management'
+//
+// ATTENZIONE: La fuonzione usa FB31 (Std_CP340), FC10 (EQ_STRNG), 
+//             UDT160 (Sv.DataFunctions_Chra, FB110 (P_RCV).
+//
+// DESCRIZIONE: La funzione provvede a ricevere dalla CP340 una stringa 
+//              di MAX 40 caratteri ed in base ai comandi ricevuti effettua
+//              le seguenti operazioni:
+//              Cmd_Read_SN: Legge una stringa dallo scanner e lo scrive dentro
+//              la stringa StrLabel della struttuta Data_Record di tipo 
+//              Sv.DataFunctions_Chra passata come parametro. Viene messo a 1
+//              St_Read_SN appena viene ricevuta la stringa.
+//              St_Read_CHRA: Legge una stringa dallo scanner e lo scrive dentro
+//              la stringa Chra_or_SN_Lost della struttuta Data_Record di tipo 
+//              Sv.DataFunctions_Chra passata come parametro. Viene messo a 1
+//              St_Read_CHRA appena viene ricevuta la stringa.
+//              Cmd_CheckLabel: Confronta la stringa ricevuta dallo scanner con 
+//              la stringa contenuta in StrLabel della struttuta Data_Record di tipo 
+//              Sv.DataFunctions_Chra passata come parametro. Viene messo a 1
+//              St_CheckLabelOK appena viene ricevuta la stringa ed il confronto a esito
+//              positivo altrimenti viene posto a 1 St_CheckLabelKO.
+//
+VERSION : '1.0'
+AUTHOR  : Filip1
+NAME    : ScanMng
+FAMILY  : Scanner
+
+// Parametro del blocco
+VAR_INPUT
+  Cmd_Read_SN   : BOOL; //Command: Read Serial Number in Label String
+  Cmd_Read_CHRA : BOOL; //Command: Read CHRA
+  Cmd_CheckLabel: BOOL; //Command: Read from scanner and compare with Label
+  Address       : INT;  //CP340 base address
+END_VAR
+
+VAR_IN_OUT
+  Data_Record   : "Sv.DataFunctions_Chra";
+END_VAR
+
+VAR_OUTPUT
+  // Parametro di uscita
+  St_Read_SN    : BOOL; //State: Serial Number readed
+  St_Read_CHRA  : BOOL; //State: CHRA readed
+  St_CheckLabelOK: BOOL; //State: String readed and compared with Label and result OK
+  St_CheckLabelKO: BOOL; //State: String readed and compared with Label and result KO 
+  All_CmdError  : BOOL;  //Errore: Non è possibile dare più di un comando per volata 
+  All_RxError   : BOOL; //CP340 in error
+  All_Code      : WORD; //CP340 error code
+END_VAR
+
+
+VAR_TEMP
+  // Variabili temporanee
+  CompareStr : BOOL;
+END_VAR
+VAR
+  CP340: "Std_CP340";
+  Scanner_String: STRING[40];
+  StrLabelAux   : STRING[40];
+  CP340_Buffer  : ARRAY[0..255] OF CHAR;
+END_VAR
+
+
+    //Non è permesso dare più di un comando per volata
+    
+    All_CmdError := Cmd_Read_SN AND Cmd_Read_CHRA OR
+                    Cmd_Read_SN AND Cmd_CheckLabel OR
+                    Cmd_Read_CHRA AND Cmd_CheckLabel;
+      
+    CP340.Cmd_Read := (Cmd_Read_SN OR Cmd_Read_CHRA OR Cmd_CheckLabel) AND NOT All_CmdError;
+   
+    CP340(Address    := Address,
+          Out_String := Scanner_String,
+          St_Buffer  := CP340_Buffer);
+  
+    All_RxError := CP340.All_RxERR;
+    All_Code    := CP340.All_Code;
+    
+    
+ //Se la lettura è corretta
+    IF CP340.St_Read THEN
+        //Salva il serial number letto dallo scanner in StrLabel
+        IF Cmd_Read_SN AND NOT St_Read_SN THEN
+            St_Read_SN      := TRUE;
+            Data_Record.StrLabel := Scanner_String;    
+        END_IF;
+        
+        IF Cmd_Read_CHRA AND NOT St_Read_CHRA THEN
+            St_Read_CHRA      := TRUE;
+            Data_Record.Chra_or_SN_Lost := Scanner_String;    
+        END_IF;
+
+        IF Cmd_CheckLabel AND NOT (St_CheckLabelOK OR St_CheckLabelKO) THEN
+            StrLabelAux := Data_Record.StrLabel;
+            St_CheckLabelOK := StrLabelAux = Scanner_String; 
+            St_CheckLabelKO := NOT St_CheckLabelOK;  
+        END_IF;
+    END_IF;
+    
+//AZZERO I RISULTATI SE NON HO PIU' IL COMADO  
+    IF NOT Cmd_Read_SN AND St_Read_SN THEN
+        St_Read_SN := FALSE;
+                               //1234567890123456789012345678901234567890  
+        Data_Record.StrLabel := 'no Serial Number!                       ';
+    END_IF;
+
+    IF NOT Cmd_Read_CHRA AND St_Read_CHRA THEN
+        St_Read_CHRA := FALSE;
+                                      //12345678901234567890
+        Data_Record.Chra_or_SN_Lost := 'no CHRA!            ';
+    END_IF;
+    
+     IF NOT Cmd_CheckLabel AND(St_CheckLabelOK OR St_CheckLabelKO) THEN
+        St_CheckLabelOK := FALSE;
+        St_CheckLabelKO := FALSE;
+    END_IF;
+END_FUNCTION_BLOCK

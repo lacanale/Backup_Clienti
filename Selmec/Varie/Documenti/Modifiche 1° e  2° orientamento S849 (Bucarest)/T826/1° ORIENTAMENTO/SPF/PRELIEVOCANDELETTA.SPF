@@ -1,0 +1,45 @@
+; *********  VerificaRicettaNozzle ******************
+
+Stopre 
+If LAB1<>"AUTO" Gotof Manuale
+; ********************* Verifica ID > Max *******************************
+IF R[(2000 + (Vite_Nozzle*5)+1)]>R1202  ;(R2001 - R2006 - R2011....)
+   Nr_Messaggio=8
+   Messaggio ; Errore impostazione ID da ricetta 
+	 Ripeti_Annulla
+	 Nr_Messaggio=9
+	 Messaggio ; Ciclo abortito per errore impostazione numero vite da ricetta
+	 Origine
+	 M30
+Endif		
+
+Manuale:
+; ********************* Verifica ID = 0 *******************************
+IF R[(2000 + (Vite_Nozzle*5)+1)]==0  ;(R2001 - R2006 - R2011....)
+   Nr_Messaggio=8
+   Messaggio ; Errore impostazione ID da ricetta 
+	 Ripeti_Annulla
+	 Nr_Messaggio=9
+	 Messaggio ; Ciclo abortito per errore impostazione numero vite da ricetta
+	 Origine
+	 M30
+Endif		
+
+; ******************** Errore impostazione candelette ********************
+Stopre
+If (R[2000 + (Vite_Nozzle*5)+2]==1) and (Vite_Nozzle > 2)
+	Nr_Messaggio=54
+	Messaggio
+	Origine
+	M30
+endif
+
+; **************** Errore impostazione programma BOSCH ********************
+Stopre
+If (R[2000 + (Vite_Nozzle*5)+3]==0)
+	Nr_Messaggio=55
+	Messaggio
+	Origine
+	M30
+endif
+RET

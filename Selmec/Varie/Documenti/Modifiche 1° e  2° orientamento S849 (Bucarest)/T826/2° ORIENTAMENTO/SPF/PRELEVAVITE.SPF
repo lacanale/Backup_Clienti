@@ -1,0 +1,69 @@
+N010 Def INT Tentativi
+N011 Def REAL Posizione_C_Sicura
+N020 Tentativi=0
+N021 Posizione_C_Sicura=-200
+N030 ;/-----------------------
+N040 ;/    Prelievo Vite
+N050 ;/-----------------------																																												
+N060 Rit:
+N070 Nr_Messaggio=4
+N080 Messaggio; Approccio al punto prelievo vite
+N090 M43 ; Abilita carico vite
+N100 G1 Z0 F=F_Veloce
+N101 If ($AA_IM[Y]<=120) ; Per evitare l'urto quando parte dal check lubberig
+N102	X=R1301 Y=R1302 
+N103	C=R1304;Preposizionam.sopra vite 		
+N104 else
+N105	X=R1301 Y=R1302 C=R1304;Preposizionam.sopra vite 		
+N106 endif
+N130 IF LAB1<>"AUTO" GOTOF Discesa
+N140 Attendi:
+N150 Stopre
+N160 IF ($A_DBW[0] B_AND 2) <> 2	;Vite pronta per prelievo
+N170    Nr_Messaggio=24        
+N180    Messaggio ;Attesa vite per prelievo
+N190    Gotob Attendi
+N200 ENDIF
+N210 Z=R1303-7
+N220 M42	       ;Prelievo vite in corso  
+N230 Discesa:
+N240 G1 F=F_Lenta Z=R1303 ;Z presa vite
+N250 Stopre
+N260 IF LAB1<>"AUTO" GOTOF Fine
+N270 Nr_Messaggio=6
+N280 Messaggio ;Sblocco vite per prelievo
+N300 Nr_Messaggio=5
+N310 Messaggio ;Start programma bosch imbocco vite
+N320 M24 ;Start prog imbocco vite		
+N290 M25 ;Sblocco vite per prelievo	
+N291 G4 F.2																																					
+N330 G1 Z0 F=F_Veloce
+N340 M43            ;Prelievo vite completato
+N350 Nr_Messaggio=7
+N360 Messaggio ;Controllo vite prelevata 
+N370 Stopre 
+N380 IF ($A_DBW[0] B_AND 1) <> 1	;Vite non prelevata da PLC
+N390  Nr_Messaggio=8
+N400  Messaggio ; Errore presa vite
+N410  Tentativi=Tentativi + 1
+N420  if Tentativi > 2 
+N430    Ripeti_Annulla
+N440    If return==2 ;Ripeti 
+N450      Tentativi=0
+N460      GotoB Rit
+N470    else         ;Annulla 
+N480      Origine
+N490      Nr_Messaggio=9
+N500      Messaggio ;Ciclo abortito per errore prelievo vite
+N510      M30
+N520    endif
+N530  else
+N540    GotoB Rit
+N550  endif  
+N560 ENDIF
+N561 G1 C=Posizione_C_Sicura ; Aggiunto per evitare urto con proximity presenza vite
+N570 FINE:
+N580 M43            ;Prelievo vite completato
+N590 Nr_Messaggio=10
+N600 Messaggio  ;Prelievo vite completato correttamente
+N610 RET           ;

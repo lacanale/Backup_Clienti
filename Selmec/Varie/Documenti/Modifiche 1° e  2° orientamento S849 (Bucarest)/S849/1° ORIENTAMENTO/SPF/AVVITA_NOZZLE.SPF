@@ -1,0 +1,117 @@
+; ********** Avvita_Nozzle ******************
+
+DEF INT Offset_R,Id_Vite
+
+If LAB1<>"AUTO" 
+	ID_Vite=Vite_Nozzle
+	GotoF Manuale
+endif	
+
+; Disingombro NOZZLE
+Stopre
+if (R1201<>3) 
+G1 X=X_Disingombro Y=Y_Disingombro
+endif
+
+Vite_Nozzle=0 
+R1553=3 ; Imposta nozzle scarto
+AvvitaNozzle:     ;------------------------------     
+Stopre
+ID_Vite=R[2000 + (Vite_Nozzle * 5) + 1] ; Leggo ID della vite R2001 - R2006 - R2011... 
+Manuale:
+Offset_R=2301 + ((ID_Vite-1) * 5) ; R2301 - R2306 - R2311 ...
+Stopre
+
+$A_DBW[2]=Vite_Nozzle + 1 ; Comunica al PLC la vite attualmente in elaborazione  
+
+VerificaRicettaNozzle       ;Richiamo sub controllo presenza vite in ricetta esce con M30
+
+If LAB1<>"AUTO" 
+	GotoF Senza
+endif	
+
+;Ciclo Candelette
+IF R[2000 + (Vite_Nozzle*5)+2]==0  Or (LAB1<>"AUTO") Gotof SENZA  ;SE CICLO CON CANDELETTE
+   PrelievoCandeletta ; Numero nozzle come parametro
+   DepositoCandeletta ; Numero nozzle come parametro
+Endif
+
+; Ciclo di avvitatura
+SENZA:
+; R1201 (2=STEP 2 - 3=STEP3)
+; R1202 = Numero di viti totali
+; R1203 = Numero di avvitature
+
+Ripeti:
+
+Stopre
+Nr_Messaggio=24
+Messaggio ; Comando inserto Su  
+M22	     ;Inserto nozzle su
+
+; Verifica sparo vite 
+If ((Vite_Nozzle+1)<=R1202) and (LAB1=="AUTO")
+ M48 ; Sparo vite
+Endif
+
+Nr_Messaggio=31
+Messaggio ; Comando avvitatore nozzle in alto
+M20      ;Alza avvitatore nozzle
+
+Nr_Messaggio=17
+Messaggio ; Posizionamento su punto di avvitatura nozzle
+; Posizionamento su punto di avvitatura
+G1 X=R[Offset_R] Y=R[Offset_R+1] Z=R[Offset_R+2] C=R[Offset_R+3]
+
+If (LAB1<>"AUTO") Gotof Fine
+
+; Verifica se avvitatura o ripasso
+If (Vite_Nozzle+1)<=R1202 
+	M15  ;Avvitatore in basso 
+  Nr_Messaggio=18
+	Messaggio ; Attesa sparo vite in corso...
+
+  ;Verifica sparo vite OK
+  Stopre
+	If (($A_DBW[0] B_AND 8) <> 8) ; Verifica vite
+		Nr_Messaggio=19
+   	Messaggio; Sparo vite fallito Annulla-Ripeti
+   	Ripeti_Annulla
+   	Stopre
+   	If Return==2  ; Se premuto ripeti
+      F=F_Veloce
+			G1 Z0
+			Origine	
+      Gotob Ripeti
+    endif
+    If Return==1 ; Se premuto annulla
+		 	Nr_Messaggio=20
+      Messaggio ; Ciclo abortito per errore sparo vite
+      Origine 
+      M30
+    endif
+  endif    
+
+  Nr_Messaggio=21
+  Messaggio; Comando Inserto Giu 
+  M19	 ;INSERTO GIU' SENZA CONTROLLO SENSORE
+  CheckPresenzaVite  ;Richiama Programma controllo vite con i sensori con 3 ripetizioni
+  ; Esecuzione coppie
+Else
+  Nr_Messaggio=22
+  Messaggio ; Comando avvitatore in basso
+  M15   ;AVVITATORE IN BASSO
+  Nr_Messaggio=21
+  Messaggio ; Comando Inserto Giu
+  M19	 ;INSERTO GIU' SENZA CONTROLLO SENSORE
+Endif
+
+CheckAvvitaturaNozzle ;Richiamo prog. avvitatura e controllo esito avvitatura
+Vite_Nozzle=Vite_Nozzle+1
+
+If Vite_Nozzle>=R1203 Goto FINE
+GotoB AVVITANOZZLE
+FINE:
+R1553=1 ; Imposta Nozzle avvitato OK
+RET
+

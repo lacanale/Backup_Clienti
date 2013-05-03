@@ -1,0 +1,99 @@
+N010 DEF INT Vite_Da_Avvitare,Offset_Partenza,CicloAnnullato
+N020 
+N030 CicloAnnullato=0
+N040 If LAB1<>"AUTO" 
+N041		Vite_Da_Avvitare=Vite_Coperchio
+N042		GotoF Manuale
+N043 endif
+N050 Vite_Coperchio=0
+N060 
+N070 Avvita:
+N080 
+N090 $A_DBW[2]=Vite_Coperchio + 1 ; Comunica al PLC la vite attualmente in elaborazione
+N100 
+N110 VerificaPrelievoVite          ;Controlla esistenza punto e prelievo vite (disabilitato in manuale)   
+N120 Nr_Messaggio=11  
+N130 Messaggio ;Approccio al punto di avvitatura  
+N140 
+N150 
+N160 ;Avvitature vite (1° Vite=R301...R352 - 2° Vite=R353...R404  ..)
+N170 Vite_Da_Avvitare=R[(Vite_Coperchio*5)+1] ;Verifica ID della vite
+N171 Manuale:
+N180 Offset_Partenza=301 + ((Vite_Da_Avvitare-1)*52) ;Calcola offset R di partenza
+N190 G1 Z0 F=F_Veloce
+N195 Stopre
+N200 BEGIN_POS_IN:
+N220 G1 F=F_Veloce
+N230 X=R[Offset_Partenza] Y=R[Offset_Partenza+1] Z=R[Offset_Partenza+2] C=R[Offset_Partenza+3]
+N240 Offset_Partenza=Offset_Partenza+5
+N250 END_POS_IN:
+N260 REPEAT BEGIN_POS_IN END_POS_IN P=8
+N270 
+N280 G1 F=F_Lenta
+N290 X=R[Offset_Partenza] Y=R[Offset_Partenza+1] Z=R[Offset_Partenza+2] C=R[Offset_Partenza+3]
+N300 
+N310 ; Verifica se uscire dal punto (valido solo in manuale)
+N320 If LAB1<>"AUTO"
+N330  Stopre
+N340  G4 F1 
+N350  Nr_Messaggio=12
+N360  Messaggio ;Attesa conferma operatore 
+N370  M51 ; Attesa conferma operatore
+N380  Stopre
+N390  GotoF Esci_da_Punto
+N400  M30
+N410 endif
+N420 Stopre
+N430 Rit:
+N440 Nr_Messaggio=13
+N450 Messaggio ;Avvitatura coperchio in corso...
+N460 M23 ;Avvita a PLC
+N470 G4 F1
+N480 
+N490 ; Verifica esito avvitatura
+N500 Stopre
+N510 IF ($A_DBW[0] B_AND 4) <> 4
+N520 Nr_Messaggio=14
+N530 Messaggio   ;Scarto Avvitatura da prog. bosch
+N540 Ripeti_Annulla
+N550 Stopre
+N560 If Return==2 ;Ripeti
+N570    Nr_Messaggio=15
+N580  	Messaggio ;Svitatura in corso
+N590    M99 ; Svita
+N600  	GOTOB Rit
+N610  else
+N620    Nr_Messaggio=17
+N630    Messaggio ;Ciclo abortito per errore avvitatura bosch
+N640    CicloAnnullato=1
+N650  endif  
+N660 endif
+N670 
+N680 Esci_da_Punto:
+N690 Nr_Messaggio=15
+N700 Messaggio ; Uscita dal punto di avvitatura in corso...
+N705 Stopre
+N710 BEGIN_POS_OUT:
+N730 G1 F=F_Veloce
+N740 X=R[Offset_Partenza] Y=R[Offset_Partenza+1] Z=R[Offset_Partenza+2] C=R[Offset_Partenza+3]
+N750 Offset_Partenza=Offset_Partenza-5
+N760 END_POS_OUT:
+N770 REPEAT BEGIN_POS_OUT END_POS_OUT P=9
+N780 
+N790 If LAB1<>"AUTO" GotoF Fine
+N800 If CicloAnnullato==1
+N810   Nr_Messaggio=17
+N820   Messaggio ;Ciclo abortito per errore avvitatura bosch 
+N830   Origine
+N840   M30
+N850 endif
+N860 
+N870 If Vite_Coperchio>=R1201-1 GotoF FINE ;Ciclo terminato OK
+N880 Vite_Coperchio=Vite_Coperchio+1
+N890 GOTOB Avvita
+N900 FINE:
+N902 $A_DBW[2]=Vite_Coperchio + 2 ;Solo per visualizzazione su pannellino
+N891 Stopre
+N905 R1552=1 ; Conferma esecuzione ciclo avvitature OK
+N906 R1553=1 ; Imposta Pezzo avvitato correttamente
+N910 RET

@@ -1,0 +1,10 @@
+A Bucarest Versione 2.1 M-H
+
+Al primo invio di stringhe seriali non manda la coppia ma informazioni di data e ora come riportato nela file
+BLM.png.
+
+Questo comporta che il primo ciclo automatico dopo lo spegnimento dello strumento fallisce e bisogna
+ripeterlo almeno due volte, da quel momento in poi continua a funzionare correttamente.
+
+
+Ad Atessa versione 2.1 h-H

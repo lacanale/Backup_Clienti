@@ -1,0 +1,8 @@
+N10 ;Verifica prelievo vite
+N20 If LAB1<>"AUTO" GotoF Esci
+N30 
+N40 IF R[(Vite_Coperchio*5)+2]==1 ;(R2 - R7 - R12....)
+N50 	PrelevaVite
+N60 ENDIF
+N70 Esci:
+N80 RET

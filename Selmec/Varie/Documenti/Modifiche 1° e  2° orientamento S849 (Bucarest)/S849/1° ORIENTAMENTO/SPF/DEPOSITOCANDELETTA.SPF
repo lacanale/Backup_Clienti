@@ -1,0 +1,31 @@
+; ********** DepositoCandeletta ******************
+
+PROC DepositoCandeletta(Int Cand)
+DEF INT Offset_Dep
+
+If (R1502 > 0) AND (R1502 < 3) ; Verifica impostazione OK
+ ;Prima candeletta indice 0
+ Offset_Dep=1311 + (Vite_Nozzle * 5) ; R1311 - R1316 - R1321 
+
+ F=F_Veloce
+ G1 Z0
+ Nr_Messaggio=16
+ Messaggio ; Approccio al punto di deposito candeletta
+ ;Posizionamento su tavola per deposito candeletta
+ X=R[Offset_Dep] Y=R[Offset_Dep+1] Z=R[Offset_Dep+2] C=R[Offset_Dep+3 ];Deposito nel portacandelette
+ Stopre
+ Nr_Messaggio=12
+ Messaggio ; Discesa slitta pinza candeletta
+ M25			;SCENDI CANDELETTA
+ Nr_Messaggio=11
+ Messaggio ; Apertura pinza candeletta in corso...
+ M27			;APRI PINZA CANDELETTA
+ Nr_Messaggio=14
+ Messaggio ; Salita slitta pinza candeletta in corso…
+ M26			;SALI 
+else
+ Nr_Messaggio=15
+ Messaggio ; Numero candeletta deposito errato
+ M30
+endif
+Ret

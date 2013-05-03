@@ -1,0 +1,14 @@
+N10 G1 Z0 F=F_Veloce           ;Solleva Z 
+Stopre
+; Verifica se sono già in posizione
+If ($AA_IM[X]<=(R1301+1)) and ($AA_IM[X]>=(R1301-1)) and ($AA_IM[Y]<=(R1302+1)) and ($AA_IM[Y]>=(R1302-1))  GOTOF Muovi
+
+C-180
+Muovi:
+
+N110 X=R1301 Y=R1302   ;Preposizionam.sopra vite
+N120 C=R1304
+Stopre
+N50 R1552 = 2 ; Conferma esecuzione funzione
+Stopre
+N50 ret

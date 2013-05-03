@@ -1,0 +1,53 @@
+N010 ; ********** CheckAvvitaturaChra ******************
+N020 
+N030 DEF INT Riavv
+N040 Stopre
+N050 Riavv=0
+N060 Riavvita: 
+N070 Nr_Messaggio=45
+N080 Messaggio ; Avvitatura CHRA in corso...
+N090 M24 ;Avvita CHRA
+N100 G4 F1
+N110 ;CONTROLLA AVVITATURA FALLITA O ALTEZZA FUORI SOGLIA
+N120 Stopre
+N130 IF (($A_DBW[0] B_AND 64) <> 64) OR (($A_DBW[0] B_AND 128) <> 128)
+N140   ; Ritenta avvitatura
+N150   Stopre
+N160   IF Riavv<2
+N170      Nr_Messaggio=46
+N180      Messaggio ; Svita vite chra per nuovo tentativo
+N190      M99                      ;SVITA CHRA
+N200      G4 F1
+N210      Riavv=Riavv+1
+N220      GOTOB Riavvita
+N230   ENDIF
+N240 
+N250   IF (($A_DBW[0] B_AND 64) <> 64)
+N260      Nr_Messaggio=47
+N270      Messaggio ; Messaggio errore avvitatura  
+N280      R1553=4 ; Imposta scarto per avvitatura
+N281	    Stopre
+N290   ENDIF
+N300 
+N310   IF (($A_DBW[0] B_AND 128) <> 128)
+N320      Nr_Messaggio=48
+N330      Messaggio ; Messaggio errore altezza   
+N340      R1553=6 ; Imposta scarto per altezza
+N341      Stopre
+N350   ENDIF
+N360 
+N370   Ripeti_Annulla ;Sul campo PLC è visualizzato il tipo di errore
+N380   Stopre
+N390   If Return==2
+N400    Riavv=0
+N410    GotoB Riavvita
+N420   endif  
+N430   If Return==1
+N440     Nr_Messaggio=49
+N450     Messaggio ; Ciclo abortito dopo errore avvitatura chra
+N460     M99 ; Svita CHRA
+N470     Svita_Chra=1 Riavv=0
+N480   endif
+N490 Endif
+N500 RET
+N510 

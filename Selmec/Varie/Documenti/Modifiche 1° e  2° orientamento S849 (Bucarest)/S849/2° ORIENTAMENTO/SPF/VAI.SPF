@@ -1,0 +1,64 @@
+N010 LAB1="MANUALE"
+N020 F_Veloce=1000 
+N030 F_Lenta=500
+N040 G1 G90 F=F_Veloce
+N050 
+N060 ;Selezione della manovra richiesta:
+N070 ;la variabile R1501 e' scritta DAL PLC
+N080 Stopre
+N090 IF R1501==0 GotoF VAI_RIPOSO     ;Posizione di parcheggio
+N100 IF R1501==1 GotoF VAI_COPERCHIO_PRESA_VITE  ;Presa vite
+N110 IF R1501==2 GotoF VAI_COPERCHIO  ;Punti vite coperchio 
+N120 IF R1501==3 GotoF VAI_CAPABILITY_COPERCHIO ;BLM 
+N130 IF R1501==4 GotoF VAI_VERIFICA_ASSI
+N140 
+N150 GOTO FINE
+N160 
+N170 ;****************** ORIGINE ******************* 
+N180 VAI_RIPOSO:
+N190 Nr_Messaggio=18
+N200 Messaggio; Ritorno al punto origine in corso…
+N210 Origine  ;SPF per portare gli assi su origine
+N220 GotoF FINE
+N230 
+N240 ;****************** PRESA VITE  ******************* 
+N250 VAI_COPERCHIO_PRESA_VITE: 
+N260 PrelevaVite
+N270 GotoF FINE
+N280 
+N290 ;****************** VITI COPERCHIO  ******************* 
+N300 VAI_COPERCHIO:
+N310 ;La R1502 è scritta dal PLC
+N320 Vite_Coperchio=R1502
+N330 Nr_Messaggio=19
+N340 Messaggio;Fine posizionamento al punto vite in manuale
+N350 G4 F1
+N360 AvvitaCoperchio
+N370 GotoF FINE
+N380 
+N390 ;****************** BLM *******************  
+N400 VAI_CAPABILITY_COPERCHIO:
+N410 Nr_Messaggio=20
+N420 Messaggio ; Approccio al punto di capability BLM
+N430 Check_BLM_Coperchio
+N440 GotoF FINE
+N450 
+N460 VAI_VERIFICA_ASSI:
+N470 Nr_Messaggio=22
+N480 Messaggio ; Approccio al punto capability assi
+N490 G1 Z0 F=F_Veloce
+N500 C0
+N510 Stopre
+N520 X=R1311 Y=R1312
+N530 C=R1314
+N540 Z=R1313
+N550 Stopre
+N560 Nr_Messaggio=23
+N570 Messaggio ; Arrivo al punto capability assi attesa conferma operatore
+N580 G4 F1
+N590 M51   ; Attesa start ciclo per prosecuzione
+N600 Z0
+N610 Gotof Fine
+N620 
+N630 FINE:
+N640 M30

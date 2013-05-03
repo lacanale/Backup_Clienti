@@ -1,0 +1,33 @@
+N010 ;R1208 = Altezza Lubbering
+N020 ;R1209 = Lunghezza Lubbering
+N030 Nr_Messaggio=1
+N040 Messaggio ; Accostamento al punto check BLM
+N050 F=F_Veloce
+N060 G1 Z0
+N065 G1 C=R1309 ;R1309
+N070 G1 X=(R1306) Y=R1307  ;-R1209
+N082 F=F_Lenta
+N090 G1 Z=(R1308)          ;+ R1208
+N100 Ripeti:
+N110 If LAB1<>"AUTO" GotoF Esci 
+N120  ;Questa funzione si resetta sull'esito di OK o KO da PLC
+N130  Nr_Messaggio=2
+N140  Messaggio ; Ciclo check BLM in corso...
+N150  M70 ; Avvia ciclo capability coperchio
+N160  ;
+N165  Stopre
+N170  If (($A_DBW[0] B_AND 8) <> 8) ; Verifica esito ciclo capability coperchio
+N180     Nr_Messaggio=3
+N190     Messaggio ; Ciclo capability nozzle fallito
+N200     Ripeti_Annulla
+N210     Stopre
+N220     If Return==2 GotoB Ripeti
+N230     Origine 
+N240     M30
+N250  endif
+N260  ;Origine
+N270 G1 Z0 F=F_Veloce
+N271 Stopre
+N275 R1552 = 4 ; Conferma fine funzione check BLM
+N280 Esci:
+N290 ret

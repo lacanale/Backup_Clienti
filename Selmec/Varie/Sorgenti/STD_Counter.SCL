@@ -1,0 +1,97 @@
+FUNCTION_BLOCK STD_Counter 
+TITLE = 'STD_Counter'
+//
+// Contatore
+//
+// 
+//
+// 
+// 01/07/2009 - Prima versione della funzione
+
+VERSION : '1.0'
+AUTHOR  : MDQ 
+NAME    : STD_Cou
+FAMILY  : Contat
+VAR_TEMP
+    // Variabili temporanee
+   TMP_Timer    : BOOL;
+   TMP_BTimer   : BOOL;
+END_VAR
+VAR
+    // Variabili statiche
+   STA_Signal   :    BOOL;  // Fronte dell'impulso
+   STA_BuzzerON :    BOOL;  // attivazione buzzer
+   STA_Impulsi  :    INT;  // numero di impulsi contati
+   STA_Timer    :    "TON"; // timer per antiripetitivo
+   STA_BuzzerT  :    "TON"; // timer per buzzer
+END_VAR
+
+// Parametri del blocco
+VAR_INPUT
+   // Parametri d'ingresso
+   IN_Enable    :    BOOL;  // Abilitazione a contare
+   IN_Signal    :    BOOL;  // Segnale da contare
+   IN_Reset     :    BOOL;  // Reset del conteggio
+   IN_SignalTC  :    BYTE;  // Numero totale di segnali
+   IN_WaitTime  :    TIME;  // Tempo di attesa
+   IN_BuzzerTime:    TIME;  // Tempo di segnalazione acustica 
+END_VAR
+
+VAR_IN_OUT
+    // Parametri di transito
+END_VAR
+
+VAR_OUTPUT
+    // Parametri di uscita
+    OUT_Sound           :   BOOL;   // segnale ad 1 per 500 ms
+    OUT_CountOK         :   BOOL;   // tutti i segnali sono stati contati
+    OUT_ERR_signalON    :   BOOL;   // errore segnale sempre attivo
+    OUT_Number          :   Byte;   // numero di segnali contati
+END_VAR
+
+    OUT_ERR_SignalON:=false;   
+    IF IN_Enable THEN 
+       IF IN_reset THEN
+          Sta_Impulsi:=0;
+          OUT_countOK :=false;
+       END_IF;       
+       Sta_timer (IN:= STA_Signal,
+                  PT:= IN_Waittime);             
+       TMP_Timer:=Sta_timer.Q;  
+               
+       IF IN_signal AND NOT STA_Signal AND NOT Out_CountOK THEN
+            STA_Signal :=true;
+            STA_BuzzerON := true;
+            STA_Impulsi:=STA_Impulsi+1;                      
+       END_IF; 
+
+       IF tmp_timer AND NOT in_signal THEN
+          STA_Signal:=false;
+       END_IF; 
+       IF tmp_timer AND in_signal THEN          
+          OUT_ERR_SignalON:=True;
+       END_IF; 
+       
+       Sta_buzzerT (IN:= STA_BuzzerON,
+                    PT:= IN_BuzzerTime);             
+       TMP_BTimer:=Sta_buzzerT.Q;  
+
+       IF TMP_BTimer THEN
+          STA_BuzzerON :=false;
+       END_IF;
+ 
+       IF INT_TO_BYTE(STA_Impulsi)=IN_SignalTC THEN
+            OUT_countOK:=True;
+       END_IF;
+       OUT_Number:=INT_TO_BYTE(STA_impulsi);
+       OUT_Sound :=Sta_BuzzerON;
+    ELSE
+       OUT_sound :=false;
+       OUT_countOK :=false;
+       OUT_Number :=0;
+       STA_Impulsi :=0;
+    END_IF;
+    
+    // Parte istruzioni
+    ;
+END_FUNCTION_BLOCK

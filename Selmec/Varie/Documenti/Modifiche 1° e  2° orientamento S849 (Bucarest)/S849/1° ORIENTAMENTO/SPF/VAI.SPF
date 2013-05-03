@@ -1,0 +1,92 @@
+; ********** Vai ******************
+LAB1="MANUALE"
+F_Veloce=2000
+F_Lenta=500
+G1 G90 F=F_Veloce
+ProtezioneAssi
+;Selezione della manovra richiesta:
+;la variabile R1501 e' scritta DAL PLC
+Stopre
+IF R1501==0 GotoF VAI_RIPOSO        ;Posizione di parcheggio
+IF R1501==1 GotoF VAI_PUNTI_NOZZLE  ;Punti vite nozzle
+IF R1501==2 GotoF VAI_PUNTI_CHRA    ;Punti vite chra 
+IF R1501==3 GotoF VAI_PRELIEVO_CANDELETTA  
+IF R1501==4 GotoF VAI_DEPOSITO_CANDELETTA 
+IF R1501==5 GotoF VAI_DINAMOMETRO   
+IF R1501==6 GotoF VAI_CAPABILITY_NOZZLE   
+IF R1501==7 GotoF VAI_CAPABILITY_CHRA
+IF R1501==8 GotoF VAI_VERIFICA_ASSI
+
+GOTO FINE
+
+;****************** ORIGINE ******************* 
+VAI_RIPOSO:
+Nr_Messaggio=52
+Messaggio ; Ritorno al punto origine in corso…
+Origine  ;SPF per portare gli assi su origine
+GotoF FINE
+
+;****************** PRESA VITE  ******************* 
+VAI_PUNTI_NOZZLE: 
+;La R1502 è scritta dal PLC
+Vite_Nozzle=R1502
+F=F_Veloce
+G1 Z0
+Avvita_Nozzle
+GotoF FINE
+
+;****************** VITI COPERCHIO  ******************* 
+VAI_PUNTI_CHRA:
+;La R1502 è scritta dal PLC
+Vite_Chra=R1502
+F=F_Veloce
+G1 Z0
+Avvita_Chra
+GotoF FINE
+
+VAI_PRELIEVO_CANDELETTA:
+;La R1502 è scritta dal PLC
+Vite_Nozzle=R1502-1
+PrelievoCandeletta
+GotoF FINE
+
+VAI_DEPOSITO_CANDELETTA:
+;La R1502 è scritta dal PLC
+Vite_Nozzle=R1502-1
+DepositoCandeletta
+Gotof Fine
+
+VAI_DINAMOMETRO:
+G1 Z0
+Dinamometro
+Gotof Fine
+
+;****************** BLM NOZZLE *******************  
+VAI_CAPABILITY_NOZZLE:
+Check_BLM_Nozzle
+GotoF FINE
+
+;****************** BLM CHRA *******************  
+VAI_CAPABILITY_CHRA:
+Check_BLM_Chra
+GotoF FINE
+
+VAI_VERIFICA_ASSI:
+Nr_Messaggio=22
+Messaggio ; Approccio al punto capability assi
+G1 Z0 F=F_Veloce
+C90
+Stopre
+X=R1309 Y=R1310
+C=R1312
+Z=R1311
+Stopre
+Nr_Messaggio=23
+Messaggio ; Arrivo al punto capability assi attesa conferma operatore
+G4 F1
+M51   ; Attesa start ciclo per prosecuzione
+Z0
+Gotof Fine
+
+FINE:
+M30

@@ -1,0 +1,19 @@
+N010 ;Return=1 Annulla
+N020 ;Return=2 Ripeti
+N030 Return=0
+N040 Ripeti:
+N050 M55	;Visualizza tasto annulla a pannellino
+N060 Stopre
+N070 if ($A_DBW[0] B_AND 16384) == 16384
+N080   Return=1
+N090   GotoF Esci
+N100 endif
+N110 
+N120 if ($A_DBW[0] B_AND 32768) == 32768
+N130   Return=2
+N140   GotoF Esci
+N150 endif
+N160 
+N170 GOTOB Ripeti
+N180 Esci:
+N190 RET

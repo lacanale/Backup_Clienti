@@ -1,0 +1,78 @@
+; ********** Dinamometro ******************
+
+DEF Int Offset_R
+; Posizionamento su punto di dinamometro
+Ripeti:
+Offset_R=2601
+Nr_Messaggio=36
+Messaggio ; Comando dinamometro giu
+
+F=F_Veloce
+Nr_Messaggio=37
+Messaggio ; Approccio ai punti di ingresso dinamometro
+;Ingresso dinamometro (3 punti)
+Begin_Pos_IN1:
+STOPRE
+X=R[Offset_R] Y=R[Offset_R+1] Z=R[Offset_R+2] C=R[Offset_R+3]
+Offset_R=Offset_R+5
+End_Pos_IN1:
+REPEAT Begin_Pos_IN1 End_Pos_IN1 P=2
+
+G1 Z0
+M29 ; Dinamometro giu
+M59 ; Apertura finestra di controllo leva
+F=F_Lenta
+
+;Ingresso dinamometro (17 punti)
+Begin_Pos_IN2:
+STOPRE
+X=R[Offset_R] Y=R[Offset_R+1] Z=R[Offset_R+2] C=R[Offset_R+3]
+Offset_R=Offset_R+5
+End_Pos_IN2:
+REPEAT Begin_Pos_IN2 End_Pos_IN2 P=16
+
+M60 ;Chiusura finestra di controllo leva
+Offset_R =2701
+
+Nr_Messaggio=38
+Messaggio ; Approccio ai punti di uscita dinamometro
+;Uscita dinamometro (3 punti)
+Begin_Pos_OUT1:
+STOPRE
+X=R[Offset_R] Y=R[Offset_R+1] Z=R[Offset_R+2] C=R[Offset_R+3]
+Offset_R=Offset_R+5
+End_Pos_OUT1:
+REPEAT Begin_Pos_OUT1 End_Pos_OUT1 P=6
+
+Nr_Messaggio=39
+Messaggio ; Comando dinamometro su 
+M31 ; Dinamometro su
+F=F_Veloce
+
+If (($A_DBW[0] B_AND 256) <> 256) 
+ Nr_Messaggio=40
+ Messaggio ; Ciclo dinamometro fallito
+ Ripeti_Annulla
+ Stopre
+ if Return==2 GotoB Ripeti
+ if Return==1
+ 	Nr_Messaggio=41
+ 	Messaggio ; Ciclo abortito per controllo dinamometro
+	R1553=5 ; Imposta scarto per dinamometro
+	GotoF Uscita
+ endif
+endif
+
+Uscita:
+;Uscita dinamometro (3 punti)
+Begin_Pos_OUT2:
+STOPRE
+X=R[Offset_R] Y=R[Offset_R+1] Z=R[Offset_R+2] C=R[Offset_R+3]
+Offset_R=Offset_R+5
+End_Pos_OUT2:
+REPEAT Begin_Pos_OUT2 End_Pos_OUT2 P=2
+
+
+If LAB1<>"AUTO" GotoF Fine
+Fine:
+RET

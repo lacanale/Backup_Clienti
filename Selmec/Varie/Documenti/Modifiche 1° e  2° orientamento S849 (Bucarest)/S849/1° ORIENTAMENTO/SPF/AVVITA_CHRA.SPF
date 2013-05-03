@@ -1,0 +1,97 @@
+N010 ; ********** Avvita_Chra ******************
+N020 
+N030 DEF Int Offset_R,ID_Vite
+N040 If LAB1<>"AUTO" Gotof AvvitaManuale
+N050 Vite_Chra=0 
+N060 G1 F=F_Veloce
+N070 R1553=4 ; Imposta scarto avvitatura
+N080 
+N140 AvvitaManuale:
+N150 If LAB1<>"AUTO" 
+N160 	ID_Vite=Vite_Chra
+N170 	GotoF Manuale
+N180 endif	
+N192 Stopre
+; Disingombro
+If ($A_DBW[0] B_AND 8192) == 8192 
+	; PER TURBO T5
+	G1 X=X_Disingombro 
+	Y=Y_Disingombro
+else
+; PER TURBO GTD
+	G1 Y=Y_Disingombro 
+	X=X_Disingombro
+endif
+N200 AvvitaChra: 
+N210 Stopre
+N220 VerificaRicettaCHRA ;controllo presenza vite in ricetta
+N230 
+N240 ID_Vite=R[(Vite_Chra * 5) + 1] ; Leggo ID della vite R1 - R6 - R11... 
+N191	; Disingombro CHRA
+N250 Manuale:
+N260 Offset_R=301 + ((ID_Vite-1) * 52) ; R301 - R353 - R405 ...
+N270 $A_DBW[2]=Vite_Chra + 1 ; Comunica al PLC la vite attualmente in elaborazione
+N280 Nr_Messaggio=43
+N290 Messaggio ; Approccio al punto di avvitatura chra
+N300 ; Posizionamento su punto di avvitatura
+N310 G1 F=F_Veloce
+N320 G1 Z0
+N330 Begin_Pos_IN:
+N340 ;STOPRE
+N350 X=R[Offset_R] Y=R[Offset_R+1] Z=R[Offset_R+2] C=R[Offset_R+3]
+N360 Offset_R=Offset_R+5
+N370 End_Pos_IN:
+N380 REPEAT Begin_Pos_IN End_Pos_IN P=8
+N390 
+N400 F=F_Lenta
+N410 
+N420 ;Ingresso
+N430 ;R346 - R398 - R450 ...
+N440 X=R[Offset_R] Y=R[Offset_R+1] Z=R[Offset_R+2] C=R[Offset_R+3]
+N450 
+N460 If LAB1<>"AUTO"
+N470   Nr_Messaggio=43 
+N480   Messaggio ;Arrivo, premere start per uscire
+N490   M51 ; Attesa conferma operatore
+N500   Gotof Esci_Punto
+N510 endif
+N520 
+N530 CheckAvvitaturaCHRA   ;Richiamo sub avvitatura e controllo avvitatura
+N540 
+N550 Esci_Punto:
+N560 ;Uscita
+N570 F=F_Veloce
+N580 
+N590 Nr_Messaggio=50
+N600 Messaggio ;Uscita dal punto di avvitatura
+N610 Begin_Pos_OUT:
+N620 ;Stopre
+N630 X=R[Offset_R] Y=R[Offset_R+1] Z=R[Offset_R+2] C=R[Offset_R+3]
+N640 Offset_R=Offset_R-5
+N650 End_Pos_OUT:
+N660 Repeat Begin_Pos_OUT End_Pos_OUT P=9
+N670 
+N680 Z0
+N690 
+N700 If LAB1<>"AUTO" GotoF Fine
+N710 
+N720 IF Svita_Chra==True 
+N730 	If Vite_Chra==0 Gotof LabelScarto
+N740 	Vite_Chra=Vite_Chra-1
+N750 	Svitatura_Chra
+N760 	Gotof LabelScarto
+N770 	M30
+N780 Else
+N790 	Vite_Chra=Vite_Chra+1
+N800 Endif
+N810 
+N820 ;Verifica fine ciclo
+N830 If Vite_Chra>=R1205 Goto FINE
+N840 
+N850 GOTOB Avvitachra
+N860 FINE:
+N861 Stopre
+N870 R1553=2 ; Chra avvitato OK
+N880 LabelScarto:
+N890 RET
+N900 

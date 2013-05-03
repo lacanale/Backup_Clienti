@@ -1,0 +1,22 @@
+Ultimo progetto VNT26
+
+
+PLC
+Compilare UDT_Pantografo oppure
+Copiare DB88 dopo aver salvato tutti i valori di configurazione degli assi VAT(PantoVAT)
+Copiare UDT5,UDT7,UDT8,UDT9,UDT10,UDT11,UDT12
+
+Compilare sorgente PantoBeckSystemv2.2 (FB1,FB4,FB6,FB7)
+Aggiornare il richiamo all'interno dell'FC58 quindi rigenerando il DB7 (si può confrontare con Calibrazione VNT17 oppure Calibrazione VNT-26)
+
+
+BECKOFF
+Assicurarsi che sia disattivato Project->Option->Auto load dentro TwinCat
+Aprire il progetto da caricare
+Andare Online->Communication Parameter-> COM1 19200 E 1 bit stop
+Selezionare LOGIN
+Eseguire il download
+Al termine selezionare ONLINE->Creare BootProject
+Poi selezionare ONLINE->START e verificare in basso RUN scritto in Verde
+
+

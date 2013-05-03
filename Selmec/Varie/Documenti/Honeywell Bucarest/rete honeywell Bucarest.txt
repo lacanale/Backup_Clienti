@@ -1,0 +1,3 @@
+rete = sfguest
+pw=12Honeywell{}
+proxy=192.168.101.5 port=31280

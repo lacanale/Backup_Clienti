@@ -1,0 +1,58 @@
+; ********** Origine ******************
+
+Def real X_Origine,Y_Origine,Z_Origine,C_Origine
+F=F_Veloce
+R1552=0
+;M20  Avvitatore nozzle su
+;M22  Insero nozzle su
+;M31  Dinamometro Su
+;M26  Slitta Candelette su
+;M27  Apri pinza candelette 
+M22 M20 M31 M27 M26
+
+X_Origine=491.0
+Y_Origine=-1.0
+Z_Origine=0.0
+C_Origine=204.0
+
+G1 Z=Z_Origine
+Stopre
+; Disingombro NOZZLE
+If  (($A_DBW[0] B_AND 2) == 2) and (R1201<>3) 
+; Disingombro
+	If ($A_DBW[0] B_AND 8192) == 8192 
+		; PER TURBO T5
+		G1 X=X_Disingombro 
+		Y=Y_Disingombro
+	else
+		; PER TURBO GTD
+		G1 Y=Y_Disingombro 
+		X=X_Disingombro
+	endif
+endif
+
+; Disingombro CHRA
+Stopre
+G1 C=C_Origine
+If  (($A_DBW[0] B_AND 4) == 4) 
+	; Disingombro
+	If ($A_DBW[0] B_AND 8192) == 8192 
+		; PER TURBO T5
+		G1 X=X_Disingombro 
+		Y=Y_Disingombro
+	else
+		; PER TURBO GTD
+		G1 Y=Y_Disingombro 
+		X=X_Disingombro
+	endif
+endif
+
+X=X_Origine Y=Y_Origine
+
+
+; Pulizia canna
+M21 ; Inserto nozzle giu
+M22 ; Inserto nozzle su
+Stopre
+R1552=1
+Ret

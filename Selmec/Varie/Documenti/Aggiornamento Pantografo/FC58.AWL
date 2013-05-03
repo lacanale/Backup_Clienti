@@ -1,0 +1,325 @@
+FUNCTION "SystemPantografo" : VOID
+TITLE =
+VERSION : 0.1
+
+
+VAR_TEMP
+  Cmd_InviaAvvitature : BOOL ;	
+  errore_ret_val : INT ;	
+  Enable : BOOL ;	
+  Cmd_ACQ : BOOL ;	
+  ACQ_AutoNum : BOOL ;	
+  In_ScrewDrivingOk : BOOL ;	
+  In_ScrewDrivingKo : BOOL ;	
+  In_ScrewDrivingStarted : BOOL ;	
+  In_ScrewDrivingEnd : BOOL ;	
+  ComOK : BOOL ;	
+  ComKO : BOOL ;	
+  error_retval : INT ;	
+  AngoloPallet : REAL ;	
+  In_WorkFlange : INT ;	
+  DefaultScrewProg : BYTE ;	
+  Ripristino : BOOL ;	
+  tmp_real : REAL ;	
+  tmp_real2 : REAL ;	
+  testmode : BOOL ;	
+  ResetAvvitature : BOOL ;	
+END_VAR
+BEGIN
+NETWORK
+TITLE =
+
+
+
+NETWORK
+TITLE =Gestione Enable
+//1) Automatico -> e ho già la pagina di avvitatura; 2) modo SetUp; 3) Non sono 
+//in 
+//stato di svitatura 
+//attuatore 
+//NB: dopo la call se sono in stato di svitatura metto il programma di svitatura
+      U(    ; 
+      U     "MODO AUTOMATICO STAZIONE"; 
+      UN    "Stato_SvitaturaAttuatore"; 
+      U(    ; //pagina - stato di avvitatura staffa  
+      L     "Scambio dati OP170".NUMERO_PAGINA.N_XX; 
+      L     46; 
+      ==I   ; 
+      )     ; 
+      )     ; 
+      O     "MODO SETUP STAZIONE"; 
+//O     M      0.1                  //da rimuuovere
+      =     #Enable; 
+
+
+NETWORK
+TITLE =Modalità ACQ
+
+
+
+      U     "MODO SETUP STAZIONE"; 
+      =     #Cmd_ACQ; 
+
+      U     "Scambio dati OP170".ACQ_Mode.AutoNumerazione; 
+      =     #ACQ_AutoNum; 
+
+NETWORK
+TITLE =Gestione Flangia in corso
+
+      U     #Cmd_ACQ; 
+      SPB   ACQ; 
+
+//gestione flangia in base al ciclo
+      L     1; 
+      T     #In_WorkFlange; 
+      SPA   OUT; 
+
+ACQ:  L     "Scambio dati OP170".ACQ_Mode.FlangiaDaAcquisire; 
+      T     #In_WorkFlange; 
+
+OUT:  NOP   0; 
+
+NETWORK
+TITLE =Gestione invio avvitature
+//invio viti in caso di Acquisizione 
+//
+//o in caso di init del ciclo(quest'ultimo è da aggiugere)
+
+
+
+      U     "FR+MODO AUTOMATICO"; //stato di invio vite -> gestire init quando va in Auto
+      O(    ; 
+      UN    #Cmd_ACQ; 
+      U     "FR+ACQ_PuntiModificati"; 
+//  U     "Station.Systems".PantoSystem.ST_ACQ_PuntiModificati
+      )     ; 
+      S     "Station.Systems".PantoSystem.CMD.RetrieveRecipePoint; 
+
+      U     "Station.Systems".PantoSystem.ST_InvioAvvitTerminato; 
+      O     #Cmd_ACQ; 
+      O     T     29; 
+      R     "Station.Systems".PantoSystem.CMD.RetrieveRecipePoint; 
+
+      U     "Station.Systems".PantoSystem.CMD.RetrieveRecipePoint; 
+      =     #Cmd_InviaAvvitature; 
+
+      U     "Station.Systems".PantoSystem.CMD.RetrieveRecipePoint; 
+      L     S5T#5S; 
+      SE    T     29; 
+
+
+
+NETWORK
+TITLE =Mapping Stati avvitatore
+
+
+      U     "Bench.MapE".BOSCH_Pant_ResultOK; 
+      U     "MODO AUTOMATICO STAZIONE"; //aggiunto per evitare registrazioni in manuale 20110930
+      O(    ; 
+//aggiunto perchè se non ho la punta fissa
+//con il contraccolpo della coppia
+//la posizione acquisita "balla"
+      U     #Cmd_ACQ; 
+      U     "FR+ PULSANTE AVV. BOSCH"; 
+      )     ; 
+      UN    "Stato_SvitaturaAttuatore"; 
+      =     #In_ScrewDrivingOk; 
+
+      U     "Bench.MapE".BOSCH_Pant_ResultKO; 
+      U     "MODO AUTOMATICO STAZIONE"; //aggiunto per evitare registrazioni in manuale 20110930
+      =     #In_ScrewDrivingKo; 
+
+      U     "Bench.MapE".Screwing_InProgress; 
+      U     "MODO AUTOMATICO STAZIONE"; //aggiunto per evitare registrazioni in manuale 20110930
+      =     #In_ScrewDrivingStarted; 
+
+
+      U     "Bench.MapE".BOSCH_Pant_EndSequence; 
+      U     "MODO AUTOMATICO STAZIONE"; //aggiunto per evitare registrazioni in manuale 20110930
+      UN    #Cmd_ACQ; 
+      O(    ; 
+//aggiunto perchè se non ho la punta fissa
+//con il contraccolpo della coppia
+//la posizione acquisita "balla"
+      U     #Cmd_ACQ; 
+      U     "FR+ PULSANTE AVV. BOSCH"; 
+      )     ; 
+      =     #In_ScrewDrivingEnd; 
+
+NETWORK
+TITLE =Interfaccia Punti vite Supervisore vs PantoSystem
+
+//      U     #Cmd_ACQ
+//      SPB   jmp1
+//      CALL  "FC_Superv2Panto"
+//       Superv_Flange:="PosAvvitature_Staffa".PantoPosizioni
+//       Flange       :="Panto.Recipe".Flangia
+//jmp1: NOP   0
+
+NETWORK
+TITLE =Gestione Programma di Default dell'Avvitatore 
+//programma da utilizzare in caso di disabilitazione dei controlli xy, z e 
+//z-finale
+      L     1; //"PosAvvitature_Staffa".PantoPosizioni.Flangia[1].Vite[1].ProgAvvitatura
+      T     #DefaultScrewProg; 
+
+      L     1; 
+      T     "Panto.Recipe".Flangia[1].Vite[1].AbilitaSvitatura; 
+      T     "Panto.Recipe".Flangia[1].Vite[2].AbilitaSvitatura; 
+      T     "Panto.Recipe".Flangia[1].Vite[3].AbilitaSvitatura; 
+      T     "Panto.Recipe".Flangia[1].Vite[4].AbilitaSvitatura; 
+      T     "Panto.Recipe".Flangia[1].Vite[5].AbilitaSvitatura; 
+      T     "Panto.Recipe".Flangia[1].Vite[6].AbilitaSvitatura; 
+
+      T     "Panto.Recipe".Flangia[2].Vite[1].AbilitaSvitatura; 
+      T     "Panto.Recipe".Flangia[2].Vite[2].AbilitaSvitatura; 
+      T     "Panto.Recipe".Flangia[2].Vite[3].AbilitaSvitatura; 
+      T     "Panto.Recipe".Flangia[2].Vite[4].AbilitaSvitatura; 
+      T     "Panto.Recipe".Flangia[2].Vite[5].AbilitaSvitatura; 
+      T     "Panto.Recipe".Flangia[2].Vite[6].AbilitaSvitatura; 
+
+      L     15; 
+      T     "Panto.Recipe".Flangia[1].Vite[1].ProgSvitatura; 
+      T     "Panto.Recipe".Flangia[1].Vite[2].ProgSvitatura; 
+      T     "Panto.Recipe".Flangia[1].Vite[3].ProgSvitatura; 
+      T     "Panto.Recipe".Flangia[1].Vite[4].ProgSvitatura; 
+      T     "Panto.Recipe".Flangia[1].Vite[5].ProgSvitatura; 
+
+      T     "Panto.Recipe".Flangia[2].Vite[1].ProgSvitatura; 
+      T     "Panto.Recipe".Flangia[2].Vite[2].ProgSvitatura; 
+      T     "Panto.Recipe".Flangia[2].Vite[3].ProgSvitatura; 
+      T     "Panto.Recipe".Flangia[2].Vite[4].ProgSvitatura; 
+      T     "Panto.Recipe".Flangia[2].Vite[5].ProgSvitatura; 
+
+NETWORK
+TITLE =Gestione Reset Esiti Avvitature
+//U stato del ciclo in cui resettare gli esiti avvitature FC33
+//
+//ed in caso di 
+//
+//VALUTARE SE EFFETTUARLO A FINE CICLO O AD INIZIO DEL NUOVO CICLO DI MATCHING
+      U     "Mem.Reset_Avvitature"; 
+      L     S5T#5S; 
+      SE    T     28; 
+
+      U     "Mem.Reset_Avvitature"; 
+      O     "FR+StatoSvitatura"; 
+      S     "Station.Systems".PantoSystem.CMD.ResetAvvitature; 
+
+      U(    ; 
+      U     "FR+BeckRipris.Effettuato"; 
+      O     T     28; //rst per timeout
+      )     ; 
+      R     "Station.Systems".PantoSystem.CMD.ResetAvvitature; 
+      R     "Mem.Reset_Avvitature"; 
+
+      U     "Station.Systems".PantoSystem.CMD.ResetAvvitature; 
+      =     #ResetAvvitature; 
+
+
+
+NETWORK
+TITLE =Assegnazione OLD VitiEffettuate
+
+//   L     "Station.Systems".PantoSystem.OUT_vitiEffettuate
+//   L     "Station.Systems".PantoSystem.OUT_vitiEffettuateOLD
+//      <>I   
+//      SPBN  salt
+//      L     "Station.Systems".PantoSystem.OUT_vitiEffettuate
+//      T     "Station.Systems".PantoSystem.OUT_vitiEffettuateOLD
+
+//     L     "Station.Systems".PantoSystem.OUT_vitiEffettuate
+//      L     0
+//      ==I   
+//      SPB   salt
+
+//      SET   
+//      S     "Avv effettuata da Panto"
+//salt: NOP   0
+
+NETWORK
+TITLE =
+
+      U     M     77.0; 
+      =     #testmode; 
+
+
+      CALL "FB_PantoBeckhoffSystems" , "Ist_FB_PantoBeckhoffSyst" (
+           In_NumFlange             := 1,
+           In_MaxScrews             := 15,
+           AddrIN                   := 400,
+           AddrOUT                  := 400,
+           Cmd_Enable               := TRUE,//FALSE
+           Cmd_Reset                := #ResetAvvitature,
+           Cmd_SendScrewsPos        := #Cmd_InviaAvvitature,
+           In_WorkFlange            := #In_WorkFlange,
+           In_Start_PLS             := FALSE,
+           In_ScrewDrivingOk        := #In_ScrewDrivingOk,
+           In_ScrewDrivingKo        := #In_ScrewDrivingKo,
+           In_ScrewDrivingStarted   := #In_ScrewDrivingStarted,
+           In_ScrewDrivingEnd       := #In_ScrewDrivingEnd,
+           In_DefaultScrewProg      := #DefaultScrewProg,
+           In_ToolRotationAngle     := 0.000000e+000,
+           Cmd_Mode_ACQ_Pos         := #Cmd_ACQ,// Modo acquisizione
+           ACQ_AutoNumerazione      := #ACQ_AutoNum,
+           ACQ_TestModeEnable       := #testmode,//M0.0
+           ACQ_TestModeTollR        := 5.000000e+000,
+           ACQ_TestModeTollZ        := 1.500000e+001,
+           ACQ_TestModeZmin         := 1.000000e+001,
+           ACQ_TestModeZmax         := 1.000000e+001,
+           Out_Pantosystem          := "Station.Systems".PantoSystem,
+           AvvitaturaOK             := "Avv effettuata da Panto",
+           ACQ_Point_Executed       := M    250.0,
+           ACQ_IdViteDaAcquisire    := "Scambio dati OP170".ACQ_Mode.ViteDaAcquisire,
+           Flange                   := "Panto.Recipe".Flangia,
+           PantografoParametri      := "Panto.Recipe".Parametri);
+
+//refresh da db system a db OP170
+      CALL "BLKMOV" (
+           SRCBLK                   := "Station.Systems".PantoSystem,
+           RET_VAL                  := #errore_ret_val,
+           DSTBLK                   := "Scambio dati OP170".PantoSystem);
+NETWORK
+TITLE =Interfaccia Punti vite PantoSystem vs Supervisore
+
+//      UN    #Cmd_ACQ
+//      SPB   jmp2
+//      CALL  "FC_Panto2Superv"
+//       Flange       :="Panto.Recipe".Flangia
+//       Superv_Flange:="PosAvvitature_Staffa".PantoPosizioni
+//jmp2: NOP   0
+
+NETWORK
+TITLE =Assegnazione Stato Flange Terminate
+
+      U     "Station.Systems".PantoSystem.ST_PantoFlangeTerminate; 
+      =     "Mem.viti tutte avvitate"; 
+NETWORK
+TITLE =pezza da sistemare
+
+//      U     "Ricette".CheckPosizioneVite
+//      SPB   scr0
+//    L     #DefaultScrewProg
+//      T     "Station.Systems".PantoSystem.OUT_PantoScrewProgNum
+
+//      U     "Station.Systems".PantoSystem.OUT_StartPls
+//      =     "Station.Systems".PantoSystem.ST_Panto_Screw
+
+//      U     "Station.Systems".PantoSystem.ST_Panto_Screw
+
+//scr0: NOP   0
+
+NETWORK
+TITLE =Caso di    "Stato_SvitaturaAttuatore"
+
+      U     "Stato_SvitaturaAttuatore"; 
+      SPBN  out1; 
+      L     "Panto.Recipe".Parametri.Globali.ProgSvitatura; 
+      T     "Station.Systems".PantoSystem.OUT_PantoScrewProgNum; 
+out1: NOP   0; 
+
+
+
+
+END_FUNCTION
+

@@ -1,0 +1,39 @@
+; ********** Check_BLM_NOZZLE ******************
+
+Nr_Messaggio=4
+Messaggio; Approccio al punto Check BLM NOZZLE in corso...
+R1553=3 ; Imposta nozzle scarto
+F=F_Veloce
+G1 Z0
+G1 X=R1301 Y=R1302 Z=R1303 C=R1304
+
+IF LAB1<>"AUTO" GotoF Fine
+
+Ripeti:
+;Questa funzione si resetta sull'esito di OK o KO da PLC
+ Nr_Messaggio=5
+ Messaggio ; Ciclo capability nozzle in corso...
+ M15 ; Slitta Avvitatore Giu
+ M19 ; Inserto Giu senza controllo sensore
+ M70 ; Avvia ciclo capability nozzle
+ ;
+Stopre
+ If (($A_DBW[0] B_AND 512) <> 512) ; Verifica esito ciclo capability nozzle
+    Nr_Messaggio=6
+    Messaggio ; Ciclo capability nozzle fallito
+    Ripeti_Annulla
+    Stopre
+    If Return==2 GotoB Ripeti
+    If Return==1 
+    	Nr_Messaggio=7
+    	Messaggio ; Ciclo abortito per errore check capability nozzle
+    	Origine 
+    	M30
+    EndIf
+Endif
+;Origine
+M20  ;Avvitatore nozzle su
+M22  ;Insero nozzle su
+Fine:
+RET
+
