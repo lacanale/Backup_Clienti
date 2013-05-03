@@ -1,0 +1,6 @@
+Pulsantiera da EB65...EB71    E   AB64...AB69  (GESTIONE FB79)
+
+DB32.DBX1.6 E DB32.DBX1.7 (JOG- E JOG+)
+
+
+Per esempio gestione start estermo E5.4 E5.5
