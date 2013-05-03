@@ -1,0 +1,385 @@
+%,MX-O,
+; ELECTRIC SYSTEM di DI SILVIO DINO (problemi sul cambio utensili)
+; PROGRAMMA X FRESA CHIRON
+; 05 GIUGNO 2007
+;--------------------------------------------------------------------------------------
+;                                INGRESSI
+;
+ DEF IN-EMERG      I01  ; emergenza dall'esterno a PLC e CNC
+ DEF M-A           I02  ; macchina accesa
+;
+;**************************************************************************************
+;                                 USCITE
+;______________________________________________________________________________________
+ DEF OUT-EMER      O01  ; emergenza da CNC e PLC verso esterno
+;
+;                                REGISTRI
+;______________________________________________________________________________________
+;**************************************************************************************
+;                               CICLO INIZIALE
+CY1
+;
+M2047               = ERA   M1  M2000   ; reset dei flag.
+                    = ERA   O1  O256    ; reset delle uscite
+                    = ERA   T1  T255    ; reset dei timer
+                    = ERA   C1  C255    ; reset dei contatori
+                    = ERA   R1  R255    ; reset dei registri
+                    = GEAR1
+NOT MSTROBE         = MOV 500 R550
+                    = MOV 500 R551 
+                    = MOV 500 R552
+                    = MOV 500 R553
+                    = MOV 500 R554
+                    = MOV 500 R555
+                    = MOV 500 R556
+;
+END
+;
+;**************************************************************************************
+;                                  PROGRAMMA
+PRG
+REA
+;*****************************GESTIONE DEL SEGNALE AUXEND******************************
+;
+TSTROBE OR  T2STROBE OR DFU  MSTROBE  OR DFU DM03 OR DFU DM04  OR SSTROBE 
+                                    = tg1 40 500
+NOT  T40                             = AUXEND 
+;****************************GESTIONE START CN*****************************************
+START OR (NOT M90 AND NOT M10 AND   I7 AND M150 AND NOT CYSTART) 
+                                   = CYSTART
+CPS MBCD* EQ $150                  = SET M150
+DFU M89                            = RES M150
+;
+;****************************ALLARMI EMERGENZE E SEGNALAZIONI SPIE*********************
+;( NOT M200 OR NOT M300 )  AND NOT I07 = ERR2
+DFD I19                              = SET M670
+T63                                  = RES M670
+I17 AND IN-EMERG    AND  /ALARM  AND NOT M670  = OUT-EMER
+NOT I17                            = ERR1
+;**********************RICERCA ZERO ASSI***********************************************
+;
+NOT I30                             = DECEL1 ;ZERO ASSE X
+NOT I31                             = DECEL2 ;ZERO ASSE Y
+NOT I32                             = DECEL3 ;ZERO ASSE Z
+;**********************ABILITAZIONE  ASSI**********************************************
+OUT-EMER AND NOT LOPEN              = SERVO1ON 
+                                    = SERVO2ON
+                                    = SERVO3ON
+                                    = SERVO4ON
+                                    = SERVO5ON
+                                    = SERVO6ON
+                                    = SERVO7ON
+B5R561                  = TG1 63 3000                                             
+;
+;****************************GESTIONE  MANDRINO****************************************
+OUT-EMER AND NOT T17                = O13;COMANDO POTENZA MANDRINO
+                                    = TG2 10 2000
+;
+( T10 OR ( O13 AND O15 ) AND ( DM03 OR  DM04 )) AND NOT O23 
+                                    = O15 ;COMANDO DI ABILITAZIONE ALLA ROTAZIONE 
+;--------------------------------------------------------------------------------------
+DM05                                = O16 ;COMANDO DI ABILITAZIONE ORIENTAMENTO
+                                    = TG2 17 4000
+;********************GESTIONE ENCODER MAGAZZINO UTENSILI*******************************
+I20                                 = M1 ; PESO 1
+I21                                 = M2 ; PESO 2
+I22                                 = M3 ; PESO 4
+I23                                 = M4 ; PESO 8
+I24                                 = M5 ; PESO 10
+I25                                 = M6 ; PESO 20
+;
+M2047                    = CNCRD(TOOL,R20 ,M700 ) 
+                    = CNCWR(R20,GUP100,M701 ) 
+                    = CNCRD(NXTOOL ,R21 ,M702 ) 
+                    = CNCWR(R21,GUP101,M703 ) 
+                    = CNCWR(R100 ,GUP200,M705 ) 
+                    = CNCWR(R101 ,GUP201,M706 ) 
+                    = CNCRD(POSZ,R102,M707)
+= CNCWR(R102 ,GUP202,M708 ) 
+I7               = MOV 1 R100 008 
+NOT I7           = MOV 0 R100 008 
+I9               = MOV 1 R101 008 
+NOT I9           = MOV 0 R101 008 
+; LETTURA DELLE POSIZIONI REALI ASSE Z
+M2047            = MOV -72 R110
+                 = DVS R102 10000 R111
+CPS R110 EQ R111 = M675   ; SE L'ASSE SI TROVA A -720MM
+NOT M675         = TG2 130 600
+DFU M675         = SET M676
+T130             = RES M676   
+M676 = M720  ;POSIZIONE IN LINEA CON IL BRACCIO CARICATORE
+;
+M2047            = MOV 60 R112
+CPS R111 EQ R112 = M677   ; SE L'ASSE SI TROVA A 600MM 
+NOT M677         = TG2 131 600
+DFU M677         = SET M678
+T131             = RES M678
+M678 = M721 ; POSIZIONE IN ALTO IL BRACCIO PUO' GIRARE
+;
+;************************ LETTURA UTENSILE RICHIESTO***********************************
+M2047            = MOV M1 R1 108     ;CARICA SU R1 LA POSIZIONE DEL MAGAZZINO UTENSILI   
+M2047 OR TSTROBE    = MOV TBCD R2 108   ;R2 = LETTURA UTENSILE RICHIAMATO
+TSTROBE AND NOT CPS R2 EQ R20   = SET M200  ;R2 = LETTURA UTENSILE RICHIAMATO
+;************************ LETTURA UTENSILE DA RIPORRE *********************************                 
+M2047 OR DFU T2STROBE    = MOV T2BCD R3 108  ;R3 = POSIZIONE DOVE RIPORRE L'UTENSILE
+ DFU DM06       = SET M300
+; 
+;***************************************************************************************
+;                      M710 MARCA DI CICLO CAMBIO UTENSILE IN CORSO
+;****************************************************************************************
+T2STROBE                 = SET M710 ;CICLO DI CAMBIO UTENSILE ATTIVATO 
+DFU I8 AND M700              = SET M711 ;LETTURA DI BRACCIO VERSO IL CARICATORE
+M700 AND M701 AND I7          = RES M710 ;FINE CICLO
+                              = RES M711 
+;*****************GESTIONE COMANDI DI ROTAZIONE E BLOCCO SBLOCCO CORONA****************
+; *********** M USATE DAL 200 AL 211 **************************************************
+B5R563 AND MANUAL                     = SET M330 ;ROT IN MANUALE
+B6R563 AND MANUAL                     = SET M331
+MANUAL AND ( RESETIN OR DFU I26 )     = SET M332
+                                      = SET M333
+M332                            = TG2 71 250
+                                = TG2 72 150
+T72 OR T63                            = RES M330
+                                      = RES M333
+T71                             = RES M331 = RES M332
+;**********************COMANDO DI ROTAZIONE A SINISTRA****************************
+(NOT O5 AND M200 AND NOT M300 AND M206 AND NOT M207 ) OR 
+(NOT O5 AND M300 AND M306 AND NOT M307 ) OR 
+(NOT O5 AND M330 AND MANUAL )                   = M50
+M50 AND I3 AND I7 AND I4 AND NOT I5 AND NOT I2 = O4  ; ROTAZIONE A SINISTRA
+;*******************************COMANDO DI ROTAZIONE A DESTRA*********************
+(NOT O4 AND M200 AND NOT M300 AND M207 AND NOT M206 ) OR 
+(NOT O4 AND M300 AND M307 AND NOT M306 ) OR 
+(NOT O4 AND M331 AND MANUAL )                   = M51
+M51 AND I3 AND I7 AND I4 AND NOT I5 AND NOT I2 = O5  ; ROTAZIONE A DESTRA
+;*********************BLOCCAGGIO CORONA MAGAZZINO*********************************
+DFU I9 OR  DFU M201 OR DFU M301  OR 
+( MANUAL AND DFD M330 OR DFD M331 )      = TG1 20 500 ;DO L'IMPULSO 
+T20 OR T63                                                = O21 ; BLOCCO LA CORONA
+;---------------------------------------------------------------------------------
+;***********************SBLOCCAGGIO DELLA CORONA MAGAZZINO************************
+DFU O21   OR T63                                          = RES M208
+                                                    = RES M308
+( DFD M300 AND M200 ) OR  (DFU M200 OR DFU M300) AND I2   OR 
+( MANUAL AND DFU M330 OR DFU M331 )      = TG1 21 500 ;DO L'IMPULSO
+T21                             = O22 ;SBLOCCO LA CORONA
+;---------------------------------------------------------------------------------
+;*************DECIDO IL SENSO DI ROTAZIONE CON TSTROBE****************************
+NOT O5 AND NOT O4 AND M200 AND NOT M201 AND CPS R2 GT R1 AND NOT M202 AND NOT M204 = SET M202   
+;UTENS.RICHIESTO MAGGIORE DELLA POSIZIONE ATTUALE
+;DEVE RUOTARE IN SENSO SINISTRO
+;--------------------------------------------------------------------------------------
+NOT O5 AND NOT O4 AND  M200 AND NOT M201 AND CPS R2 LT R1 AND NOT M203 AND NOT M205 = SET M203   
+;UTENS.RICHIESTO MINORE DELLA POSIZIONE   ATTUALE
+;DEVE RUOTARE IN SENSO DESTRO
+;--------------------------------------------------------------------------------------
+NOT O5 AND NOT O4 AND M200 AND NOT M201 AND CPS R1 EQ 1 AND  CPS R2 EQ 36  AND NOT M204 = SET M204 
+;DEVE RUOTARE IN SENSO DESTRO
+;--------------------------------------------------------------------------------------
+NOT O5 AND NOT O4 AND M200 AND NOT M201 AND CPS R1 EQ 36 AND CPS R2 EQ 1   AND NOT M205 = SET M205 
+;DEVE RUOTARE IN SENSO SINISTRO
+;--------------------------------------------------------------------------------------   
+M204  OR M206 OR T63    = RES M202
+M205 OR M207  OR T63    = RES M203
+;************************GESTIONE  ROTAZIONE MAGAZZINO CON TSTROBE*********************************
+;
+(M202 OR M205 AND I3 ) AND NOT O5 AND M200  = SET M206 ;ROTAZIONE A SINISTRA
+ M206 OR T63                                           = RES M205
+( M200 AND O4 AND CPS R1 EQ R2 AND I14 ) OR M207 OR T63   = RES M206 ;FERMA LA ROTAZIONE
+;--------------------------------------------------------------------------------------
+(M203 OR M204 AND I3 ) AND NOT O4 AND M200  = SET M207 ;ROTAZIONE A DESTRA
+ M207 OR T63                                           = RES M204
+( M200 AND O5 AND CPS R1 EQ R2 AND I13 ) OR M206  OR T63     = RES M207 ;FERMA LA ROTAZIONE                                      
+;*****************GESTIONE RALLENTAMENTO***********************************************
+M200                                   = ADS $1 R2 R11 ;SOMMO 1 A R2 
+M200                                   = ADS -1 R2 R13 ;SOTTRAGGO 1 A R2
+M200 AND CPS R1 EQ R11                 = M209          ;SONO IN POSIZIONE PIU' 1                     
+M200 AND CPS R1 EQ R13                 = M210          ;SONO IN POSIZIONE MENO 1                       
+M200 AND ( M204 OR M205 ) OR ( O5 AND  M209 ) OR ( O4 AND  M210 )  
+                                       = SET M211 
+( M200 AND M211 ) OR M330 OR M331                         = TG2 22 250
+NOT I5 AND NOT I2 AND I3 AND I7 AND I4 AND ( T22 OR T23 ) = O3   ;RALLENTO
+M200 AND NOT O5 AND NOT O4 AND I26 AND  CPS R1 EQ R2  
+                                       = M201     ;POSIZIONE TROVATA 
+ M201 OR T63                                      = RES M211
+                                       = RES M200 ;RESETTO IL CICLO
+;-------------------------REFRIGERANTE--------------------------------------------------                                       
+B20R561 OR DFU DM09 OR T63 = RES M400
+B21R561 OR DFU DM08 = SET  M400
+M400 = O9
+;_______________________________________________________________________________________
+;____________________RICERCA UTENSILE DA RIPORRE_______________________________________
+;
+;*************DECIDO IL SENSO DI ROTAZIONE*********************************************
+NOT O5 AND NOT O4 AND M300 AND NOT M301 AND CPS R3 GT R1 AND NOT M302 AND NOT M304 = SET M302   
+;UTENS.RICHIESTO MAGGIORE DELLA POSIZIONE ATTUALE
+;DEVE RUOTARE IN SENSO SINISTRO
+;--------------------------------------------------------------------------------------
+NOT O5 AND NOT O4 AND M300 AND NOT M301 AND CPS R3 LT R1 AND NOT M303 AND NOT M305 = SET M303   
+;UTENS.RICHIESTO MINORE DELLA POSIZIONE   ATTUALE
+;DEVE RUOTARE IN SENSO DESTRO
+;--------------------------------------------------------------------------------------
+NOT O5 AND NOT O4 AND M300 AND NOT M301 AND CPS R1 EQ 1 AND  CPS R3 EQ 36  AND NOT M304 = SET M304 
+ M304 OR T63 = RES M302
+;DEVE RUOTARE IN SENSO DESTRO
+;--------------------------------------------------------------------------------------
+NOT O5 AND NOT O4 AND M300 AND NOT M301 AND CPS R1 EQ 36 AND CPS R3 EQ 1   AND NOT M305 = SET M305 
+ M305 OR T63 = RES M303 
+;DEVE RUOTARE IN SENSO SINISTRO
+;--------------------------------------------------------------------------------------   
+;************************GESTIONE  ROTAZIONE MAGAZZINO CON M6*********************************
+;
+(M302 OR M305 AND I3 ) AND NOT O5 AND M300  = SET M306 ;ROTAZIONE A SINISTRA
+ M306 OR T63                                          = RES M302
+                                            = RES M305
+( M300 AND O4 AND CPS R1 EQ R3 AND I14 )  OR T63 OR M307   = RES M306 ;FERMA LA ROTAZIONE
+;--------------------------------------------------------------------------------------
+(M303 OR M304 AND I3 ) AND NOT O4 AND M300  = SET M307 ;ROTAZIONE A DESTRA
+M307 OR T63                                           = RES M303
+                                            = RES M304
+( M300 AND O5 AND CPS R1 EQ R3 AND I13 ) OR M306 OR T63     = RES M307 ;FERMA LA ROTAZIONE                                      
+;*****************GESTIONE RALLENTAMENTO CON M6***********************************************
+M300                                   = ADS $1 R3 R11 ;SOMMO 1 A R3 
+M300                                   = ADS -1 R3 R13 ;SOTTRAGGO 1 A R3
+M300 AND CPS R1 EQ R11                 = M309          ;SONO IN POSIZIONE PIU' 1                     
+M300 AND CPS R1 EQ R13                 = M310          ;SONO IN POSIZIONE MENO 1                       
+M300 AND ( M304 OR M305 ) OR ( O5 AND  M309 ) OR ( O4 AND  M310 )  
+                                       = SET M311 
+M300 AND M311                          = TG2 23 250
+M300 AND NOT O5 AND NOT O4 AND I26 AND  CPS R1 EQ R3  
+                                       = M301     ;POSIZIONE TROVATA 
+DFU M301 OR T63                                      = RES M311
+CPS R1 EQ R3 AND DFU I7 AND M300       = RES M300 ;RESETTO IL CICLO
+;_______________________________________________________________________________________
+;**************************************************************************************
+;BRACCIO VERSO IL MANDRINO
+;**************************************************************************************
+( MANUAL AND B2R563 ) OR M504 OR (M18 AND M720) OR 
+( M96 AND NOT I07 )  AND NOT I9 AND NOT M660    = SET M660
+;
+DFU I7 OR DFU I9                              = TG1 101 2000
+;
+DFU I10 OR T63 OR I9 OR  T101  OR T37                          = RES M660 
+                                              = RES M101
+;
+( ( MANUAL AND M660 ) OR ( I6 AND NOT I9 AND  M660 AND NOT O07 AND NOT O4 AND NOT O5 ) )    = O08
+O08 AND M96                           = TG2 37 50
+;*****************************************************************************************
+;                           BRACCIO VERSO IL CARICATORE
+;*****************************************************************************************
+( MANUAL AND B3R563 ) OR M501  OR (M25 AND M720)OR 
+( M98 AND NOT I08 )  AND NOT I8 AND NOT M661     = SET M661
+( MANUAL AND B3R563 )  AND NOT I8                = SET M102
+;
+I7  OR T38                                             = TG2 102 200
+;
+DFU I10 OR T63 OR I8  OR (I7 AND NOT T102)                  =  RES M661 = RES M102
+;
+( ( ( I06 AND NOT I8 AND  M661 AND NOT O8 AND NOT O4 AND NOT O5 AND I2 ) OR MANUAL AND M661 OR M102 ))  = O07
+O07 AND M25                     = TG2 38 200
+;****************************************************************************************
+;SGANCIO UTENSILE DAL CARICATORE LEVA SU'
+ M502 OR M99  AND  I2       = O20
+;SGANCIO UTENSILE DAL CARICATORE LEVA GIU'
+( MANUAL AND  B4R563 ) OR M503  OR M97                           = O24
+;SGANCIO UTENSILE DAL MANDRINO
+( MANUAL AND B1R563 ) OR ( ( M14 OR M23 AND M710) AND I9 )                = O23 
+;SOFFIAGGIO ARIA SGANCIO UTENSILE
+( MANUAL AND B1R563 ) OR (M15 AND M710)                                   = O02
+;ROTAZIONE BRACCIO
+;
+; 
+;*********************  prelievo utensile selezionato*******************************************                          
+;PRELIEVO UTENSILE DAL CARICATORE
+DFU TSTROBE  = SET M549
+NOT M548 AND M549    = SET M550
+T63 OR DFU M550    = RES M549 
+T63 OR DFU M500                     = RES M550
+(DFD M200 AND CPS R1 EQ R2 AND NOT CPS R2 EQ R20) OR DFU M550   = SET M500 ;CONSENSO AL PRELIEVO UTENSILE
+ M500 AND NOT I08 AND NOT O08 AND CPS R1 EQ R2    = SET M547    ;BRACCIO VERSO IL CARICATORE
+M500 AND  M547 = TG2 83 3000
+ T83  = M501
+ T63 OR DFU I08  = RES M547
+          = TRS 83 
+;
+M500 AND DFU I08 AND NOT O8                   = SET M502           ;SGANCIO UTENSILE LEVA SU'
+;
+M500 AND I5 AND NOT I8 OR T63                    = RES M502
+M504                                        =  M503;LEVA GIU'
+;
+M500 AND I5                        = TG2 90 1000           
+ T90                     = SET M504        ;BRACCIO VERSO IL MANDRINO  
+                         = TRS 90               
+I7 AND M504  OR T63                     = RES M504
+                                    = RES M500
+;******************************CAMBIO UTENSILE DA COMANDO M6*************************************
+NOT M21 AND CPS MBCD* EQ $70 AND INPOS3 AND NOT I09  AND NOT M80   =   M19
+                                                               = SET M21
+DFU M19                                     = SET M18 
+                                                       = SET M36 
+                                                       = SET M548
+O08 AND I9                                = SET M54
+DFU I4  OR T63                                  = RES M54
+DFU I09                                   = SET M14;SGANCIO UTENSILE DAL MANDRINO
+DFU M14 OR T63                                  = RES M18
+DFU I9                                    = TG1 34 1000
+T34                                       = M15;SOFFIAGGIO ARIA
+( CPS MBCD* EQ $71 AND INPOS3 )  = SET M32
+                                 = RES M21
+DFU M32                                   = SET M33
+DFU I6 OR T63                                   = RES M33
+( M33  AND  I9  AND M721 ) OR MANUAL AND B0R563  = O6 ;ROTAZIONE BRACCIO
+;
+( I9 AND INPOS3 AND NOT I07 AND CPS MBCD* EQ $72 ) OR DFD I9     = RES M14 ;BRACCIO VERSO IL MANDRINO
+ CPS MBCD* EQ $76                                  = SET M76
+NOT M27 AND NOT O07 AND NOT I07 AND CPS MBCD* EQ $77        =  M26
+= SET M27 
+I07        = TG2 39 4000
+T39 = RES M27
+DFU M26                                            = SET M25 ;BRACCIO VERSO IL CARICATORE
+                                                   = RES M14
+                                                   = RES M32
+O07 OR I7                                       = RES M25
+DFU M25                                   = SET M599
+M599 AND I7                                     = TG2 95 3000 
+T95  OR T63                                     = SET M600
+                                          = RES M599
+                                          = TRS 95    
+DFD I07  OR T63                                 = RES M600
+M600 AND NOT M122 AND NOT M98  AND M76 AND  CPS R1 EQ R3 AND I02 AND NOT M99 
+                                          = SET M99
+M99                                       = TG2 99 1000
+NOT M98 AND T99 AND CPS R1 EQ R3          = SET M98 
+                                          = SET M122 
+                                          = TRS 99 
+M98                                       = TG2 98 1000
+NOT M97 AND T98                           = SET M97 
+                                          = RES M122 
+                                          = RES M99 
+                                          = RES M98
+                                          = TRS 98
+M97                                       = TG2 97 1000
+NOT M96 AND T97                           = SET M96
+                                          = RES M97
+                                          = TRS 97
+M96  AND  I7   OR T63                           = RES M96  
+                                          = RES M76  
+                                          = RES M36 
+                                          = RES M548
+END                                       
+;______________________________________________________________________________________                                       
+;VISUALIZZAZIONI INGRESSI EXTRA                                                                                 
+I15 = M401
+I17 = M402
+I19 = M403
+I25 = M404
+I29 = M405
+I07 = M413
+I10 = M406
+I12 = M407
+I16 = M408
+I18 = M409
+I26 = M410
+I38 = M411
+I40 = M412
+END

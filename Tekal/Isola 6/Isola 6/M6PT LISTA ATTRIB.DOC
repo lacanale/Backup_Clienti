@@ -1,0 +1,120 @@
+File  C:\..\PT\20080207\PT@@@@Z0.SEQ                             Pag.         1 
+                                                                                
+    Operando   Simbolo  Commento                                                
+                                                                                
+    E 32.0     e 32.0   macchina in start
+    E 32.1     e 32.1   man/autom
+    E 32.2     e 32.2   selett run/prog
+    E 32.3     e 32.3   palmare 1 ciclo
+    E 32.4     e 32.4   palmare 2 ciclo
+    E 32.5     e 32.5   press aria
+    E 32.6     e 32.6   sblocca scarto
+    E 32.7     e 32.7   termico pompa vuoto
+
+    E 33.0     e 33.0   presenza pezzo
+    E 33.1     e 33.1   fc sollevat n.1
+    E 33.2     e 33.2   otturatore term indietro
+    E 33.3     e 33.3   blocca pezzo aperto
+    E 33.4     e 33.4   fc sollevatore 2
+    E 33.5     e 33.5   otturatore inclinato dietro
+    E 33.6     e 33.6   ottuatore anter indietro
+    E 33.7     e 33.7   barriera interrotta
+
+    E 64.0     e 64.0   porta otturatore alto
+    E 64.1     e 64.1   ottur post 1 indietro
+    E 64.2     e 64.2   FC SPINTORE POMPA ACQUA INDIETRO
+    E 64.3     e 64.3   otturatore ant 2 indietro
+    E 64.4     e 6a.4   otturat post 2 indietro
+    E 64.5     e 64.5   selett inserimento robot
+    E 64.6     E 64.6   FREE
+    E 64.7     E 64.7   PULSANTE BHO
+
+    E 65.0     e 65.0   start da robot
+    E 65.1     e 65.1   FREE
+    E 65.2     e 65.2   FREE
+    E 65.3     e 65.3   FREE
+    E 65.4     e 65.4   FREE
+    E 65.5     e 65.5   FREE
+    E 65.6     e 65.6   FREE
+    E 65.7     e 65.7   FREE
+
+    A 1.0      A1.0     EV SCARICO VUOTO
+    A 1.1      A1.1     EV VUOTO LENTO
+    A 1.2      A1.2     RICH PZ DA PROVARE
+    A 1.3      A1.3     COMANDO RELE' ATTIVAZ EMERGENZA
+    A 1.4      A1.4     EV OTTURAT ANT 2 INDIETRO
+    A 1.5      A1.5     EV OTTURAT ANT 2 AVANTI
+    A 1.6      A1.6     EV OTTURAT POST 2 INDIETRO
+    A 1.7      A1.7     EV OTTURAT POST 2 AVANTI
+
+    A 32.0     a32.0    COMANDO POMPA VUOTO
+    A 32.1     a32.1    LAMP SBLOCCA PZ SCARTO
+    A 32.2     a32.2    MARCATORE PZ BUONO
+    A 32.3     a32.3    LAMP PZ BUONO
+    A 32.4     a32.4    LAMP SCARTO 1
+    A 32.5     a32.5    LAMP SCARTO 2
+    A 32.6     a32.6    EV OTTURAT ANT INDIETRO
+    A 32.7     a32.7    EV OTTURAT ANT AVANTI
+
+    A 33.0     a33.0    EV BLOCCAGGIO PZ INDIETRO
+    A 33.1     a33.1    EV BLOCCAGGIO PZ AVANTI
+    A 33.2     a33.2    EV OTTURATORE TERMOSTATO INDIETRO
+    A 33.3     a33.3    EV OTTURATORE TERMOSTATO AVANTI
+    A 33.4     a33.4    EV SPINTORE POMPA ACQUA INDIETRO
+    A 33.5     a33.5    EV SPINTORE POMPA ACQUA AVANTI
+    A 33.6     A33.6    EV OTTURATORE POST 1 INDIETRO
+    A 33.7     A33.7    EV OTTURATORE POST 1 AVANTI
+
+File  C:\..\PT\20080207\PT@@@@Z0.SEQ                             Pag.         2 
+                                                                                
+    Operando   Simbolo  Commento                                                
+                                                                                
+
+    A 64.0     A64.0    EV PORTA OTTURATORE BASSO
+    A 64.1     A64.1    EV PORTA OTTURATORE ALTO
+    A 64.2     A64.2    EV OTTURATORE INCLINATO INDIETRO
+    A 64.3     A64.3    EV OTTURATORE INCLINATO AVANTI
+    A 64.4     A64.4
+    A 64.5     A64.5    EV MARCATORE SCARTO 1
+    A 64.6     A64.6    EV BLOCCAGGI SX/DX INDIETRO
+    A 64.7     A64.7    EV BLOCCAGGI SX/DX AVANTI
+
+    A 65.0     A65.0    EV RIEMPIM RAPIDO PRESSIONE
+    A 65.1     A65.1    EV STABILIZZAZ 1 PRESSIONE
+    A 65.2     A65.2    EV STABILIZZAZ 2 PRESSIONE
+    A 65.3     A65.3    EV SCARICO PRESSIONE
+    A 65.4     A65.4    EV REMPIM LENTO PRESSIONE
+    A 65.5     A65.5    EV VUOTO RAPIDO
+    A 65.6     A65.6    EV STABILIZZAZ 1 VUOTO
+    A 65.7     A65.7    EV STABILIZZAZ 2 VUOTO
+
+    M 2.0      M 2.0
+    M 2.1      M 2.1
+    M 2.2      M 2.2
+    M 2.3      M 2.3
+    M 2.4      M 2.4
+    M 2.5      M 2.5
+    M 2.6      M 2.6
+    M 2.7      M 2.7    AUX E32.0 MACCHINA IN START
+
+    M 3.0      M3.0     AUX SELET AUT (NOT E32.1)
+    M 3.1      M3.1     AUX ARIA+EMERG OK (E32.0 E32.5)
+    M 3.2      M3.2     AUX TERMICO POMPA VUOTO OK
+    M 3.3      M3.3
+    M 3.4      M3.4
+    M 3.5      M3.5
+    M 3.6      M3.6
+    M 3.7      M3.7     AUX CONDIZIONI INIZIALI OK
+
+    M 20.0     M20.0    AUX E64.2 SPINTORE POMPA INDIETRO
+    M 20.1     M20.1    SPINTORE POMPA AVVIATP
+    M 20.2     M20.2
+    M 20.3     M20.3
+    M 20.4     M20.4
+    M 20.5     M20.5    AUX SPINTORE POMPA ACQUA AVANTI
+    M 20.6     M20.6
+    M 20.7     M20.7
+
+    M 30.0     M 30.0   AUX START DA ROBOT
+
+LO

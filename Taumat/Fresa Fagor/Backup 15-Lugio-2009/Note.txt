@@ -1,0 +1,1 @@
+Collegamento con adattatore : dal lato dell'adattatore connettore (RS232) DAL LATO DEL CNC connettore MPI

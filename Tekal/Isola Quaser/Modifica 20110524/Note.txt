@@ -1,0 +1,2 @@
+Aggiunto il contatto R518.4 sul segmento G8.5 bypassabile con K15.7.
+Decodificati M42 e M41 per apertura e chiusura attrezzo interno alla macchina.
